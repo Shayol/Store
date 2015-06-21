@@ -67,12 +67,12 @@ ActiveRecord::Schema.define(version: 20150620043055) do
   add_index "countries", ["name"], name: "index_countries_on_name", unique: true, using: :btree
 
   create_table "credit_cards", force: :cascade do |t|
-    t.integer  "number",           null: false
+    t.text     "number",           null: false
     t.text     "expiration_month", null: false
     t.integer  "expiration_year",  null: false
     t.text     "firstname",        null: false
     t.text     "lastname",         null: false
-    t.integer  "CVV",              null: false
+    t.text     "CVV",              null: false
     t.integer  "customer_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
