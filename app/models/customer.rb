@@ -1,5 +1,6 @@
 class Customer < ActiveRecord::Base
   has_many :orders
+  has_many :raitings
 
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -11,6 +12,10 @@ class Customer < ActiveRecord::Base
 
   def current_order
     self.orders.find_by(state: "in progress")
+  end
+
+  def new_order
+    self.orders.new
   end
 
 end

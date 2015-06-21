@@ -17,8 +17,7 @@ def status_completed?
   end
 
   def order_book(book, quantity=1)
-    order_items = self.order_items
-    book_items = order_items.map{|item| item.book_id == book.id }
+    book_items = self.order_items.map{|item| item.book == book}
     if book_items.any?
       book_items.first.increment!(:quantity, quantity)
     else
