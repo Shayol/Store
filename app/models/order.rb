@@ -1,5 +1,7 @@
 class Order < ActiveRecord::Base
 
+  ORDER_STATE = ["in progress", "completed", "shipped"]
+
   has_many :order_items
   has_many :books, :through => :order_items
   belongs_to :customer
@@ -9,11 +11,17 @@ class Order < ActiveRecord::Base
 
   validate :total_price, presence: true
   validates :completed_date, presence: true, if: :status_completed?
-  validate :state, inclusion: { in: ["in progress", "complited", "shipped"]}, presence: true
+  validate :state, inclusion: { in: ORDER_STATE }, presence: true
+
+  before_save do
+    self.total_price = set_total_price
+  end
+
+  scope :in_progress, -> {where(state: ORDER_STATE[0])}
 
 
 def status_completed?
-    true if self.status == "completed"
+    true if self.status == ORDER_STATE[1]
   end
 
   def order_book(book, quantity=1)

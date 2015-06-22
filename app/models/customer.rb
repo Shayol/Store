@@ -11,7 +11,7 @@ class Customer < ActiveRecord::Base
   validates :password, length: { in: 6..20 }, confirmation: true
 
   def current_order
-    self.orders.find_by(state: "in progress")
+    self.orders.in_progress.first
   end
 
   def new_order
