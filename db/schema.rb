@@ -92,20 +92,20 @@ ActiveRecord::Schema.define(version: 20150620043055) do
   add_index "customers", ["email"], name: "index_customers_on_email", unique: true, using: :btree
 
   create_table "order_items", force: :cascade do |t|
-    t.decimal  "price",      null: false
-    t.integer  "quantity",   null: false
+    t.decimal  "price",      precision: 9, scale: 2, null: false
+    t.integer  "quantity",                           null: false
     t.integer  "book_id"
     t.integer  "order_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "order_items", ["book_id"], name: "index_order_items_on_book_id", using: :btree
   add_index "order_items", ["order_id"], name: "index_order_items_on_order_id", using: :btree
 
   create_table "orders", force: :cascade do |t|
-    t.decimal  "total_price",                                 null: false
-    t.datetime "completed_date",                              null: false
+    t.decimal  "total_price",         default: 0.0,           null: false
+    t.datetime "completed_date"
     t.string   "state",               default: "in progress", null: false
     t.integer  "customer_id"
     t.integer  "credit_card_id"

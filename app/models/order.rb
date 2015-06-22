@@ -9,32 +9,34 @@ class Order < ActiveRecord::Base
   belongs_to :billing_address, :class_name => 'Address', :foreign_key => 'billing_address_id'
   belongs_to :shipping_address, :class_name => 'Address', :foreign_key => 'shipping_address_id'
 
-  validate :total_price, presence: true
+  validates :total_price, presence: true
   validates :completed_date, presence: true, if: :status_completed?
-  validate :state, inclusion: { in: ORDER_STATE }, presence: true
+  validates :state, inclusion: { in: ORDER_STATE }, presence: true
 
   before_save do
-    self.total_price = set_total_price
+    self.update_attribute(:total_price, set_total_price) #MAKE THIS WORK ON ADDING ASSOCIOATIONS
   end
 
   scope :in_progress, -> {where(state: ORDER_STATE[0])}
 
 
 def status_completed?
-    true if self.status == ORDER_STATE[1]
+    true if self.state == ORDER_STATE[1]
   end
 
   def order_book(book, quantity=1)
-    book_items = self.order_items.map{|item| item.book == book}
-    if book_items.any?
-      book_items.first.increment!(:quantity, quantity)
+    if self.order_items.any?
+      self.order_items.first.increment!(:quantity, quantity)
     else
       self.order_items.create(price: book.price, quantity: quantity, book_id: book.id)
     end
+    self.save
   end
 
   def set_total_price
-    self.order_items.inject(sum=0){|sum, item| sum + item.price * item.quantity}
+    45.55
+    # sum=0
+    # self.order_items.inject(sum){|sum, item| sum + item.price * item.quantity}
   end
 
 end
