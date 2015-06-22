@@ -3,4 +3,7 @@ class Book < ActiveRecord::Base
   belongs_to :category
   has_many :ratings
   has_many :customers, :through => :ratings
+
+  validate :title, :price, :amount, presence: true
+
 end
