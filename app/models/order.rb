@@ -2,7 +2,7 @@ class Order < ActiveRecord::Base
 
   ORDER_STATE = ["in progress", "completed", "shipped"]
 
-  has_many :order_items, after_remove: :set_total_price
+  has_many :order_items #, after_remove: :set_total_price
   has_many :books, :through => :order_items
   belongs_to :customer
   belongs_to :credit_card
@@ -31,10 +31,11 @@ def status_completed?
     else
       item.create(price: book.price, quantity: quantity, book_id: book.id)
     end
+    #Order.connection.clear_query_cache
     set_total_price
   end
 
-  def set_total_price(order_item=1)
+  def set_total_price
     sum=0
     self.order_items.each do |item|
       sum += item.price * item.quantity
