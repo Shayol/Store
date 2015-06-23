@@ -2,7 +2,7 @@ class Order < ActiveRecord::Base
 
   ORDER_STATE = ["in progress", "completed", "shipped"]
 
-  has_many :order_items
+  has_many :order_items, after_remove: :set_total_price
   has_many :books, :through => :order_items
   belongs_to :customer
   belongs_to :credit_card
@@ -13,9 +13,9 @@ class Order < ActiveRecord::Base
   validates :completed_date, presence: true, if: :status_completed?
   validates :state, inclusion: { in: ORDER_STATE }, presence: true
 
-  before_save do
-    self.update_attribute(:total_price, set_total_price) #MAKE THIS WORK ON ADDING ASSOCIOATIONS
-  end
+  # before_save do
+  #   self.update_attribute(:total_price, set_total_price) #MAKE THIS WORK ON ADDING ASSOCIOATIONS
+  # end
 
   scope :in_progress, -> {where(state: ORDER_STATE[0])}
 
@@ -25,18 +25,21 @@ def status_completed?
   end
 
   def order_book(book, quantity=1)
-    if self.order_items.any?
-      self.order_items.first.increment!(:quantity, quantity)
+    item = self.order_items
+    if item && item.find_by(book: book)
+      item.find_by(book: book).increment!(:quantity, quantity)
     else
-      self.order_items.create(price: book.price, quantity: quantity, book_id: book.id)
+      item.create(price: book.price, quantity: quantity, book_id: book.id)
     end
-    self.save
+    set_total_price
   end
 
-  def set_total_price
-    45.55
-    # sum=0
-    # self.order_items.inject(sum){|sum, item| sum + item.price * item.quantity}
+  def set_total_price(order_item=1)
+    sum=0
+    self.order_items.each do |item|
+      sum += item.price * item.quantity
+    end
+    self.update_attribute(:total_price, sum)
   end
 
 end

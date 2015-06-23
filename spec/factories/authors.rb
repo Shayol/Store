@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :author do
-    firstname { FFaker::Name.first_name }
-    lastname { FFaker::Name.last_name }
+    firstname { Faker::Name.first_name }
+    lastname { Faker::Name.last_name }
   end
 
 end
