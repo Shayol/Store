@@ -2,6 +2,7 @@ class Customer < ActiveRecord::Base
   has_many :orders
   has_many :raitings
   has_many :customers, :through => :raitings
+  has_many :credit_cards
 
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

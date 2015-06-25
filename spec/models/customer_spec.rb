@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Customer, type: :model do
   it { should have_many(:raitings) }
   it { should have_many(:orders) }
+  it { should have_many(:credit_cards) }
   it { should validate_presence_of(:firstname) }
   it { should validate_presence_of(:lastname) }
   it { should validate_presence_of(:password) }
