@@ -1,7 +1,7 @@
 class Address < ActiveRecord::Base
   belongs_to :country
-  validate :address, presence: true
-  validate :zipcode, presence: true
-  validate :city, presence: true
-  validate :phone, presence: true
+  validates :address, presence: true
+  validates :zipcode, presence: true
+  validates :city, presence: true
+  validates :phone, presence: true
 end

@@ -5,6 +5,6 @@ FactoryGirl.define do
     zip_code { Faker::Address.zip_code }
     city { Faker::Address.city }
     phone { Faker::PhoneNumber.cell_phone }
-    country #{ Country.new name: FFaker::Address.country }
+    country nil
   end
 end

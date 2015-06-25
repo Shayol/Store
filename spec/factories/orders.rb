@@ -4,7 +4,6 @@ FactoryGirl.define do
     completed_date { Faker::Time.between(3.days.ago, Time.now) }
     state "in progress"
     customer nil
-    credit_card nil
   end
 
 end

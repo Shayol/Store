@@ -13,33 +13,26 @@ class Order < ActiveRecord::Base
   validates :completed_date, presence: true, if: :status_completed?
   validates :state, inclusion: { in: ORDER_STATE }, presence: true
 
-  # before_save do
-  #   self.update_attribute(:total_price, set_total_price) #MAKE THIS WORK ON ADDING ASSOCIOATIONS
-  # end
-
   scope :in_progress, -> {where(state: ORDER_STATE[0])}
 
 
-def status_completed?
-    true if self.state == ORDER_STATE[1]
+  def status_completed?
+    state == ORDER_STATE[1]
   end
 
   def order_book(book, quantity=1)
-    item = self.order_items
-    if item && item.find_by(book: book)
-      item.find_by(book: book).increment!(:quantity, quantity)
+    if item = order_items.find_by(book: book)
+      item.increment!(:quantity, quantity)
     else
-      item.create(price: book.price, quantity: quantity, book_id: book.id)
+      order_items.create(price: book.price, quantity: quantity, book_id: book.id)
     end
-    #Order.connection.clear_query_cache
     set_total_price
   end
 
+  private
+
   def set_total_price
-    sum=0
-    self.order_items.each do |item|
-      sum += item.price * item.quantity
-    end
+    sum = order_items.inject(0) { |sum, item| sum + item.price * item.quantity }
     self.update_attribute(:total_price, sum)
   end
 

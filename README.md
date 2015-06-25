@@ -1,6 +1,7 @@
 == README
 
-Business logic structure:
+##Business logic structure:
+
 Book
 
     Should contain title, descirption, price and how many books in stock
