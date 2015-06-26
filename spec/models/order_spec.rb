@@ -11,6 +11,7 @@ RSpec.describe Order, type: :model do
   it { should have_many(:books) }
   it { should validate_presence_of(:total_price) }
   it { should validate_presence_of(:state) }
+
   let(:book) {create :book, price: 77}
 
   subject{create :order}
@@ -50,10 +51,10 @@ RSpec.describe Order, type: :model do
       expect(subject.state).to eq("in progress")
     end
 
-    it "order's state should be onу of the  ['in progress', 'completed', 'shipped']" do
-      order= build :order, state: "fakeState"
-      expect(order).not_to be_valid
-    end
+    # it "order's state should be onу of the  ['in progress', 'completed', 'shipped']" do
+    #   order= build :order, state: "fakeState"
+    #   expect(order).not_to be_valid
+    # end
 
     it "is invalid if it has no completed date while in 'completed' state " do
       order= build :order, state: Order::ORDER_STATE[1], completed_date: nil

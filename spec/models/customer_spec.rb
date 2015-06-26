@@ -32,4 +32,12 @@ RSpec.describe Customer, type: :model do
       expect(subject.new_order.class).to eq(Order)
     end
   end
+
+  describe "scope: In progress" do
+    it "fetches only orders 'in progress'" do
+      completed_order = create :order, state: Order::ORDER_STATE[1], customer: subject
+      new_order = create :order, customer: subject
+      expect(subject.orders.in_progress).not_to include(Order::ORDER_STATE[1])
+    end
+  end
 end
