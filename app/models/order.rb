@@ -1,6 +1,6 @@
 class Order < ActiveRecord::Base
 
-  ORDER_STATE = ["in progress", "completed", "shipped"]
+  ORDER_STATE = ["in_progress", "in_queue", "in_delivery", "delivered", "canceled"]
 
   has_many :order_items, dependent: :destroy #, after_remove: :set_total_price
   has_many :books, :through => :order_items
@@ -10,15 +10,15 @@ class Order < ActiveRecord::Base
   belongs_to :shipping_address, :class_name => 'Address', :foreign_key => 'shipping_address_id'
 
   validates :total_price, presence: true
-  validates :completed_date, presence: true, if: :status_completed?
+  #validates :completed_date, presence: true, if: :status_completed?
   validates :state, inclusion: { in: ORDER_STATE }, presence: true
 
   scope :in_progress, -> {where(state: ORDER_STATE[0])}
 
 
-  def status_completed?
-    state == ORDER_STATE[1]
-  end
+  # def status_completed?
+  #   state == ORDER_STATE[1]
+  # end
 
   def order_book(book, quantity=1)
     if item = order_items.find_by(book: book)
