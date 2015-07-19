@@ -1,10 +1,28 @@
-<div class="row user">
-  <div class="col-md-12">
+<div class="row">
+  <div class="col-md-3">
+    The Bookstore
+    <!-- <div
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
+    </div> -->
+  </div>
+  <div class="col-md-3">
+    <%= link_to "HOME", root_path %> | <%= link_to "SHOP", '#' %>
+  </div>
+  <div class="col-md-3">
+  <i class="fa fa-shopping-cart"> CART(EMPTY)</i>
+  <!--fa_icon "shopping-cart", text: "CART(EMPTY)"-->
+  </div>
+  <div class="col-md-3">
     <% if user_signed_in? %>
-    <%= current_user.email %>
-    <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %>
+      <%= link_to "Settings", '#' %> |
+      <%= link_to "Orders", '#' %> |
+      <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %>
     <%else%>
-    <%= link_to 'Sign in', new_user_session_path %> or <%= link_to 'Sign up', new_user_registration_path %>
+      <%= link_to 'Sign in', new_user_session_path %> |
+      <%= link_to 'Sign up', new_user_registration_path %>
     <% end %>
   </div>
 </div>

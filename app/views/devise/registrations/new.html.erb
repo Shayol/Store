@@ -1,29 +1,58 @@
-<h2>Sign up</h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<div class="row">
+  <div class="col-md-3 col-md-offset-4 text-center">
+    <%= link_to user_omniauth_authorize_path(:facebook) do %>
+      <i class="fa fa-facebook-square fa-5x"></i>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-1 col-md-offset-5 text-center">
+   or
+  </div>
+</div>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "sign_up_form"}) do |f| %>
   <%= devise_error_messages! %>
-
+<div class="row ">
+  <div class="col-md-3 col-md-offset-4 text-center">
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true %>
   </div>
-
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-3 col-md-offset-4 text-center">
   <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <!--<em>(<%= @minimum_password_length %> characters minimum)</em>-->
     <% end %><br />
     <%= f.password_field :password, autocomplete: "off" %>
   </div>
+  </div>
+</div>
 
+<div class="row">
+ <div class="col-md-3 col-md-offset-4 text-center">
   <div class="field">
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
-
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2 col-md-offset-4">
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>
+  </div>
+</div>
 <% end %>
-
+<div class="row">
+  <div class="col-md-3 col-md-offset-4">
+  <div class="field">
 <%= render "devise/shared/links" %>
+  </div>
+  </div>
+</div>
+
