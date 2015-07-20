@@ -67,21 +67,18 @@ ActiveRecord::Schema.define(version: 20150716153624) do
     t.integer  "category_id"
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
-    t.string   "storage"
   end
 
   add_index "books", ["author_id"], name: "index_books_on_author_id", using: :btree
   add_index "books", ["category_id"], name: "index_books_on_category_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
-    t.text     "name",       null: false
-    t.integer  "parent_id"
+    t.text     "title",      null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "categories", ["name"], name: "index_categories_on_name", using: :btree
-  add_index "categories", ["parent_id"], name: "index_categories_on_parent_id", using: :btree
+  add_index "categories", ["title"], name: "index_categories_on_title", unique: true, using: :btree
 
   create_table "countries", force: :cascade do |t|
     t.text     "name",       null: false
@@ -98,23 +95,12 @@ ActiveRecord::Schema.define(version: 20150716153624) do
     t.text     "firstname",        null: false
     t.text     "lastname",         null: false
     t.text     "CVV",              null: false
-    t.integer  "customer_id"
+    t.integer  "user_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
   end
 
-  add_index "credit_cards", ["customer_id"], name: "index_credit_cards_on_customer_id", using: :btree
-
-  create_table "customers", force: :cascade do |t|
-    t.text     "email",      null: false
-    t.text     "password",   null: false
-    t.text     "firstname",  null: false
-    t.text     "lastname",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "customers", ["email"], name: "index_customers_on_email", unique: true, using: :btree
+  add_index "credit_cards", ["user_id"], name: "index_credit_cards_on_user_id", using: :btree
 
   create_table "order_items", force: :cascade do |t|
     t.decimal  "price",      precision: 9, scale: 2, null: false
@@ -131,8 +117,8 @@ ActiveRecord::Schema.define(version: 20150716153624) do
   create_table "orders", force: :cascade do |t|
     t.decimal  "total_price",         default: 0.0,           null: false
     t.datetime "completed_date"
-    t.string   "state",               default: "in progress", null: false
-    t.integer  "customer_id"
+    t.string   "state",               default: "in_progress", null: false
+    t.integer  "user_id"
     t.integer  "credit_card_id"
     t.integer  "billing_address_id"
     t.integer  "shipping_address_id"
@@ -141,19 +127,19 @@ ActiveRecord::Schema.define(version: 20150716153624) do
   end
 
   add_index "orders", ["credit_card_id"], name: "index_orders_on_credit_card_id", using: :btree
-  add_index "orders", ["customer_id"], name: "index_orders_on_customer_id", using: :btree
+  add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
   create_table "raitings", force: :cascade do |t|
     t.text     "review"
     t.integer  "raiting_number"
-    t.integer  "customer_id"
+    t.integer  "user_id"
     t.integer  "book_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
 
   add_index "raitings", ["book_id"], name: "index_raitings_on_book_id", using: :btree
-  add_index "raitings", ["customer_id"], name: "index_raitings_on_customer_id", using: :btree
+  add_index "raitings", ["user_id"], name: "index_raitings_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -186,11 +172,11 @@ ActiveRecord::Schema.define(version: 20150716153624) do
   add_foreign_key "addresses", "countries"
   add_foreign_key "books", "authors"
   add_foreign_key "books", "categories"
-  add_foreign_key "credit_cards", "customers"
+  add_foreign_key "credit_cards", "users"
   add_foreign_key "order_items", "books"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "credit_cards"
-  add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "users"
   add_foreign_key "raitings", "books"
-  add_foreign_key "raitings", "customers"
+  add_foreign_key "raitings", "users"
 end

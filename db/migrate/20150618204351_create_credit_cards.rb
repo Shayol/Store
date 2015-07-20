@@ -7,7 +7,7 @@ class CreateCreditCards < ActiveRecord::Migration
       t.text :firstname, null: false
       t.text :lastname, null: false
       t.text :CVV, null: false
-      t.references :customer, index: true, foreign_key: true
+      t.references :user, index: true, foreign_key: true
 
       t.timestamps null: false
     end
