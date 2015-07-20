@@ -5,11 +5,12 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :omniauthable, :omniauth_providers => [:facebook]
 
   has_one    :credit_card
+  has_many   :orders
   belongs_to :billing_address, :class_name => 'Address', :foreign_key => 'billing_address_id'
   belongs_to :shipping_address, :class_name => 'Address', :foreign_key => 'shipping_address_id'
 
-  validates :firstname, length: { maximum: 200 }, presence: true
-  validates :lastname, length: { maximum: 200 }, presence: true
+  validates :firstname, length: { maximum: 200 }
+  validates :lastname, length: { maximum: 200 }
 
 
   def self.from_omniauth(auth)
