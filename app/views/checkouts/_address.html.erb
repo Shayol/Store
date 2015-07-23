@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-2">
+    BILLING ADDRESS
+  </div>
+  <div class="col-md-2 col-md-offset-1">
+    SHIPPING ADDRESS
+  </div>
+  <div class="col-md-2 col-md-offset-1">
+    ORDER SUMMARY
+  </div>
+</div>
+<% form_for @checkout do |f| %>
+<div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :firstname, placeholder: "First name" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :lastname, placeholder: "Last name" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :address, placeholder: "Street address" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :city, placeholder: "City" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <%= f.select :country, placeholder: "Country" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :zipcode, placeholder: "Zip" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :phone, placeholder: "Phone" %>
+  </div>
+</div>
