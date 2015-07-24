@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   devise_for :admins
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: 'home_pages#home'
@@ -6,7 +7,11 @@ Rails.application.routes.draw do
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}
   resources :checkouts, only: [:new, :create]
-  resources :books
+  resources :books do
+    member do
+      post :add_to_order
+    end
+  end
   resources :orders
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

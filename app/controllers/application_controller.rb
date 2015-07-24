@@ -9,4 +9,8 @@ class ApplicationController < ActionController::Base
       stored_location_for(resource) || root_path
     end
   end
+
+  def current_order
+    current_user.orders.in_progress.first
+  end
 end
