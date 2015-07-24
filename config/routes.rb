@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
+  devise_for :admins
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: 'home_pages#home'
+
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}
   resources :checkouts, only: [:new, :create]
