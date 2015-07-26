@@ -36,6 +36,7 @@ gem 'rails_admin'
 # Upload images
 gem 'carrierwave'
 gem "mini_magick"
+gem 'carrierwave-dropbox'
 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
