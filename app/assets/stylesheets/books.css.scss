@@ -7,14 +7,18 @@
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px;
-  &.notice {
+   .notice {
     background-color: #DFF0D8;
     border-color: #D6E9C6;
     color: #3C763D;
     }
-  .alert {
+   .alert {
     background-color: #FF6565;
     border-color: #8a1f11;
     color:  #b94a48;
   }
+}
+
+.row {
+  margin: 15px;
 }

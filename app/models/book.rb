@@ -9,4 +9,6 @@ class Book < ActiveRecord::Base
 
   validates :title, :price, :amount, presence: true
 
+   paginates_per 9
+
 end

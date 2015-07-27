@@ -10,9 +10,12 @@
 
   <div class="container">
     <%= render 'layouts/header' %>
-
-    <p class="flash notice"><%= notice %></p>
-    <p class="flash alert"><%= alert %></p>
+    <% if notice || alert %>
+      <div class="flash">
+        <p class="notice"><%= notice %></p>
+        <p class="alert"><%= alert %></p>
+      </div>
+    <% end %>
 
     <%= yield %>
   </div>

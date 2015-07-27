@@ -38,6 +38,9 @@ gem 'carrierwave'
 gem "mini_magick"
 gem 'carrierwave-dropbox'
 
+gem 'kaminari'
+gem 'wicked'
+
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
