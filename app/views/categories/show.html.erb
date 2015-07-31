@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-9">
+    <%= @category.title %>
+  </div>
+  <div class="col-md-3">
+      SHOP BY CATEGORIES
+      <div class="row">
+        <div class="col-md-3">
+          <% @categories.each do |cat| %>
+            <p><%= link_to cat.title, category_path(cat) %></p>
+          <% end %>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="row">
+<%= @category_books.each do |book| %>
+  <%= render "books/book", locals: {book: book} %>
+<% end %>
+</div>
+<%= paginate @category_books %>

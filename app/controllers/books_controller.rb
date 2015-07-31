@@ -11,7 +11,7 @@ class BooksController < ApplicationController
   def add_to_order
     total_price = current_order.total_price
     current_order.order_book(@book, params[:addBook][:quantity].to_i)
-    if current_order.total_price != total_price
+    if current_order.total_price > total_price
       flash[:notice] = "Book successfully added"
     else
       flash[:alert] = "Book wasn't added"

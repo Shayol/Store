@@ -12,17 +12,20 @@
     <%= link_to "HOME", root_path %> | <%= link_to "SHOP", books_path %>
   </div>
   <div class="col-md-3">
-  <i class="fa fa-shopping-cart">
-  CART(
-    <% if current_user && current_user.orders %>
-      <%= current_order.total_price %>
-      $
-    <% else %>
-      EMPTY
+  <% if current_user && current_user.orders %>
+    <%= link_to order_path(current_order) do %>
+      <i class="fa fa-shopping-cart">
+        CART(
+          <%= current_order.total_price %>
+          $
+          )
+      </i>
     <% end %>
-    )
-  </i>
-  <!--fa_icon "shopping-cart", text: "CART(EMPTY)"-->
+    <% else %>
+    <i class="fa fa-shopping-cart">
+      CART(EMPTY)
+    </i>
+  <% end %>
   </div>
   <div class="col-md-3">
     <% if user_signed_in? %>

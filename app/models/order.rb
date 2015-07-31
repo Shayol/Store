@@ -10,6 +10,7 @@ class Order < ActiveRecord::Base
   belongs_to :shipping_address, :class_name => 'Address', :foreign_key => 'shipping_address_id'
 
   validates :total_price, presence: true
+  validates :order_items, :books, :credit_card, :billing_address, :shipping_address, presence: true, if: :order_in_delivery?
   #validates :completed_date, presence: true, if: :status_completed?
   validates :state, inclusion: { in: ORDER_STATE }, presence: true
 
@@ -19,6 +20,10 @@ class Order < ActiveRecord::Base
   # def status_completed?
   #   state == ORDER_STATE[1]
   # end
+
+  def order_in_delivery?
+    state == ORDER_STATE[1]
+  end
 
   def order_book(book, quantity=1)
     if item = order_items.find_by(book: book)

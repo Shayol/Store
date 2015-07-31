@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-9 text-center">
+    BOOK
+  </div>
+  <div class="col-md-1 text-center">
+    PRICE
+  </div>
+  <div class="col-md-1 text-center">
+    QTY
+  </div>
+  <div class="col-md-1 text-center">
+    TOTAL
+  </div>
+</div>
+<% @order_items.each do |item| %>
+  <%= render "order_item", item: item %>
+<% end %>
+
+<hr>
+
+<div class="row">
+  <div class="col-md-3 col-md-offset-9">
+    SUBTOTAL: <strong>$<%= current_order.total_price %></strong>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2 ">
+    <%= button_to "EMPTY CART", empty_cart_order_path %>
+  </div>
+  <div class="col-md-2 ">
+    <%= button_to "CONTINUE SHOPPING", '#' %>
+  </div>
+  <div class="col-md-2 col-md-offset-2">
+    <%= button_to "Coupon code", '#' %>
+  </div>
+  <div class="col-md-2 ">
+    <%= button_to "UPDATE", '#' %>
+  </div>
+  <div class="col-md-2 ">
+    <%= button_to "CHECKOUT", '#' %>
+  </div>
+</div>
+

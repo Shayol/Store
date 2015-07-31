@@ -13,10 +13,7 @@
       <strong><%= @book.price %> $</strong>
     </div>
     <div class="col-md-4 col-md-offset-2 text-right">
-      <%= form_for :addBook, url: add_to_order_book_path(@book), method: :post do |f| %>
-       <%= f.number_field :quantity, value: 1 %>
-       <%= f.submit "ADD BOOK"%>
-      <% end %>
+      <%= render "add_book", book: @book %>
     </div>
   </div>
   <div class="row">

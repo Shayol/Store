@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-md-2">
+    <img src=<%= item.book.image %> ></img>
+  </div>
+  <div class="col-md-6">
+    <strong><%= item.book.title.titleize %></strong>
+  </div>
+  <div class="col-md-1">
+    <strong>$<%= item.price %></strong>
+  </div>
+  <div class="col-md-1">
+    <%= item.quantity %></strong>
+  </div>
+  <div class="col-md-1">
+    <strong>$<%= item.price * item.quantity %></strong>
+  </div>
+</div>
