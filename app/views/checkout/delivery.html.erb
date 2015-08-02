@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-1">
+    LPS Ground - $5.00
+  </div>
+  <div class="col-md-2 col-md-offset-5">
+    <strong>ORDER SUMMARY</strong>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-md-1">
+    LPS Two Day - $10.00
+  </div>
+  <div class="col-md-2 col-md-offset-5">
+    ITEM TOTAL: $<%= current_order.total_price %>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-md-1">
+    LPS Two Day - $15.00
+  </div>
+  <div class="col-md-2 col-md-offset-5">
+    SHIPPING: $<%= current_order.shipping_price %>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 col-md-offset-6">
+      ORDER TOTAL: $<%= current_order.total_price %>
+    </div>
+  </div>

@@ -2,7 +2,7 @@ class Order < ActiveRecord::Base
 
   ORDER_STATE = ["in_progress", "in_queue", "in_delivery", "delivered", "canceled"]
 
-  has_many :order_items, dependent: :destroy #, after_remove: :set_total_price
+  has_many :order_items, dependent: :destroy
   has_many :books, :through => :order_items
   belongs_to :user
   belongs_to :credit_card

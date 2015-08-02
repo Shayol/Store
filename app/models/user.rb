@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
 
   def self.from_omniauth(auth)
-    unless where(provider: auth.provider, uid: auth.uid).first
+    unless user = where(provider: auth.provider, uid: auth.uid).first
       user = new unless user = find_by(email: auth.info.email)
       user.provider = auth.provider
       user.uid = auth.uid
@@ -25,6 +25,9 @@ class User < ActiveRecord::Base
       user.firstname = auth.info.first_name
       user.lastname = auth.info.last_name
       user.save!
+      user
+    else
+      user
     end
 end
 

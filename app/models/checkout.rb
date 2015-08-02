@@ -60,3 +60,14 @@ class Checkout
     current_user.shipping_address_id = address.id
   end
 end
+
+<!-- <div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :firstname, placeholder: "First name" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :lastname, placeholder: "Last name" %>
+  </div>
+</div> -->
