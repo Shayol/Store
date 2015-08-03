@@ -5,6 +5,7 @@ class Order < ActiveRecord::Base
   has_many :order_items, dependent: :destroy
   has_many :books, :through => :order_items
   belongs_to :user
+  belongs_to :delivery
   belongs_to :credit_card
   belongs_to :billing_address, :class_name => 'Address', :foreign_key => 'billing_address_id'
   belongs_to :shipping_address, :class_name => 'Address', :foreign_key => 'shipping_address_id'
@@ -34,10 +35,15 @@ class Order < ActiveRecord::Base
     set_total_price
   end
 
+  def items_price
+    sum = order_items.inject(0) { |sum, item| sum + item.price * item.quantity }
+  end
+
   private
 
   def set_total_price
-    sum = order_items.inject(0) { |sum, item| sum + item.price * item.quantity }
+    sum = items_price
+    sum += current_order.delivery.price if current_order.delivery
     self.update_attribute(:total_price, sum)
   end
 

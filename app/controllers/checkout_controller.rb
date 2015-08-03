@@ -12,7 +12,7 @@ class CheckoutController < ApplicationController
       @billing_address  = current_order.billing_address || current_user.billing_address || Address.new
     when :delivery
     when :payment
-
+    end
     render_wizard
   end
 
@@ -26,6 +26,7 @@ class CheckoutController < ApplicationController
       @billing_address = @order.billing_address
       #@order.update_attribute(:billing_address_id, @billing_address.id)
     when :delivery
+      @order.update_attribute(:delivery_id, order_params)
     when :payment
 
     end
@@ -57,5 +58,9 @@ class CheckoutController < ApplicationController
 
   def address_params
     params.require(:address).permit(:address, :country_id, :city, :phone, :zipcode)
+  end
+
+  def order_params
+    params.require(:order).permit(:shipping_address_id, :billing_address_id, :credit_card_id, :user_id, :delivery_id)
   end
 end
