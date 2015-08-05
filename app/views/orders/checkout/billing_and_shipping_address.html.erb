@@ -1,3 +1,4 @@
+<!-- , method: :put -->
 <div class="row">
   <div class="col-md-2">
     BILLING ADDRESS
@@ -9,7 +10,17 @@
     ORDER SUMMARY
   </div>
 </div>
-<%= form_for @billing_address, url: wizard_path, method: :put do |f| %>
+<%= form_for @billing_address, url: '/orders/checkingout/checkout' do |f| %>
+<!-- <div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :firstname, placeholder: "First name" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <%= f.text_field :lastname, placeholder: "Last name" %>
+  </div>
+</div> -->
 <div class="row">
   <div class="col-md-2">
     <%= f.text_field :address, placeholder: "Street address" %>

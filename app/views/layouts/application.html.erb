@@ -8,14 +8,15 @@
 </head>
 <body>
 
-  <div class="container">
-    <%= render 'layouts/header' %>
-    <% if notice || alert %>
-      <div class="flash">
-        <p class="notice"><%= notice %></p>
-        <p class="alert"><%= alert %></p>
-      </div>
-    <% end %>
+<div class="container">
+  <%= render 'layouts/header' %>
+  <% if notice %>
+    <p class="notice"><%= notice %></p>
+  <% end %>
+  <% if alert  %>
+    <p class="alert"><%= alert %></p>
+  <% end %>
+
 
     <%= yield %>
   </div>

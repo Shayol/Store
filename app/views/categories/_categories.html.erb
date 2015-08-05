@@ -1,0 +1,5 @@
+<div class="col-md-3">
+  <% @categories.each do |cat| %>
+    <p><%= link_to cat.title, category_path(cat) %></p>
+  <% end %>
+</div>

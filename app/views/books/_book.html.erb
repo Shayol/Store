@@ -1,17 +1,15 @@
 <div class="col-md-4">
-<div class="row">
-  <div class="col-md-3">
-    <img src=<%= book.image %> ></img>
+  <div class="row">
+  <%= link_to book_path(book) do %>
+    <div class="col-md-10 text-center">
+      <%= image_tag book.image.thumb %>
+    </div>
+    <div class="col-md-10 text-center">
+      <%= book.title.titleize %>
+    </div>
+  <% end %>
+    <div class="col-md-10 text-center">
+      <strong>$<%= book.price %></strong>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-3 text-center">
-    <%= link_to book.title.titleize, book_path(book) %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-3 text-center">
-    <strong>$<%= book.price %></strong>
-  </div>
-</div>
 </div>

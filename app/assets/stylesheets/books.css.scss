@@ -2,23 +2,46 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.flash {
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-   .notice {
-    background-color: #DFF0D8;
-    border-color: #D6E9C6;
-    color: #3C763D;
-    }
-   .alert {
-    background-color: #FF6565;
-    border-color: #8a1f11;
-    color:  #b94a48;
-  }
+.notice {
+background-color: #DFF0D8;
+border-color: #D6E9C6;
+color: #3C763D;
+padding: 15px;
+margin-bottom: 20px;
+border: 1px solid transparent;
+border-radius: 4px;
 }
+.alert {
+background-color: #FFCECE;
+border-color: #8a1f11;
+color:  #FF6565;
+padding: 15px;
+margin-bottom: 20px;
+border: 1px solid transparent;
+border-radius: 4px;
+}
+
 
 .row {
   margin: 15px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.store_name {
+  font-size: 18px;
+}
+
+.fa.fa-shopping-cart {
+  font-size: 12px;
+}
+
+.categories_header {
+  font-size: 13px;
+}
+
+.shop_domain {
+  font-size: 20px;
 }

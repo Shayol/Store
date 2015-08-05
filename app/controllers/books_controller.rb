@@ -3,6 +3,7 @@ class BooksController < ApplicationController
   before_action :find_book, only: [:show, :add_to_order]
   def index
     @books = Book.all.page params[:page]
+    @categories = Category.all
   end
 
   def show

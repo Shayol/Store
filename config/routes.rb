@@ -8,8 +8,9 @@ Rails.application.routes.draw do
 
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}
-  resources :checkout do
-    #resources :checkout, controller: 'checkout'
+  post '/orders/checkingout/checkout(.:format)', :to => "orders/checkout#create"
+  resources :orders do
+    resources :checkout, controller: 'orders/checkout'
   end
   resources :books do
     member do
