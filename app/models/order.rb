@@ -10,8 +10,7 @@ class Order < ActiveRecord::Base
   belongs_to :billing_address, :class_name => 'Address', :foreign_key => 'billing_address_id'
   belongs_to :shipping_address, :class_name => 'Address', :foreign_key => 'shipping_address_id'
 
-  validates :total_price, presence: true
-  validates :order_items, :books, :credit_card, :billing_address, :shipping_address, presence: true, if: :order_in_delivery?
+  validates :total_price, :order_items, :books, :credit_card, :billing_address, :shipping_address, presence: true, if: :order_in_delivery?
   #validates :completed_date, presence: true, if: :status_completed?
   validates :state, inclusion: { in: ORDER_STATE }, presence: true
 

@@ -27,6 +27,12 @@ class ApplicationController < ActionController::Base
     @shipping_address ||= current_user.shipping_address || Address.new
   end
 
+  def get_checkout_data
+    @billing_address  = current_order.billing_address || current_user.billing_address || Address.new.save(validate: false)
+    @shipping_address  = current_order.shipping_address || current_user.shipping_address || Address.new.save(validate: false)
+    @credit_card = current_order.credit_card || CreditCard.new
+  end
+
   def address_params
     params.require(:address).permit(:firstname, :lastname, :address, :country_id, :city, :phone, :zipcode)
   end

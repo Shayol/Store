@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     get '/settings', to: 'users#settings'
   end
 
-  post '/orders/checkingout/checkout(.:format)', :to => "orders/checkout#create"
+  #post '/orders/checkingout/checkout(.:format)', :to => "orders/checkout#create"
   resources :orders do
     resources :checkout, controller: 'orders/checkout'
   end

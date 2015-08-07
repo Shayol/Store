@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :find_order
+  before_action :find_order, only: :show
   def show
     @order_items = current_order.order_items
   end

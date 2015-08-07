@@ -1,10 +1,9 @@
-<!-- , method: :put -->
 <div class="row">
   <div class="col-md-4">
     <div class="col-md-8">
       BILLING ADDRESS
     </div>
-    <%= form_for @billing_address, url: '/orders/checkingout/checkout' do |f| %>
+    <%= form_for @billing_address, method: :put do |f| %>
       <% if @billing_address.errors.any? %>
         <% @billing_address.errors.full_messages.each do |msg| %>
           <p class="alert"> <%= msg %> </p>
@@ -111,6 +110,12 @@
 <div class="col-md-4">
   <div class="col-md-8">
     ORDER SUMMARY
+  </div>
+  <div class="col-md-8">
+    ITEM TOTAL: $<%= current_order.items_price %>
+  </div>
+  <div class="col-md-8">
+    ORDER TOTAL: $<%= current_order.total_price %>
   </div>
 </div>
 
