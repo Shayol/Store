@@ -21,4 +21,14 @@ class ApplicationController < ActionController::Base
     order = current_user.orders.in_progress.first || current_user.orders.create
     order
   end
+
+  def get_billing_and_shipping_address
+    @billing_address ||= current_user.billing_address || Address.new
+    @shipping_address ||= current_user.shipping_address || Address.new
+  end
+
+  def address_params
+    params.require(:address).permit(:firstname, :lastname, :address, :country_id, :city, :phone, :zipcode)
+  end
+
 end

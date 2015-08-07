@@ -43,14 +43,10 @@ include Wicked::Wizard
     when :delivery
     when :payment
     end
-    redirect_to wizard_path (step.first)
+    redirect_to wizard_path_next
   end
 
   private
-
-  def address_params
-    params.require(:address).permit(:address, :country_id, :city, :phone, :zipcode)
-  end
 
   def order_params
     params.require(:order).permit(:shipping_address_id, :billing_address_id, :credit_card_id, :user_id, :delivery_id)

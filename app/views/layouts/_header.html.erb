@@ -1,18 +1,17 @@
 <div class="row header">
-  <div class="col-md-3 store_name">
-    The Bookstore
+  <div class="col-md-3">
+    <h5> The Bookstore </h5>
   </div>
   <div class="col-md-3">
     <%= link_to "HOME", root_path %> | <%= link_to "SHOP", books_path %>
   </div>
   <div class="col-md-3">
-  <% if current_user && current_user.orders %>
+  <% if current_user && current_user.orders.in_progress.first %>
     <%= link_to order_path(current_order) do %>
       <i class="fa fa-shopping-cart">
-        CART(
+        CART(current_order.books.count)
           <%= current_order.total_price %>
           $
-          )
       </i>
     <% end %>
     <% else %>
@@ -23,8 +22,8 @@
   </div>
   <div class="col-md-3">
     <% if user_signed_in? %>
-      <%= link_to "Settings", '#' %> |
-      <%= link_to "Orders", '#' %> |
+      <%= link_to "Settings", settings_path %> |
+      <%= link_to "Orders", orders_path %> |
       <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %>
     <%else%>
       <%= link_to 'Sign in', new_user_session_path %> |

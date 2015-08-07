@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :customer do
+  factory :user do
     firstname { Faker::Name.first_name }
     lastname { Faker::Name.last_name }
     email { Faker::Internet.email }
