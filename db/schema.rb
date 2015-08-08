@@ -17,11 +17,11 @@ ActiveRecord::Schema.define(version: 20150805165858) do
   enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.text     "address",    null: false
-    t.text     "zipcode",    null: false
-    t.text     "city",       null: false
-    t.text     "phone",      null: false
-    t.integer  "country_id", null: false
+    t.text     "address"
+    t.text     "zipcode"
+    t.text     "city"
+    t.text     "phone"
+    t.integer  "country_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "firstname"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20150805165858) do
   create_table "books", force: :cascade do |t|
     t.text     "title",                                           null: false
     t.text     "description"
+    t.text     "summary"
     t.decimal  "price",       precision: 9, scale: 2,             null: false
     t.integer  "amount",                              default: 0, null: false
     t.integer  "author_id"
@@ -88,15 +89,14 @@ ActiveRecord::Schema.define(version: 20150805165858) do
   add_index "countries", ["name"], name: "index_countries_on_name", unique: true, using: :btree
 
   create_table "credit_cards", force: :cascade do |t|
-    t.text     "number",           null: false
-    t.text     "expiration_month", null: false
-    t.integer  "expiration_year",  null: false
-    t.text     "firstname",        null: false
-    t.text     "lastname",         null: false
-    t.text     "CVV",              null: false
+    t.text     "number"
+    t.integer  "expiration_year"
+    t.text     "firstname"
+    t.text     "lastname"
+    t.text     "CVV"
     t.integer  "user_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   add_index "credit_cards", ["user_id"], name: "index_credit_cards_on_user_id", using: :btree

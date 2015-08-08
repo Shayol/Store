@@ -9,7 +9,7 @@
   <% if current_user && current_user.orders.in_progress.first %>
     <%= link_to order_path(current_order) do %>
       <i class="fa fa-shopping-cart">
-        CART(<%= current_order.books.count %>)
+        CART(<%= current_order.order_items.count %>)
           <%= current_order.total_price %>
           $
       </i>

@@ -3,7 +3,7 @@
     <div class="col-md-8">
       BILLING ADDRESS
     </div>
-    <%= form_for @billing_address, method: :put do |f| %>
+    <%= form_for @billing_address, method: :put, url: wizard_path do |f| %>
       <% if @billing_address.errors.any? %>
         <% @billing_address.errors.full_messages.each do |msg| %>
           <p class="alert"> <%= msg %> </p>
@@ -57,7 +57,7 @@
   <div class="col-md-8">
     SHIPPING ADDRESS
   </div>
-  <%= form_for @shipping_address, url: '/orders/checkingout/checkout' do |f| %>
+  <%= form_for @shipping_address, method: :put, url: wizard_path do |f| %>
     <% if @shipping_address.errors.any? %>
       <% @shipping_address.errors.full_messages.each do |msg| %>
         <p class="alert"> <%= msg %> </p>

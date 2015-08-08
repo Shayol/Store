@@ -8,6 +8,7 @@ class Orders::CheckoutController < ApplicationController
     case step
     when :billing_and_shipping_addresss
     when :delivery
+      @order = current_order
     when :payment
     end
     render_wizard
@@ -19,9 +20,10 @@ class Orders::CheckoutController < ApplicationController
     params[:order][:state] = 'in_queue' if step == steps[-2]
     case step
     when :billing_and_shipping_address
-      instance_variable_set("@#{params[:address_type]}_address", Address.find(params[:id]))
+      instance_variable_set("@#{params[:address_type]}_address", Address.find(params[:order_id]))
       if instance_variable_get("@#{params[:address_type]}_address").update(address_params)
         flash[:notice] = "#{params[:address_type].capitalize}  address was successfully updated."
+        render next_wizard_path # what of two forms???
       else
         flash[:alert] = "#{params[:address_type].capitalize} address wasn't updated. Check for errors."
       end
@@ -30,7 +32,7 @@ class Orders::CheckoutController < ApplicationController
     when :payment
 
     end
-    render_wizard instance_variable_get("@#{params[:address_type]}_address")
+    render_wizard #instance_variable_get("@#{params[:address_type]}_address")
   end
 
   # def create

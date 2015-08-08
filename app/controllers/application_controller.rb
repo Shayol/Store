@@ -28,9 +28,27 @@ class ApplicationController < ActionController::Base
   end
 
   def get_checkout_data
-    @billing_address  = current_order.billing_address || current_user.billing_address || Address.new.save(validate: false)
-    @shipping_address  = current_order.shipping_address || current_user.shipping_address || Address.new.save(validate: false)
-    @credit_card = current_order.credit_card || CreditCard.new
+    unless current_order.billing_address || current_user.billing_address
+      @billing_address = Address.new
+      @billing_address.save(validate: false)
+      current_order.update_attribute(:billing_address_id, @billing_address.id)
+    end
+
+    unless current_order.shipping_address || current_user.shipping_address
+      @shipping_address = Address.new
+      @shipping_address.save(validate: false)
+      current_order.update_attribute(:shipping_address_id, @shipping_address.id)
+    end
+
+    unless current_order.credit_card
+      @credit_card = CreditCard.new
+      @credit_card.save(validate: false)
+      current_order.update_attribute(:credit_card_id, @credit_card.id)
+    end
+
+    @billing_address  = current_order.billing_address || current_user.billing_address
+    @shipping_address  = current_order.shipping_address || current_user.shipping_address
+    @credit_card = current_order.credit_card
   end
 
   def address_params

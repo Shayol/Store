@@ -42,7 +42,7 @@ class Order < ActiveRecord::Base
 
   def set_total_price
     sum = items_price
-    sum += current_order.delivery.price if current_order.delivery
+    sum += delivery.price if delivery
     self.update_attribute(:total_price, sum)
   end
 
