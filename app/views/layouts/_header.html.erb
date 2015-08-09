@@ -6,7 +6,7 @@
     <%= link_to "HOME", root_path %> | <%= link_to "SHOP", books_path %>
   </div>
   <div class="col-md-3">
-  <% if current_user && current_user.orders.in_progress.first %>
+  <% if current_or_guest_user && current_or_guest_user.orders.in_progress.first %>
     <%= link_to order_path(current_order) do %>
       <i class="fa fa-shopping-cart">
         CART(<%= current_order.order_items.count %>)

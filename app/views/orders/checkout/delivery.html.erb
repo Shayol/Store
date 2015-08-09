@@ -1,32 +1,30 @@
 <%= form_for @order, url: wizard_path do |f| %>
 <div class="row">
-  <div class="col-md-1">
-    Booooooo
-  </div>
-  <div class="col-md-2 col-md-offset-5">
-    <strong>ORDER SUMMARY</strong>
+  <div class="col-md-2 col-md-offset-10 text-right">
+    <h4>ORDER SUMMARY</h4>
   </div>
 </div>
 <div class="row">
-  <div class="col-md-1">
-    collection_radio_buttons(:order, :delivery_id, Delivery.all, :id, :decription_and_price)
+  <div class="col-md-10">
+    <%= collection_radio_buttons(:order, :delivery_id, Delivery.all, :id, :decription_and_price) %>
   </div>
-  <div class="col-md-2 col-md-offset-5">
-    ITEM TOTAL: $<%= current_order.items_price %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-1">
-    LPS Two Day - $15.00
-  </div>
-  <div class="col-md-2 col-md-offset-5">
-    SHIPPING: $<%= current_order.delivery.price %>
-  </div>
-</div>
-  <div class="row">
-    <div class="col-md-2 col-md-offset-6">
-      ORDER TOTAL: $<%= current_order.total_price %>
+  <div class="col-md-2">
+    <div class="row">
+      <div class="col-md-12 text-right">
+        ITEM TOTAL: $<%= current_order.items_price %>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-md-12 text-right">
+        SHIPPING: $<%= current_order.delivery.price if current_order.delivery %>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-md-12 text-right">
+          ORDER TOTAL: $<%= current_order.total_price %>
+        </div>
+    </div>
+  </div>
 </div>
 <div class="row">
   <div class="col-md-2">

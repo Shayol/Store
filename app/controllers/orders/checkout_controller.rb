@@ -21,18 +21,18 @@ class Orders::CheckoutController < ApplicationController
     case step
     when :billing_and_shipping_address
       instance_variable_set("@#{params[:address_type]}_address", Address.find(params[:order_id]))
-      if instance_variable_get("@#{params[:address_type]}_address").update(address_params)
+      if instance_variable_get("@#{params[:address_type]}_address").update!(address_params)
         flash[:notice] = "#{params[:address_type].capitalize}  address was successfully updated."
-        render next_wizard_path # what of two forms???
+        render_wizard instance_variable_get("@#{params[:address_type]}_address")
       else
         flash[:alert] = "#{params[:address_type].capitalize} address wasn't updated. Check for errors."
       end
     when :delivery
       @order.update_attributes(order_params)
+      render_wizard @order and return
     when :payment
 
     end
-    render_wizard #instance_variable_get("@#{params[:address_type]}_address")
   end
 
   # def create

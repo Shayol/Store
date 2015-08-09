@@ -19,7 +19,7 @@
 <hr>
 
 <div class="row">
-  <div class="col-md-3 col-md-offset-9">
+  <div class="col-md-3 col-md-offset-9 text-right">
     SUBTOTAL: <strong>$<%= current_order.total_price %></strong>
   </div>
 </div>
@@ -37,7 +37,7 @@
     <%= button_to "UPDATE", '#' %>
   </div>
   <div class="col-md-2 ">
-    <%= button_to "CHECKOUT", order_checkout_path(current_order) %>
+    <%= button_to "CHECKOUT", "/orders/#{current_order.id}/checkout", method: :get %>
   </div>
 </div>
 

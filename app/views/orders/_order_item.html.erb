@@ -1,17 +1,17 @@
 <div class="row">
-  <div class="col-md-2">
-    <img src=<%= item.book.image %> ></img>
+  <div class="col-md-4">
+    <img src=<%= item.book.image.thumb %> ></img>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-5">
     <strong><%= item.book.title.titleize %></strong>
   </div>
-  <div class="col-md-1">
+  <div class="col-md-1 text-center">
     <strong>$<%= item.price %></strong>
   </div>
-  <div class="col-md-1">
+  <div class="col-md-1 text-center">
     <%= item.quantity %></strong>
   </div>
-  <div class="col-md-1">
+  <div class="col-md-1 text-center">
     <strong>$<%= item.price * item.quantity %></strong>
   </div>
 </div>

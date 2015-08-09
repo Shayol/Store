@@ -8,12 +8,15 @@ class Ability
       can :access, :rails_admin       # only allow admin users to access Rails Admin
       can :dashboard
       can :manage, :all
+    elsif user.guest?
+      can :manage, OrderItem, :user_id => user.id
+      can :manage, Order, :user_id => user.id
     else
-       can [:create, :update, :destroy], [ Address, CreditCard, User], :user_id => user.id
-       can :read, [Book, Category, Order, OrderItem], :user_id => user.id
-       can [:update, :create, :destroy], Order, Order.in_progress do |order|
-         order.state == Order::ORDER_STATE[0] #???? only his own
-    end
+       can :manage, [ Address, CreditCard, User, Order, OrderItem], :user_id => user.id
+       can :read, [Book, Category]
+    #    can [:update, :create, :destroy], Order, Order.in_progress do |order|
+    #      order.state == Order::ORDER_STATE[0] #???? only his own
+    # end
     end
 
     #   if user.admin?
