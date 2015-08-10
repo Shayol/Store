@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'raitings/new'
+
   #get 'categories/show'
 
   devise_for :admins
