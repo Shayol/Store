@@ -25,3 +25,32 @@
 </div>
 </div>
 
+ <div class="row">
+    <div class="col-md-3">
+      <h2> Reviews </h2>
+    </div>
+    <div class="col-md-9">
+      <%=link_to "Add review for this book", new_book_rating_path(@book) %>
+    </div>
+    <div class="col-md-12">
+      <% if @book.ratings.any? %>
+        <% @book.ratings.each do |rating| %>
+          <span class="star-rating">
+            <% (1..5).each do |i| %>
+              <% if i <= rating.rating_number %>
+                <i class="active">
+              <% else %>
+                <i></i>
+              <% end %>
+          <%="by #{rating.customer.firstname} #{rating.customer.lastname}" %>
+          <%= rating.created_at.strftime("%B %d, %Y") %>
+          <p><em><%= rating.review %></em></p>
+        <% end %>
+      <% else %>
+        <br>
+        <p>There is no revies for this book.</p>
+      <% end %>
+    </div>
+
+
+

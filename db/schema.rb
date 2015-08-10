@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(version: 20150805165858) do
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
 
   create_table "authors", force: :cascade do |t|
-    t.text     "firstname",  null: false
-    t.text     "lastname",   null: false
+    t.text     "firstname"
+    t.text     "lastname"
     t.text     "biography"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -90,13 +90,14 @@ ActiveRecord::Schema.define(version: 20150805165858) do
 
   create_table "credit_cards", force: :cascade do |t|
     t.text     "number"
-    t.integer  "expiration_year"
+    t.text     "expiration_year"
+    t.text     "expiration_month"
     t.text     "firstname"
     t.text     "lastname"
     t.text     "CVV"
     t.integer  "user_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   add_index "credit_cards", ["user_id"], name: "index_credit_cards_on_user_id", using: :btree
@@ -140,10 +141,11 @@ ActiveRecord::Schema.define(version: 20150805165858) do
   create_table "raitings", force: :cascade do |t|
     t.text     "review"
     t.integer  "raiting_number"
+    t.boolean  "approved",       default: false
     t.integer  "user_id"
     t.integer  "book_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   add_index "raitings", ["book_id"], name: "index_raitings_on_book_id", using: :btree

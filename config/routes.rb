@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'categories/show'
+  #get 'categories/show'
 
   devise_for :admins
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
@@ -12,9 +12,8 @@ Rails.application.routes.draw do
     get '/settings', to: 'users#settings'
   end
 
-  #post '/orders/checkingout/checkout(.:format)', :to => "orders/checkout#create"
   resources :orders do
-    resources :checkout, controller: 'orders/checkout'
+    resources :checkout, controller: 'orders/checkout', only: [:show, :update]
   end
   resources :books do
     member do
@@ -26,7 +25,8 @@ Rails.application.routes.draw do
       post :empty_cart
     end
   end
-  resources :categories, :addresses
+  resources :categories, only: [:show]
+  resources :addresses, :ratings, only: [:create, :update]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

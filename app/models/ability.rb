@@ -12,8 +12,8 @@ class Ability
       can :manage, OrderItem, :user_id => user.id
       can :manage, Order, :user_id => user.id
     else
-       can :manage, [ Address, CreditCard, User, Order, OrderItem], :user_id => user.id
-       can :read, [Book, Category]
+       can :manage, [ Address, CreditCard, User, Order, OrderItem, Rating], :user_id => user.id
+       can :read, [Book, Category, Rating]
     #    can [:update, :create, :destroy], Order, Order.in_progress do |order|
     #      order.state == Order::ORDER_STATE[0] #???? only his own
     # end

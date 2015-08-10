@@ -2,7 +2,8 @@ class CreateCreditCards < ActiveRecord::Migration
   def change
     create_table :credit_cards do |t|
       t.text :number
-      t.integer :expiration_year
+      t.text :expiration_year
+      t.text :expiration_month
       t.text :firstname
       t.text :lastname
       t.text :CVV

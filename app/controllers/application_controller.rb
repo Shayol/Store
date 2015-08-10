@@ -85,8 +85,8 @@ class ApplicationController < ActionController::Base
   # called (once) when the user logs in, insert any code your application needs
   # to hand off from guest_user to current_user.
   def logging_in
-    guest_order = guest_user.orders.in_progress.first
-    current_user_order = current_user.orders.in_progress.first
+    guest_order = guest_user.orders.in_progress.take
+    current_user_order = current_user.orders.in_progress.take
       if current_user_order.order_items.empty?
         guest_order.order_items.each do |order_item|
           order_item.order_id = current_user_order.id
