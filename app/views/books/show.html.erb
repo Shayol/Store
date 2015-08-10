@@ -11,9 +11,9 @@
   <div class="col-md-8">
     <div class="row">
     <div class="col-md-2 col-md-offset-1">
-      <strong><%= @book.price %> $</strong>
+      <h3><%= @book.price %> $</h3>
     </div>
-    <div class="col-md-6 col-md-offset-2 text-right">
+    <div class="col-md-4 col-md-offset-4 text-right">
       <%= render "add_book", book: @book %>
     </div>
   </div>
@@ -27,29 +27,33 @@
 
  <div class="row">
     <div class="col-md-3">
-      <h2> Reviews </h2>
+      <h4> Reviews </h4>
     </div>
     <div class="col-md-9">
-      <%=link_to "Add review for this book", new_book_rating_path(@book) %>
+      <h4><%= link_to "Add review for this book", new_book_raiting_path(@book) %></h3>
     </div>
+    <div class="row">
     <div class="col-md-12">
-      <% if @book.ratings.approved_by_admin.any? %>
-        <% @book.ratings.approved_by_admin.each do |rating| %>
+      <% if @book.raitings.approved_by_admin.any? %>
+        <% @book.raitings.approved_by_admin.each do |raiting| %>
           <span class="star-rating">
             <% (1..5).each do |i| %>
-              <% if i <= rating.rating_number %>
-                <i class="active">
+              <% if i <= raiting.raiting_number %>
+                <i class="active"></i>
               <% else %>
                 <i></i>
               <% end %>
-          <%="by #{rating.customer.firstname} #{rating.customer.lastname}" %>
-          <%= rating.created_at.strftime("%B %d, %Y") %>
-          <p><em><%= rating.review %></em></p>
+            <% end %>
+          </span>
+          by <%= raiting.user.firstname %> <%= raiting.user.lastname %>
+          <em><%= raiting.created_at.strftime("%B %d, %Y") %></em>
+          <p><em><%= raiting.review %></em></p>
         <% end %>
       <% else %>
         <br>
-        <p>There is no revies for this book.</p>
+        <p>There are no reviews for this book yet.</p>
       <% end %>
+    </div>
     </div>
 
 

@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :find_order, only: :show
   def show
-    @order_items = current_order.order_items
+    @order_items = current_user.current_order.order_items
   end
 
   def index
@@ -9,8 +9,8 @@ class OrdersController < ApplicationController
   end
 
   def empty_cart
-    current_order.order_items.delete
-    current_order.set_total_price
+    curent_user.current_order.order_items.delete
+    current_user.current_order.set_total_price
     flash[:notice] = "Cart is empty"
     redirect_to action: :show
   end

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :get_billing_and_shipping_address
+  before_action :get_settings_data
 
   def settings
   end

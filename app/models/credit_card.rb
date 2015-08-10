@@ -8,7 +8,7 @@ class CreditCard < ActiveRecord::Base
   validates :number, :expiration_month, :expiration_year, :firstname, :lastname, :CVV, presence: true
   validates :expiration_month, inclusion: { in: EXPIRATION_MONTH }
   validates :expiration_year, inclusion: { in: EXPIRATION_YEAR }
-  validates :cvv, length: 3..4
-  validates :number, length: { is: 16 }
+  validates :CVV, length: 3..4
+  validates :number, length: 13..16
 
 end

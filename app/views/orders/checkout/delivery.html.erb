@@ -1,30 +1,9 @@
 <%= form_for @order, url: wizard_path do |f| %>
 <div class="row">
-  <div class="col-md-2 col-md-offset-10 text-right">
-    <h4>ORDER SUMMARY</h4>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-10">
+  <div class="col-md-8">
     <%= collection_radio_buttons(:order, :delivery_id, Delivery.all, :id, :decription_and_price) %>
   </div>
-  <div class="col-md-2">
-    <div class="row">
-      <div class="col-md-12 text-right">
-        ITEM TOTAL: $<%= current_order.items_price %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 text-right">
-        SHIPPING: $<%= current_order.delivery.price if current_order.delivery %>
-      </div>
-    </div>
-      <div class="row">
-        <div class="col-md-12 text-right">
-          ORDER TOTAL: $<%= current_order.total_price %>
-        </div>
-    </div>
-  </div>
+    <%= render "summary_order" %>
 </div>
 <div class="row">
   <div class="col-md-2">

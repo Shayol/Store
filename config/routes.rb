@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'raitings/new'
+  #get 'raitings/new'
 
   #get 'categories/show'
 
@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     member do
       post :add_to_order
     end
+    resources :raitings, only: [:new, :create, :update]
   end
   resources :orders do
     member do
@@ -28,7 +29,7 @@ Rails.application.routes.draw do
     end
   end
   resources :categories, only: [:show]
-  resources :addresses, :ratings, only: [:create, :update]
+  resources :addresses, only: [:create, :update]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,4 +1,6 @@
-<%= form_for :addBook, url: add_to_order_book_path(book), method: :post do |f| %>
-  <%= f.number_field :quantity, value: 1 %>
-  <%= f.submit "ADD BOOK"%>
+<%= form_for :addBook, url: add_to_order_book_path(book), method: :post, class: "form-inline" do |f| %>
+  <div class="form-group">
+    <%= f.number_field :quantity, value: 1, class: "form-control" %>
+    <%= f.submit "ADD BOOK", class: "btn btn-info"%>
+  </div>
 <% end %>

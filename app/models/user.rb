@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :omniauthable, :omniauth_providers => [:facebook]
 
   has_one    :credit_card
-  has_many   :orders
+  has_many   :orders, dependent: :destroy
   has_many   :raitings
   belongs_to :billing_address, :class_name => 'Address', :foreign_key => 'billing_address_id'
   belongs_to :shipping_address, :class_name => 'Address', :foreign_key => 'shipping_address_id'
@@ -30,5 +30,10 @@ class User < ActiveRecord::Base
       user
     end
 end
+
+ def current_order
+    order = orders.in_progress.take
+    order.nil? ? orders.create : order
+  end
 
 end

@@ -17,45 +17,43 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_order
-    order = current_or_guest_user.orders.in_progress.first || current_or_guest_user.orders.create
-    order
-  end
-
-  def get_billing_and_shipping_address
+  def get_settings_data
     @billing_address ||= currents_user.billing_address || Address.new
     @shipping_address ||= current_user.shipping_address || Address.new
   end
 
+  # REFACTOR THISSS
   def get_checkout_data
-    unless current_order.billing_address || current_or_guest_user.billing_address
+    unless current_or_guest_user.current_order.billing_address || current_or_guest_user.billing_address
       @billing_address = Address.new
       @billing_address.save(validate: false)
-      current_order.update_attribute(:billing_address_id, @billing_address.id)
+      current_or_guest_user.current_order.update_attribute(:billing_address_id, @billing_address.id)
     end
 
-    unless current_order.shipping_address || current_or_guest_user.shipping_address
+    unless current_or_guest_user.current_order.shipping_address || current_or_guest_user.shipping_address
       @shipping_address = Address.new
       @shipping_address.save(validate: false)
-      current_order.update_attribute(:shipping_address_id, @shipping_address.id)
+      current_or_guest_user.current_order.update_attribute(:shipping_address_id, @shipping_address.id)
     end
 
-    unless current_order.credit_card
+    unless current_or_guest_user.current_order.credit_card
       @credit_card = CreditCard.new
       @credit_card.save(validate: false)
-      current_order.update_attribute(:credit_card_id, @credit_card.id)
+      current_or_guest_user.current_order.update_attribute(:credit_card_id, @credit_card.id)
     end
 
-    @billing_address  = current_order.billing_address || current_user.billing_address
-    @shipping_address  = current_order.shipping_address || current_user.shipping_address
-    @credit_card = current_order.credit_card
+    @billing_address  = current_or_guest_user.current_order.billing_address || current_user.billing_address
+    @shipping_address  = current_or_guest_user.current_order.shipping_address || current_user.shipping_address
+    @credit_card = current_or_guest_user.current_order.credit_card
+    @order = current_or_guest_user.current_order
   end
 
   def address_params
     params.require(:address).permit(:firstname, :lastname, :address, :country_id, :city, :phone, :zipcode)
   end
 
-   # if user is logged in, return current_user, else return guest_user
+  # GUEST USER
+
   def current_or_guest_user
     if current_user
       if session[:guest_user_id] && session[:guest_user_id] != current_user.id
@@ -69,10 +67,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # find guest_user object associated with the current session,
-  # creating one as needed
   def guest_user(with_retry = true)
-    # Cache the value the first time it's gotten.
     @cached_guest_user ||= User.find(session[:guest_user_id] ||= create_guest_user.id)
 
   rescue ActiveRecord::RecordNotFound # if session[:guest_user_id] invalid
@@ -82,11 +77,9 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # called (once) when the user logs in, insert any code your application needs
-  # to hand off from guest_user to current_user.
   def logging_in
-    guest_order = guest_user.orders.in_progress.take
-    current_user_order = current_user.orders.in_progress.take
+    guest_order = guest_user.current_order
+    current_user_order = current_user.current_order
       if current_user_order.order_items.empty?
         guest_order.order_items.each do |order_item|
           order_item.order_id = current_user_order.id

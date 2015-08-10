@@ -8,7 +8,6 @@ class Orders::CheckoutController < ApplicationController
     case step
     when :billing_and_shipping_addresss
     when :delivery
-      @order = current_order
     when :payment
     end
     render_wizard
@@ -16,41 +15,41 @@ class Orders::CheckoutController < ApplicationController
 
 
   def update
-    @order = current_order
     params[:order][:state] = 'in_queue' if step == steps[-2]
     case step
     when :billing_and_shipping_address
-      instance_variable_set("@#{params[:address_type]}_address", Address.find(params[:order_id]))
+      instance_variable_set("@#{params[:address_type]}_address", Address.find(instance_variable_get("@#{params[:address_type]}_address").id)) ## find address id ...
       if instance_variable_get("@#{params[:address_type]}_address").update!(address_params)
-        flash[:notice] = "#{params[:address_type].capitalize}  address was successfully updated."
-        render_wizard instance_variable_get("@#{params[:address_type]}_address")
+        flash[:notice] = "#{params[:address_type].capitalize} address was successfully updated."
       else
         flash[:alert] = "#{params[:address_type].capitalize} address wasn't updated. Check for errors."
       end
+       @rendered_variable = instance_variable_get("@#{params[:address_type]}_address")
     when :delivery
-      @order.update_attributes(order_params)
-      render_wizard @order and return
+      if @order.update_attributes(order_params)
+        flash[:notice] = "Delivery was successfully updated"
+      else
+        flash[:alert] = "Delivery wasn't updated. Check for errors."
+      end
+      @rendered_variable = @order
     when :payment
-
+      if @credit_card.update_attributes(credit_card_params)
+        flash[:notice] = "Credit card was successfully updated"
+        else
+        flash[:alert] = "Credit card wasn't updated. Check for errors."
+      end
+      @rendered_variable = @credit_card
     end
+    render_wizard @rendered_variable
   end
-
-  # def create
-  #   @order = current_order
-  #   case step
-  #   when :billing_and_shipping_address
-  #     @billing_address = @order.billing_address.create!(address_params)
-  #     @billing_address = @order.billing_address
-  #     #@order.update_attribute(:billing_address_id, @billing_address.id)
-  #   when :delivery
-  #   when :payment
-  #   end
-  #   redirect_to wizard_path_next
-  # end
 
   private
 
   def order_params
     params.require(:order).permit(:shipping_address_id, :billing_address_id, :credit_card_id, :user_id, :delivery_id)
+  end
+
+  def credit_card_params
+    params.require(:credit_card).permit(:firstname, :lastname, :expiration_month, :expiration_year, :CVV, :number)
   end
 end

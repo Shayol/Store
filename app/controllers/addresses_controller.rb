@@ -8,7 +8,7 @@ class AddressesController < ApplicationController
       redirect_to settings_path
     else
       flash[:alert] = "#{params[:address_type].capitalize} address wasn't created. Check for errors."
-      get_billing_and_shipping_address
+      get_settings_data
       render 'users/settings'
     end
   end

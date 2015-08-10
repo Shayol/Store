@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-4">
+    <h3>Credit card</h3>
+  </div>
+  <div class="col-md-8 text-right">
+   <h3>ORDER SUMMARY</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <%= form_for @credit_card, method: :put, url: wizard_path do |f| %>
+      <% if @credit_card.errors.any? %>
+        <% @credit_card.errors.full_messages.each do |msg| %>
+          <p class="alert"> <%= msg %> </p>
+        <% end %>
+      <% end %>
+    <div class="row">
+      <div class="col-md-8">
+        <%= f.text_field :firstname, placeholder: "First name", value: current_or_guest_user.current_order.billing_address.firstname %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <%= f.text_field :lastname, placeholder: "Last name", value: current_or_guest_user.current_order.billing_address.lastname %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <%= f.text_field :number, placeholder: "Card number" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+      <p>Expiration date</p>
+        <%= f.select :expiration_month, CreditCard::EXPIRATION_MONTH, include_blank: "Month" %>
+        <%= f.select :expiration_year, CreditCard::EXPIRATION_YEAR, include_blank: "Year" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <%= f.text_field :CVV, placeholder: "cvv" %>
+      </div>
+    </div>
+  </div>
+  <%= render "summary_order" %>
+  </div>
+    <div class="row">
+      <div class="col-md-8">
+        <%= f.submit "Save and continue", class: "btn btn-default" %>
+      </div>
+    </div>
+    <% end %>

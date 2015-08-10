@@ -20,7 +20,7 @@
 
 <div class="row">
   <div class="col-md-3 col-md-offset-9 text-right">
-    SUBTOTAL: <strong>$<%= current_order.total_price %></strong>
+    SUBTOTAL: <strong>$<%= current_user.current_order.total_price %></strong>
   </div>
 </div>
 <div class="row">
@@ -37,7 +37,7 @@
     <%= button_to "UPDATE", '#' %>
   </div>
   <div class="col-md-2 ">
-    <%= button_to "CHECKOUT", "/orders/#{current_order.id}/checkout", method: :get %>
+    <%= button_to "CHECKOUT", "/orders/#{current_or_guest_user.current_order.id}/checkout/billing_and_shipping_address", method: :get %>
   </div>
 </div>
 

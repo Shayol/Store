@@ -1,0 +1,26 @@
+h1
+  ' New review for
+  =link_to @book.title, @book
+
+- if @rating.errors.any?
+  div.alert.alert-danger
+    strong Review can't be save because:
+    - @rating.errors.full_messages.each do |msg|
+      p msg
+
+=form_for @rating, url: book_raitings_path do |f|
+  .form-group
+    =f.label :raiting_number, "Rating:", class: "control-label"
+    span.star-rating
+      -(1..5).each do |i|
+        =f.radio_button :raiting_number, i
+        i
+  .form-group
+    =f.label :review, "Text:", class: "control-label"
+    =f.text_area :review, class: "form-control"
+    =f.hidden_field :book_id, :value => @book.id
+  .form-group
+    =f.submit 'Add review', class: "btn btn-primary"
+    span
+      ' or
+      =link_to "Cancel", @book
