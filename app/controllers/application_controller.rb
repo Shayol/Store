@@ -22,32 +22,6 @@ class ApplicationController < ActionController::Base
     @shipping_address ||= current_user.shipping_address || Address.new
   end
 
-  # REFACTOR THISSS
-  def get_checkout_data
-    unless current_or_guest_user.current_order.billing_address || current_or_guest_user.billing_address
-      @billing_address = Address.new
-      @billing_address.save(validate: false)
-      current_or_guest_user.current_order.update_attribute(:billing_address_id, @billing_address.id)
-    end
-
-    unless current_or_guest_user.current_order.shipping_address || current_or_guest_user.shipping_address
-      @shipping_address = Address.new
-      @shipping_address.save(validate: false)
-      current_or_guest_user.current_order.update_attribute(:shipping_address_id, @shipping_address.id)
-    end
-
-    unless current_or_guest_user.current_order.credit_card
-      @credit_card = CreditCard.new
-      @credit_card.save(validate: false)
-      current_or_guest_user.current_order.update_attribute(:credit_card_id, @credit_card.id)
-    end
-
-    @billing_address  = current_or_guest_user.current_order.billing_address || current_user.billing_address
-    @shipping_address  = current_or_guest_user.current_order.shipping_address || current_user.shipping_address
-    @credit_card = current_or_guest_user.current_order.credit_card
-    @order = current_or_guest_user.current_order
-  end
-
   def address_params
     params.require(:address).permit(:firstname, :lastname, :address, :country_id, :city, :phone, :zipcode)
   end

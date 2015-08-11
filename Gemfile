@@ -14,6 +14,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'font-awesome-rails'
 gem 'slim-rails'
+
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -41,6 +42,7 @@ gem 'carrierwave-dropbox'
 
 gem 'kaminari'
 gem 'wicked'
+gem 'virtus'
 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc

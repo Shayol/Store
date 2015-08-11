@@ -3,35 +3,35 @@
     <div class="col-md-8">
       BILLING ADDRESS
     </div>
-    <%= form_for @billing_address, method: :put, url: wizard_path do |f| %>
-      <% if @billing_address.errors.any? %>
-        <% @billing_address.errors.full_messages.each do |msg| %>
+    <%= form_for @address, method: :put, url: wizard_path do |f| %>
+      <% if @address.errors.any? %>
+        <% @address.errors.full_messages.each do |msg| %>
           <p class="alert"> <%= msg %> </p>
         <% end %>
       <% end %>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :firstname, placeholder: "First name" %>
+        <%= f.text_field :billing_firstname, placeholder: "First name" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :lastname, placeholder: "Last name" %>
+        <%= f.text_field :billing_lastname, placeholder: "Last name" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :address, placeholder: "Street address" %>
+        <%= f.text_field :billing_address, placeholder: "Street address" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :city, placeholder: "City" %>
+        <%= f.text_field :billing_city, placeholder: "City" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.select :country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+        <%= f.select :billing_country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: false %>
       </div>
     </div>
     <div class="row">
@@ -41,67 +41,53 @@
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :phone, placeholder: "Phone" %>
+        <%= f.text_field :billing_phone, placeholder: "Phone" %>
       </div>
     </div>
-    <%= hidden_field_tag 'address_type', 'billing' %>
-    <div class="row">
-      <div class="col-md-8">
-        <%= f.submit "Save and continue" %>
-      </div>
-    </div>
-    <% end %>
   </div>
 
 <div class="col-md-4">
   <div class="col-md-8">
     SHIPPING ADDRESS
   </div>
-  <%= form_for @shipping_address, method: :put, url: wizard_path do |f| %>
-    <% if @shipping_address.errors.any? %>
-      <% @shipping_address.errors.full_messages.each do |msg| %>
-        <p class="alert"> <%= msg %> </p>
-      <% end %>
-    <% end %>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :firstname, placeholder: "First name" %>
+        <%= f.text_field :shipping_firstname, placeholder: "First name" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :lastname, placeholder: "Last name" %>
+        <%= f.text_field :shipping_lastname, placeholder: "Last name" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :address, placeholder: "Street address" %>
+        <%= f.text_field :shipping_address, placeholder: "Street address" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :city, placeholder: "City" %>
+        <%= f.text_field :shipping_city, placeholder: "City" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.select :country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+        <%= f.select :shipping_country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: false %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :zipcode, placeholder: "Zip" %>
+        <%= f.text_field :shipping_zipcode, placeholder: "Zip" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :phone, placeholder: "Phone" %>
+        <%= f.text_field :shipping_phone, placeholder: "Phone" %>
       </div>
     </div>
-    <%= hidden_field_tag 'address_type', 'shipping' %>
     <div class="row">
       <div class="col-md-8">
-        <%= f.submit "Save and continue" %>
+        <%= f.submit %>
       </div>
     </div>
     <% end %>
