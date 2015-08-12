@@ -1,21 +1,23 @@
 class CheckoutAddressForm
   include ActiveModel::Model
-  include Virtus
+  include Virtus.model
+
+  ADDRESS_ATTRIBUTES = ["firstname", "lastname", "address", "zipcode", "city", "phone", "country_id"]
 
   attribute :billing_firstname, String
   attribute :billing_lastname, String
-  attribute :billing_address, Text
-  attribute :billing_zipcode, Text
-  attribute :billing_city, Text
-  attribute :billing_phone, Text
+  attribute :billing_address, String
+  attribute :billing_zipcode, String
+  attribute :billing_city, String
+  attribute :billing_phone, String
   attribute :billing_country_id, Integer
 
   attribute :shipping_firstname, String
   attribute :shipping_lastname, String
-  attribute :shipping_address, Text
-  attribute :shipping_zipcode, Text
-  attribute :shipping_city, Text
-  attribute :shipping_phone, Text
+  attribute :shipping_address, String
+  attribute :shipping_zipcode, String
+  attribute :shipping_city, String
+  attribute :shipping_phone, String
   attribute :shipping_country_id, Integer
 
 
@@ -34,30 +36,22 @@ class CheckoutAddressForm
     end
   end
 
-  def populate
-    @billing_address  = current_or_guest_user.current_order.billing_address || current_or_guest_user.billing_address
-    @shipping_address  = current_or_guest_user.current_order.shipping_address || current_or_guest_user.shipping_address
+   def persisted?
+    false
+  end
 
-    unless @billing_address
-      @billing_address = Address.new
-      @billing_address.save(validate: false)
-      current_or_guest_user.current_order.update_attribute(:billing_address_id, @billing_address.id)
+  def populate(billing, shipping)
+    ADDRESS_ATTRIBUTES.each do |attr|
+      eval("billing_#{attr} = billing.#{attr}")
+      eval("shipping_#{attr} = shipping.#{attr}")
     end
-
-    unless @shipping_address
-      @shipping_address = Address.new
-      @shipping_address.save(validate: false)
-      current_or_guest_user.current_order.update_attribute(:shipping_address_id, @shipping_address.id)
-    end
-
-
 
   end
 
   private
 
-  def persist!
-    current_or_guest_user.current_order.biiling_address.update!(billing_address_params)
+  def persist!(order)
+    current_or_guest_user.current_order.billing_address.update!(billing_address_params)
     current_or_guest_user.current_order.shipping_address.update!(shipping_address_params)
   # add sh and bill address to current user if none
   end

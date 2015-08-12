@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_settings_data
-    @billing_address ||= currents_user.billing_address || Address.new
+    @billing_address ||= current_user.billing_address || Address.new
     @shipping_address ||= current_user.shipping_address || Address.new
   end
 

@@ -5,9 +5,10 @@ class Orders::CheckoutController < ApplicationController
 
   def show
     case step
-    when :billing_and_shipping_addresss
+    when :billing_and_shipping_address
       @address = CheckoutAddressForm.new
-      @address.populate
+      get_checkout_address_data
+      @address.populate(@billing_address, @shipping_address)
     when :delivery
       get_order
     when :payment
@@ -22,7 +23,7 @@ class Orders::CheckoutController < ApplicationController
     case step
     when :billing_and_shipping_address
       @address = CheckoutAddressForm.new(checkout_address_form_params)
-      if @addres.save
+      if @address.save
           flash[:notice] = "Successfully updated addresses"
         else
           flash[:alert] = "Check for errors"
@@ -56,6 +57,23 @@ class Orders::CheckoutController < ApplicationController
   end
 
   private
+
+   def get_checkout_address_data
+    @billing_address  = current_or_guest_user.current_order.billing_address || current_or_guest_user.billing_address
+    @shipping_address  = current_or_guest_user.current_order.shipping_address || current_or_guest_user.shipping_address
+
+    unless @billing_address
+      @billing_address = Address.new
+      @billing_address.save(validate: false)
+      current_or_guest_user.current_order.update_attribute(:billing_address_id, @billing_address.id)
+    end
+
+    unless @shipping_address
+      @shipping_address = Address.new
+      @shipping_address.save(validate: false)
+      current_or_guest_user.current_order.update_attribute(:shipping_address_id, @shipping_address.id)
+    end
+  end
 
   def get_order
     @order = current_or_guest_user.current_order
