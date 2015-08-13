@@ -24,13 +24,13 @@ class Orders::CheckoutController < ApplicationController
     case step
     when :billing_and_shipping_address
       @address = CheckoutAddressForm.new(checkout_address_form_params)
-      if @address.save(Order.find(4))
-          flash[:notice] = "Successfully updated addresses"
-        else
-          flash[:alert] = "Check for errors"
-        end
-        @rendered_variable = @address
-    when :delivery
+      if @address.save(@order)
+        flash[:notice] = "Successfully updated addresses"
+        redirect_to next_wizard_path and return
+      else
+        flash[:alert] = "Check for errors"
+      end
+     when :delivery
       if @order.update_attributes(order_params)
         flash[:notice] = "Delivery was successfully updated"
       else
