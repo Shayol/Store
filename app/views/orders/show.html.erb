@@ -1,20 +1,7 @@
-<div class="row">
-  <div class="col-md-9 text-center">
-    BOOK
-  </div>
-  <div class="col-md-1 text-center">
-    PRICE
-  </div>
-  <div class="col-md-1 text-center">
-    QTY
-  </div>
-  <div class="col-md-1 text-center">
-    TOTAL
-  </div>
-</div>
-<% @order_items.each do |item| %>
-  <%= render "order_item", item: item %>
-<% end %>
+<% if @order_items.any? %>
+
+<%= form_for @order, method: :put do |f| %>
+  <%= render "order_item", order: @order %>
 
 <hr>
 
@@ -25,19 +12,20 @@
 </div>
 <div class="row">
   <div class="col-md-2 ">
-    <%= button_to "EMPTY CART", empty_cart_order_path %>
+    <%= button_to "EMPTY CART", empty_cart_order_path, class: "btn btn-alert" %>
   </div>
   <div class="col-md-2 ">
-    <%= button_to "CONTINUE SHOPPING", '#' %>
+    <%= button_to "CONTINUE SHOPPING", books_path, class: "btn btn-primary" %>
   </div>
-  <div class="col-md-2 col-md-offset-2">
-    <%= button_to "Coupon code", '#' %>
-  </div>
-  <div class="col-md-2 ">
-    <%= button_to "UPDATE", '#' %>
+  <div class="col-md-2 col-md-offset-4">
+    <%= f.submit "Update", class: "btn btn-default" %>
+    <% end %>
   </div>
   <div class="col-md-2 ">
-    <%= button_to "CHECKOUT", "/orders/#{current_or_guest_user.current_order.id}/checkout/billing_and_shipping_address", method: :get %>
+    <%= button_to "CHECKOUT", "/orders/#{current_or_guest_user.current_order.id}/checkout/billing_and_shipping_address", method: :get, class: "btn btn-success" %>
   </div>
 </div>
+<% else %>
+  <p> No items in your order yet. <%= link_to "Go back to shop", books_path %></p>
+<% end %>
 

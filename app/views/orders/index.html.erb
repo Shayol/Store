@@ -1,2 +1,10 @@
-<h1>Order#index</h1>
-<p>Find me in app/views/order/index.html.erb</p>
+<h3> Orders </h3>
+<h4> IN PROGRESS </h4>
+<hr>
+<% render "order_item", order: current__or_guest_user.current_order %>
+<hr>
+<div class="row">
+  <div class="col-md-2"><%= button_to "GO TO CART", order_path(@order), class: "btn btn-primary" %>
+  </div>
+</div>
+

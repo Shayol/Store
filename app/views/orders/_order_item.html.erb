@@ -1,17 +1,40 @@
 <div class="row">
-  <div class="col-md-4">
-    <img src=<%= item.book.image.thumb %> ></img>
-  </div>
-  <div class="col-md-5">
-    <strong><%= item.book.title.titleize %></strong>
+  <div class="col-md-9 text-center">
+    BOOK
   </div>
   <div class="col-md-1 text-center">
-    <strong>$<%= item.price %></strong>
+    PRICE
   </div>
   <div class="col-md-1 text-center">
-    <%= item.quantity %></strong>
+    QTY
   </div>
   <div class="col-md-1 text-center">
-    <strong>$<%= item.price * item.quantity %></strong>
+    TOTAL
   </div>
 </div>
+<% @order_items.each do |order_item| %>
+<div class="row">
+  <div class="col-md-4">
+    <img src=<%= order_item.book.image.thumb %> ></img>
+  </div>
+  <div class="col-md-5">
+    <strong><%= order_item.book.title.titleize %></strong>
+  </div>
+  <div class="col-md-1 text-center">
+    <strong>$<%= order_item.price %></strong>
+  </div>
+  <div class="col-md-1 text-center">
+  <% if current_page?(order_path) %>
+    <%= number_field_tag "id-#{order_item.id}", order_item.quantity, class: "form-control qty", within: 1..200 %>
+  <% else %>
+    <strong><%= order_item.quantity %></strong>
+  <% end %>
+  </div>
+  <div class="col-md-1 text-center">
+    <strong>$<%= order_item.price * order_item.quantity %></strong>
+    <% if current_page?(order) %>
+      <%= link_to "X", order_order_item_path(order, order_item), method: :delete %>
+      <% end %>
+  </div>
+</div>
+<% end %>

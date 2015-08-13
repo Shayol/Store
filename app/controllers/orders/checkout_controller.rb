@@ -19,25 +19,18 @@ class Orders::CheckoutController < ApplicationController
 
 
   def update
+    get_order
     params[:order][:state] = 'in_queue' if step == steps[-2]
     case step
     when :billing_and_shipping_address
       @address = CheckoutAddressForm.new(checkout_address_form_params)
-      if @address.save
+      if @address.save(Order.find(4))
           flash[:notice] = "Successfully updated addresses"
         else
           flash[:alert] = "Check for errors"
         end
         @rendered_variable = @address
-      # instance_variable_set("@#{params[:address_type]}_address", Address.find(instance_variable_get("@#{params[:address_type]}_address").id)) ## find address id ...
-      # if instance_variable_get("@#{params[:address_type]}_address").update!(address_params)
-      #   flash[:notice] = "#{params[:address_type].capitalize} address was successfully updated."
-      # else
-      #   flash[:alert] = "#{params[:address_type].capitalize} address wasn't updated. Check for errors."
-      # end
-      #  @rendered_variable = instance_variable_get("@#{params[:address_type]}_address")
     when :delivery
-      get_order
       if @order.update_attributes(order_params)
         flash[:notice] = "Delivery was successfully updated"
       else

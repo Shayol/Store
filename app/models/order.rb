@@ -41,11 +41,9 @@ class Order < ActiveRecord::Base
     sum = order_items.inject(0) { |sum, item| sum + item.price * item.quantity }
   end
 
-  private
-
   def set_total_price
     sum = items_price
-    sum += delivery.price if delivery
+    sum += delivery.price if delivery && order_items.any?
     self.update_attribute(:total_price, sum)
   end
 

@@ -27,9 +27,9 @@ class CheckoutAddressForm
             :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country_id,
             presence: true
 
-  def save
+  def save(order)
     if valid?
-      persist!
+      persist!(order)
       true
     else
       false
@@ -40,7 +40,7 @@ class CheckoutAddressForm
     false
   end
 
-  def populate(billing, shipping)
+  def populate(billing, shipping) # can't receive arguments from checkout controller
     ADDRESS_ATTRIBUTES.each do |attr|
       eval("billing_#{attr} = billing.#{attr}")
       eval("shipping_#{attr} = shipping.#{attr}")
@@ -51,8 +51,8 @@ class CheckoutAddressForm
   private
 
   def persist!(order)
-    current_or_guest_user.current_order.billing_address.update!(billing_address_params)
-    current_or_guest_user.current_order.shipping_address.update!(shipping_address_params)
+    order.billing_address.update!(billing_address_params)
+    order.shipping_address.update!(shipping_address_params)
   # add sh and bill address to current user if none
   end
 
