@@ -13,5 +13,17 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require owl.carousel
 //= require turbolinks
 //= require_tree .
+
+
+var ready;
+ready = function() {
+
+  $(".owl-carousel").owlCarousel();
+
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

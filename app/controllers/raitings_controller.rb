@@ -1,6 +1,6 @@
 class RaitingsController < ApplicationController
   before_action :find_book, only: [:new, :create]
-  before_action :authenticate_user!
+  load_and_authorize_resource
 
   def new
     @rating = Raiting.new

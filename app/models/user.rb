@@ -31,9 +31,13 @@ class User < ActiveRecord::Base
     end
 end
 
- def current_order
+  def current_order
     order = orders.in_progress.take
     order.nil? ? orders.create : order
+  end
+
+  def guest?
+    email.match(/example.com/) == "example.com"
   end
 
 end

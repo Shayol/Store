@@ -1,11 +1,12 @@
 class Orders::CheckoutController < ApplicationController
+  #load_and_authorize_resource
   include Wicked::Wizard
 
-  steps :billing_and_shipping_address, :delivery, :payment, :confirm, :complete
+  steps :address, :delivery, :payment, :confirm, :complete
 
   def show
     case step
-    when :billing_and_shipping_address
+    when :address
       @address = CheckoutAddressForm.new
       get_checkout_address_data
       @address.populate(@billing_address, @shipping_address)
@@ -13,6 +14,8 @@ class Orders::CheckoutController < ApplicationController
       get_order
     when :payment
       get_credit_card
+    when :confirm
+      get_order
     end
     render_wizard
   end
@@ -20,31 +23,38 @@ class Orders::CheckoutController < ApplicationController
 
   def update
     get_order
-    params[:order][:state] = 'in_queue' if step == steps[-2]
+    #params[:order][:state] = 'in_queue' if step == steps[-2]
     case step
-    when :billing_and_shipping_address
-      @address = CheckoutAddressForm.new(checkout_address_form_params)
-      if @address.save(@order)
-        flash[:notice] = "Successfully updated addresses"
-        redirect_to next_wizard_path and return
-      else
-        flash[:alert] = "Check for errors"
-      end
-     when :delivery
-      if @order.update_attributes(order_params)
-        flash[:notice] = "Delivery was successfully updated"
-      else
-        flash[:alert] = "Delivery wasn't updated. Check for errors."
-      end
-      @rendered_variable = @order
-    when :payment
-      get_credit_card
-      if @credit_card.update_attributes(credit_card_params)
-        flash[:notice] = "Credit card was successfully updated"
+      when :address
+        @address = CheckoutAddressForm.new(checkout_address_form_params)
+        if @address.save(@order)
+          flash[:notice] = "Successfully updated addresses"
+          redirect_to next_wizard_path and return
         else
-        flash[:alert] = "Credit card wasn't updated. Check for errors."
-      end
-      @rendered_variable = @credit_card
+          flash[:alert] = "Check for errors"
+        end
+      when :delivery
+        if @order.update_attributes(order_params)
+          flash[:notice] = "Delivery was successfully updated"
+        else
+          flash[:alert] = "Delivery wasn't updated. Check for errors."
+        end
+        @rendered_variable = @order
+      when :payment
+        get_credit_card
+        if @credit_card.update_attributes(credit_card_params)
+          flash[:notice] = "Credit card was successfully updated"
+          else
+          flash[:alert] = "Credit card wasn't updated. Check for errors."
+        end
+        @rendered_variable = @credit_card
+      when :confirm
+        if @order.update(order_params)
+          flash[:notice] = "Order confirmed"
+        else
+          flash[:alert] = "Order wasn't confirmed."
+        end
+          @rendered_variable = @order
     end
     render_wizard @rendered_variable
   end

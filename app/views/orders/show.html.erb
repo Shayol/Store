@@ -1,4 +1,4 @@
-<% if @order_items.any? %>
+<% if @order.order_items.any? %>
 
 <%= form_for @order, method: :put do |f| %>
   <%= render "order_item", order: @order %>
@@ -12,7 +12,7 @@
 </div>
 <div class="row">
   <div class="col-md-2 ">
-    <%= button_to "EMPTY CART", empty_cart_order_path, class: "btn btn-alert" %>
+    <%= button_to "EMPTY CART", empty_cart_order_path, class: "btn btn-danger" %>
   </div>
   <div class="col-md-2 ">
     <%= button_to "CONTINUE SHOPPING", books_path, class: "btn btn-primary" %>
@@ -22,7 +22,7 @@
     <% end %>
   </div>
   <div class="col-md-2 ">
-    <%= button_to "CHECKOUT", "/orders/#{current_or_guest_user.current_order.id}/checkout/billing_and_shipping_address", method: :get, class: "btn btn-success" %>
+    <%= button_to "CHECKOUT", "/orders/#{current_or_guest_user.current_order.id}/checkout/address", method: :get, class: "btn btn-success" %>
   </div>
 </div>
 <% else %>

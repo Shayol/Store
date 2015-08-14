@@ -1,11 +1,15 @@
 class OrdersController < ApplicationController
   before_action :find_order, only: [:show, :update]
+  load_and_authorize_resource
+
   def show
-    @order_items = @order.order_items
   end
 
   def index
-    @orders = current_or_guest_user.orders.all
+    @cart = current_or_guest_user.current_order
+    @waiting_for_processing = current_or_guest_user.orders.in_queue.pluck(:id, :total_price, :completed_date)
+    @in_delivery = current_or_guest_user.orders.in_delivery.pluck(:id, :total_price, :completed_date)
+    @delivered = current_or_guest_user.orders.delivered.pluck(:id, :total_price, :completed_date)
   end
 
   def empty_cart

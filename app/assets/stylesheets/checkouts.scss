@@ -1,3 +1,18 @@
 // Place all the styles related to the checkouts controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.unfinished {
+  color: black;
+}
+.current {
+  text-decoration: underline;
+  color: black;
+}
+.finished {
+  text-decoration: underline;
+}
+
+.checkout_header {
+  font-size: 18px;
+}

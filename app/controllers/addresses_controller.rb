@@ -1,4 +1,5 @@
 class AddressesController < ApplicationController
+  load_and_authorize_resource
 
   def create
     instance_variable_set("@#{params[:address_type]}_address", Address.new(address_params))

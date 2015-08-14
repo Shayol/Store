@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-2">
+    NUMBER
+  </div>
+  <div class="col-md-2">
+    COMPLETED AT
+  </div>
+  <div class="col-md-2">
+    TOTAL
+  </div>
+</div>
+<%= orders.each do |order| %>
+<div class="row">
+  <div class="col-md-2">
+    <%= link_to order.id, order_path(order) %>
+  </div>
+  <div class="col-md-2">
+    <%= order.completed_date %>
+  </div>
+  <div class="col-md-2">
+    <%= order.total_price %>
+  </div>
+  <div class="col-md-2">
+    <%= link_to "View", order_path(order) %>
+  </div>
+</div>
+<% end %>

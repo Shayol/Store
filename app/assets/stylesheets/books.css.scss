@@ -24,6 +24,11 @@ border-radius: 4px;
 
 .row {
   margin: 15px;
+  padding: 15px;
+}
+
+.col-md-10 {
+  padding: 15px;
 }
 
 .header {
@@ -40,5 +45,9 @@ border-radius: 4px;
 
 #addBook_quantity {
   width: 25%;
+}
+
+.store_name {
+  font-size: 20px;
 }
 

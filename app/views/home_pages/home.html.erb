@@ -1,2 +1,33 @@
-<h1>HomePages#home</h1>
-<p>Find me in app/views/home_pages/home.html.erb</p>
+<div class="owl-carousel">
+  <%= @books.each do |book| %>
+  <div class="row">
+    <div class="col-md-6">
+      <h1><%= book.title %></h1> by <%= book.author.firstname %> <%= book.author.lastname %>
+    </div>
+ </div>
+
+<div class="row">
+  <div class="col-md-4">
+    <%= image_tag book.image.thumb %>
+  </div>
+  <div class="col-md-8">
+    <%= book.description %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2 col-md-offset-2">
+    <h3>$<%= @book.price %></h3>
+  </div>
+  <div class="col-md-4 ">
+    <%= render "add_book", book: @book %>
+  </div>
+</div>
+  <% end %>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <h4>Welcome! Choose anything you wish, we'll ship it anywhere!( Mars and alternate reality included ). We also walk dogs. </h4>
+  </div>
+</div>
