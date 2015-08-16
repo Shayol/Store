@@ -21,7 +21,18 @@
 var ready;
 ready = function() {
 
-  $(".owl-carousel").owlCarousel();
+  $(".owl-carousel").owlCarousel({
+    singleItem: true,
+    navigation: true
+  });
+
+  if($("#use_billing_as_shipping").is(":checked")) {
+    $(".shipping_address_checkout").addClass("hidden");
+  }
+
+  $('#use_billing_as_shipping').change(function() {
+  $(".shipping_address_checkout").toggleClass("hidden");
+  });
 
 };
 

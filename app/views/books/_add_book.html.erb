@@ -1,6 +1,10 @@
 <%= form_for :addBook, url: add_to_order_book_path(book), method: :post, class: "form-inline" do |f| %>
-  <div class="form-group">
-    <%= f.number_field :quantity, value: 1, within: 1..100, class: "form-control" %>
-    <%= f.submit "ADD BOOK", class: "btn btn-info"%>
-  </div>
+    <div class="row">
+      <div class="col-md-2">
+        <%= f.number_field :quantity, value: 1, within: 1..100, class: "form-control addBook_quantity" %>
+      </div>
+      <div class="col-md-2">
+        <%= f.submit "ADD BOOK", class: "btn btn-info"%>
+      </div>
+    </div>
 <% end %>

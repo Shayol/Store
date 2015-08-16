@@ -31,6 +31,17 @@ class User < ActiveRecord::Base
     end
 end
 
+  def update_settings
+    if !guest?
+      if !billing_address
+        update_attribute(:billing_address_id, current_order.billing_address_id)
+      end
+      if !shipping_address
+        update_attribute(:shipping_address_id, current_order.shipping_address_id)
+      end
+    end
+  end
+
   def current_order
     order = orders.in_progress.take
     order.nil? ? orders.create : order

@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-4">
     <div class="col-md-8">
-      BILLING ADDRESS
+      <strong> BILLING ADDRESS </strong>
     </div>
     <%= form_for @address, method: :put, url: wizard_path do |f| %>
       <% if @address.errors.any? %>
@@ -12,88 +12,98 @@
       <% end %>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :billing_firstname, placeholder: "First name" %>
+        <%= f.text_field :billing_firstname, placeholder: "First name", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :billing_lastname, placeholder: "Last name" %>
+        <%= f.text_field :billing_lastname, placeholder: "Last name", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :billing_address, placeholder: "Street address" %>
+        <%= f.text_field :billing_address, placeholder: "Street address", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :billing_city, placeholder: "City" %>
+        <%= f.text_field :billing_city, placeholder: "City", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.select :billing_country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: false %>
+        <%= f.select :billing_country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: false, class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :billing_zipcode, placeholder: "Zip" %>
+        <%= f.text_field :billing_zipcode, placeholder: "Zip", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :billing_phone, placeholder: "Phone" %>
+        <%= f.text_field :billing_phone, placeholder: "Phone", class: "form-control" %>
       </div>
     </div>
   </div>
 
 <div class="col-md-4">
   <div class="col-md-8">
-    SHIPPING ADDRESS
+    <strong>SHIPPING ADDRESS</strong>
   </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :shipping_firstname, placeholder: "First name" %>
+       <%= check_box_tag 'use_billing_as_shipping', '1', true %>
+       <%= label_tag 'use_billing_as_shipping', 'Use billing as shipping' %>
+      </div>
+    </div>
+    <div class="shipping_address_checkout">
+    <div class="row">
+      <div class="col-md-8">
+        <%= f.text_field :shipping_firstname, placeholder: "First name", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :shipping_lastname, placeholder: "Last name" %>
+        <%= f.text_field :shipping_lastname, placeholder: "Last name", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :shipping_address, placeholder: "Street address" %>
+        <%= f.text_field :shipping_address, placeholder: "Street address", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :shipping_city, placeholder: "City" %>
+        <%= f.text_field :shipping_city, placeholder: "City", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.select :shipping_country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: false %>
+        <%= f.select :shipping_country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: false, class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :shipping_zipcode, placeholder: "Zip" %>
+        <%= f.text_field :shipping_zipcode, placeholder: "Zip", class: "form-control" %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.text_field :shipping_phone, placeholder: "Phone" %>
+        <%= f.text_field :shipping_phone, placeholder: "Phone", class: "form-control" %>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-8">
-        <%= f.submit %>
-      </div>
     </div>
-    <% end %>
 </div>
 
 <%= render "summary_order" %>
-
 </div>
+
+<div class="row">
+  <div class="col-md-2">
+    <%= f.submit "SAVE AND CONTINUE", class: "btn btn-primary" %>
+  </div>
+</div>
+<% end %>
+
+

@@ -27,8 +27,9 @@ class Orders::CheckoutController < ApplicationController
     case step
       when :address
         @address = CheckoutAddressForm.new(checkout_address_form_params)
-        if @address.save(@order)
+        if @address.save(@order, params[:use_billing_as_shipping])
           flash[:notice] = "Successfully updated addresses"
+          current_or_guest_user.update_settings
           redirect_to next_wizard_path and return
         else
           flash[:alert] = "Check for errors"
