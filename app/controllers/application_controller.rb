@@ -26,6 +26,18 @@ class ApplicationController < ActionController::Base
     params.require(:address).permit(:firstname, :lastname, :address, :country_id, :city, :phone, :zipcode)
   end
 
+   def current_auth_resource
+    if admin_signed_in?
+      current_admin
+    else
+      current_or_guest_user
+    end
+  end
+
+  def current_ability
+    @current_ability ||= Ability.new(current_auth_resource)
+  end
+
   # GUEST USER
 
   def current_or_guest_user

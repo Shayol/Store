@@ -1,5 +1,5 @@
 class AddressesController < ApplicationController
-  load_and_authorize_resource
+  authorize_resource
 
   def create
     instance_variable_set("@#{params[:address_type]}_address", Address.new(address_params))
@@ -21,7 +21,7 @@ class AddressesController < ApplicationController
       redirect_to settings_path
     else
       flash[:alert] = "#{params[:address_type].capitalize} address wasn't updated. Check for errors."
-      get_billing_and_shipping_address
+      get_settings_data
       render 'users/settings'
     end
   end

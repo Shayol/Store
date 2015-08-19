@@ -1,8 +1,10 @@
 <%= render "checkout_menu" %>
 <div class="row">
   <div class="col-md-4">
-    <div class="col-md-8">
-      <strong> BILLING ADDRESS </strong>
+    <div class="row">
+      <div class="col-md-8">
+        <strong> BILLING ADDRESS </strong>
+      </div>
     </div>
     <%= form_for @address, method: :put, url: wizard_path do |f| %>
       <% if @address.errors.any? %>
@@ -32,7 +34,7 @@
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.select :billing_country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: false, class: "form-control" %>
+        <%= f.select :billing_country_id, Country.all.collect { |p| [ p.name, p.id ] }, {include_blank: false}, {class: "form-control"} %>
       </div>
     </div>
     <div class="row">
@@ -48,12 +50,14 @@
   </div>
 
 <div class="col-md-4">
-  <div class="col-md-8">
-    <strong>SHIPPING ADDRESS</strong>
+  <div class="row">
+    <div class="col-md-8">
+      <strong>SHIPPING ADDRESS</strong>
+    </div>
   </div>
     <div class="row">
       <div class="col-md-8">
-       <%= check_box_tag 'use_billing_as_shipping', '1', true %>
+       <%= f.check_box :billing_as_shipping %>
        <%= label_tag 'use_billing_as_shipping', 'Use billing as shipping' %>
       </div>
     </div>
@@ -80,7 +84,7 @@
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.select :shipping_country_id, Country.all.collect { |p| [ p.name, p.id ] }, include_blank: false, class: "form-control" %>
+        <%= f.select :shipping_country_id, Country.all.collect { |p| [ p.name, p.id ] }, {include_blank: false}, {class: "form-control"} %>
       </div>
     </div>
     <div class="row">

@@ -1,55 +1,55 @@
 <div class="row">
   <div class="col-md-3">
-    <h6>Shipping Address <%= link_to "(edit)", wizard_path(:address) if step == step[-2] %></h6>
+    <h4>Shipping Address <small><%= link_to "(edit)", wizard_path(:address) if step == wizard_steps[-2] %></small></h4>
     <div class="col-md-10">
       <%= current_or_guest_user.current_order.shipping_address.firstname %>
       <%= current_or_guest_user.current_order.shipping_address.lastname %>
-    </div>
-    <div class="col-md-10">
+    <p>
       <%= current_or_guest_user.current_order.shipping_address.address %>
-    </div>
-    <div class="col-md-10">
+    </p>
+    <p>
       <%= current_or_guest_user.current_order.shipping_address.city %>
       <%= current_or_guest_user.current_order.shipping_address.zipcode %>
-    </div>
-    <div class="col-md-10">
+    </p>
+    <p>
       <%= current_or_guest_user.current_order.shipping_address.country.name %>
-    </div>
-    <div class="col-md-10">
+    </p>
+    <p>
       Phone
       <%= current_or_guest_user.current_order.shipping_address.phone %>
+    </p>
     </div>
   </div>
   <div class="col-md-3">
-    <h6>Billing Address</h6> <span><%= link_to "(edit)", wizard_path(:address) if step == step[-2]%></span>
+    <h4>Billing Address <small><%= link_to "(edit)", wizard_path(:address) if step == wizard_steps[-2] %></small></h4>
     <div class="col-md-10">
       <%= current_or_guest_user.current_order.billing_address.firstname %>
       <%= current_or_guest_user.current_order.billing_address.lastname %>
-    </div>
-    <div class="col-md-10">
+    <p>
       <%= current_or_guest_user.current_order.billing_address.address %>
-    </div>
-    <div class="col-md-10">
+    </p>
+    <p>
       <%= current_or_guest_user.current_order.billing_address.city %>
       <%= current_or_guest_user.current_order.billing_address.zipcode %>
-    </div>
-    <div class="col-md-10">
+    </p>
+    <p>
       <%= current_or_guest_user.current_order.billing_address.country.name %>
-    </div>
-    <div class="col-md-10">
+    </p>
+    <p>
       Phone
       <%= current_or_guest_user.current_order.billing_address.phone %>
+    </p>
     </div>
   </div>
   <div class="col-md-3">
-    <h6>Shipment</h6><span><%= link_to "(edit)", wizard_path(:delivery) if step == step[-2]%></span>
+    <h4>Shipment<small><%= link_to "(edit)", wizard_path(:delivery) if step == wizard_steps[-2]%></small></h4>
     <div class="col-md-10">
       <%= current_or_guest_user.current_order.delivery.description %>
       <p><%= current_or_guest_user.current_order.delivery.price %></p>
     </div>
   </div>
   <div class="col-md-3">
-    <h6>Payment Information</h6><span><%= link_to "(edit)", wizard_path(:payment) if step == step[-2] %></span>
+    <h4>Payment Information<small><%= link_to "(edit)", wizard_path(:payment) if step == wizard_steps[-2] %></small></h4>
     <div class="col-md-10">
       ** ** **<%= current_or_guest_user.current_order.credit_card.number[-4..-1] %>
       <p><%= current_or_guest_user.current_order.credit_card.expiration_month %>/<%= current_or_guest_user.current_order.credit_card.expiration_year %></p>

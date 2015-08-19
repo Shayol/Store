@@ -7,7 +7,7 @@
 
 <div class="row">
   <div class="col-md-3 col-md-offset-9 text-right">
-    SUBTOTAL: <strong>$<%= current_user.current_order.total_price %></strong>
+    SUBTOTAL: <strong>$<%= current_or_guest_user.current_order.total_price %></strong>
   </div>
 </div>
 <div class="row">

@@ -4,14 +4,23 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :omniauthable, :omniauth_providers => [:facebook]
 
-  has_one    :credit_card
+  attr_accessor :old_password, :new_password
+
+  has_one    :credit_card, dependent: :destroy
   has_many   :orders, dependent: :destroy
-  has_many   :raitings
+  has_many   :raitings, dependent: :destroy
   belongs_to :billing_address, :class_name => 'Address', :foreign_key => 'billing_address_id'
   belongs_to :shipping_address, :class_name => 'Address', :foreign_key => 'shipping_address_id'
 
   validates :firstname, length: { maximum: 200 }
   validates :lastname, length: { maximum: 200 }
+  validates :old_password, length: {minimum: 8}, allow_blank: false, allow_nil: true
+  validates :new_password, length: {minimum: 8}, allow_blank: false, allow_nil: true
+
+  def update_password
+    self.password = new_password
+    self
+  end
 
 
   def self.from_omniauth(auth)
@@ -33,17 +42,17 @@ end
 
   def update_settings
     if !guest?
-      if !billing_address
+      if !billing_address_id
         update_attribute(:billing_address_id, current_order.billing_address_id)
       end
-      if !shipping_address
+      if !shipping_address_id
         update_attribute(:shipping_address_id, current_order.shipping_address_id)
       end
     end
   end
 
   def current_order
-    order = orders.in_progress.take
+    order = orders.in_progress.first
     order.nil? ? orders.create : order
   end
 

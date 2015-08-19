@@ -2,13 +2,13 @@
 <%= form_for @order, url: wizard_path do |f| %>
 <div class="row">
   <div class="col-md-8">
-    <%= collection_radio_buttons(:order, :delivery_id, Delivery.all, :id, :decription_and_price) %>
+    <%= f.collection_radio_buttons( :delivery_id, Delivery.all, :id, :decription_and_price) %>
   </div>
     <%= render "summary_order" %>
 </div>
 <div class="row">
   <div class="col-md-2">
-    <%= f.submit "SAVE AND CONTINUE" %>
+    <%= f.submit "SAVE AND CONTINUE", class: "btn btn-primary" %>
   </div>
 </div>
 <% end %>

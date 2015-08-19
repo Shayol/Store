@@ -1,17 +1,17 @@
 <div class="col-md-4">
+  <div class="row">
+    <div class="col-md-12 text-right">
+      ITEM TOTAL: $<%= current_or_guest_user.current_order.items_price %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 text-right">
+      SHIPPING: $<%= current_or_guest_user.current_order.delivery.price if current_or_guest_user.current_order.delivery %>
+    </div>
+  </div>
     <div class="row">
       <div class="col-md-12 text-right">
-        ITEM TOTAL: $<%= current_or_guest_user.current_order.items_price %>
+        ORDER TOTAL: $<%= current_or_guest_user.current_order.total_price %>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 text-right">
-        SHIPPING: $<%= current_or_guest_user.current_order.delivery.price if current_or_guest_user.current_order.delivery %>
-      </div>
-    </div>
-      <div class="row">
-        <div class="col-md-12 text-right">
-          ORDER TOTAL: $<%= current_or_guest_user.current_order.total_price %>
-        </div>
-    </div>
+  </div>
 </div>

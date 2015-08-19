@@ -13,7 +13,7 @@ gem 'font-awesome-rails'
 gem 'slim-rails'
 
 gem 'jquery-rails'
-gem 'turbolinks'
+# gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 
 gem 'kaminari'

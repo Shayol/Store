@@ -5,19 +5,18 @@ class Orders::CheckoutController < ApplicationController
   steps :address, :delivery, :payment, :confirm, :complete
 
   def show
+    get_order
     case step
     when :address
       @address = CheckoutAddressForm.new
       get_checkout_address_data
       @address.populate(@billing_address, @shipping_address)
     when :delivery
-      get_order
     when :payment
       get_credit_card
     when :confirm
-      get_order
     end
-    render_wizard
+    check_step ? render_wizard : (redirect_to :back)
   end
 
 
@@ -27,8 +26,8 @@ class Orders::CheckoutController < ApplicationController
     case step
       when :address
         @address = CheckoutAddressForm.new(checkout_address_form_params)
-        if @address.save(@order, params[:use_billing_as_shipping])
-          flash[:notice] = "Successfully updated addresses"
+        if @address.save(@order)
+          update_state
           current_or_guest_user.update_settings
           redirect_to next_wizard_path and return
         else
@@ -36,22 +35,22 @@ class Orders::CheckoutController < ApplicationController
         end
       when :delivery
         if @order.update_attributes(order_params)
-          flash[:notice] = "Delivery was successfully updated"
-        else
+           update_state
+         else
           flash[:alert] = "Delivery wasn't updated. Check for errors."
         end
         @rendered_variable = @order
       when :payment
         get_credit_card
         if @credit_card.update_attributes(credit_card_params)
-          flash[:notice] = "Credit card was successfully updated"
+          update_state
           else
           flash[:alert] = "Credit card wasn't updated. Check for errors."
         end
         @rendered_variable = @credit_card
       when :confirm
         if @order.update(order_params)
-          flash[:notice] = "Order confirmed"
+          update_state
         else
           flash[:alert] = "Order wasn't confirmed."
         end
@@ -61,6 +60,19 @@ class Orders::CheckoutController < ApplicationController
   end
 
   private
+
+  def update_state
+    @order.update_attribute(:state, step.to_s) unless future_step?(@order.state.to_sym)
+    flash[:notice] = "#{step} was successfully updated"
+  end
+
+  def check_step
+    if !previous_step?(@order.state.to_sym) || !future_step?(@order.state.to_sym) || step != wizard_steps.first
+    flash[:alert]="Fill in previous steps in checkout, please."
+    false
+  end
+  true
+  end
 
    def get_checkout_address_data
     @billing_address  = current_or_guest_user.current_order.billing_address || current_or_guest_user.billing_address
@@ -93,7 +105,7 @@ class Orders::CheckoutController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:shipping_address_id, :billing_address_id, :credit_card_id, :user_id, :delivery_id)
+    params.require(:order).permit(:shipping_address_id, :billing_address_id, :credit_card_id, :user_id, :delivery_id, :state, :completed_date)
   end
 
   def credit_card_params
@@ -103,7 +115,7 @@ class Orders::CheckoutController < ApplicationController
   def checkout_address_form_params
     params.require(:checkout_address_form).permit(:billing_firstname, :billing_lastname, :billing_address,
                   :billing_zipcode, :billing_city, :billing_phone, :billing_country_id,
-                  :shipping_firstname, :shipping_lastname, :shipping_address,
+                  :billing_as_shipping, :shipping_firstname, :shipping_lastname, :shipping_address,
                   :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country_id)
   end
 end
