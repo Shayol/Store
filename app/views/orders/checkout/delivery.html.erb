@@ -2,7 +2,12 @@
 <%= form_for @order, url: wizard_path do |f| %>
 <div class="row">
   <div class="col-md-8">
-    <%= f.collection_radio_buttons( :delivery_id, Delivery.all, :id, :decription_and_price) %>
+  <% Delivery.all.each do |d| %>
+  <div class="col-md-10">
+    <%= f.radio_button :delivery_id, d.id.to_i  %>
+    <%= f.label :delivery_id, "#{d.description} + #{d.price}" %>
+  </div>
+  <% end %>
   </div>
     <%= render "summary_order" %>
 </div>

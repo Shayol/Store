@@ -12,13 +12,13 @@ class Orders::CheckoutController < ApplicationController
         @address = CheckoutAddressForm.new
         get_checkout_address_data
         @address.populate(@billing_address, @shipping_address)
-        flash[:notice]="#{current_or_guest_user.current_order.billing_address}"
       when :delivery
       when :payment
         get_credit_card
       when :confirm
       when :complete
-        flash[:notice] = "Sign in or Sign up now and your order data will be saved in your account."
+        @order_in_queue = current_or_guest_user.orders.in_queue.last
+        flash[:notice] + "Sign in or Sign up now and your order data will be saved in your account."
     end
     render_wizard
   end
@@ -36,11 +36,12 @@ class Orders::CheckoutController < ApplicationController
           flash_alert
         end
       when :delivery
-        @order.update_attributes(order_params) ? update_state : flash_alert
+        @order.update(order_params) ? update_state : flash_alert
+        @order.set_total_price
         @rendered_variable = @order
       when :payment
         get_credit_card
-        @credit_card.update_attributes(credit_card_params) ? update_state : flash_alert
+        @credit_card.update(credit_card_params) ? update_state : flash_alert
         @rendered_variable = @credit_card
       when :confirm
         @order.update(order_params) ? update_state : flash_alert
@@ -60,7 +61,9 @@ class Orders::CheckoutController < ApplicationController
   end
 
   def update_state
-    @order.update_attribute(:state, step.to_s) unless future_step?(@order.state.to_sym)
+    unless future_step?(@order.state.to_sym)
+      @order.update_attribute(:state, step.to_s)
+    end
     flash_success
   end
 
@@ -76,8 +79,8 @@ class Orders::CheckoutController < ApplicationController
    def get_checkout_address_data
     @billing_address  = current_or_guest_user.current_order.billing_address
     @shipping_address  = current_or_guest_user.current_order.shipping_address
-    @billing_address ||= current_user.billing_address if current_user
-    @shipping_address ||= current_user.shipping_address if current_user
+    # @billing_address ||= current_user.billing_address if current_user
+    # @shipping_address ||= current_user.shipping_address if current_user
 
     unless @billing_address
       @billing_address = Address.new

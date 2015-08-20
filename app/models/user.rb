@@ -14,14 +14,6 @@ class User < ActiveRecord::Base
 
   validates :firstname, length: { maximum: 200 }
   validates :lastname, length: { maximum: 200 }
-  validates :old_password, length: {minimum: 8}, allow_blank: false, allow_nil: true
-  validates :new_password, length: {minimum: 8}, allow_blank: false, allow_nil: true
-
-  def update_password
-    self.password = new_password
-    self
-  end
-
 
   def self.from_omniauth(auth)
     unless user = where(provider: auth.provider, uid: auth.uid).first

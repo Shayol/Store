@@ -7,9 +7,9 @@ class OrdersController < ApplicationController
 
   def index
     @cart = current_or_guest_user.current_order
-    @waiting_for_processing = current_or_guest_user.orders.in_queue.pluck(:id, :total_price, :completed_date)
-    @in_delivery = current_or_guest_user.orders.in_delivery.pluck(:id, :total_price, :completed_date)
-    @delivered = current_or_guest_user.orders.delivered.pluck(:id, :total_price, :completed_date)
+    @waiting_for_processing = current_or_guest_user.orders.in_queue
+    @in_delivery = current_or_guest_user.orders.in_delivery
+    @delivered = current_or_guest_user.orders.delivered
   end
 
   def empty_cart

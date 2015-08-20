@@ -9,16 +9,17 @@ class UsersController < ApplicationController
 
   def update_password
     if @user.valid_password?(user_password_params[:old_password])
-    if @user.update_password.save!
-      sign_in @user, :bypass => true
-      flash[:success] = "Password changed."
-      redirect_to settings_path
+      if @user.update(password: user_password_params[:new_password])
+        sign_in @user, :bypass => true
+        redirect_to settings_path, notice: "Password changed."
+      else
+        flash[:alert] = "Password wasn't updated. Check for errors."
+        render "settings"
+      end
     else
-      flash[:alert] = "Password wasn't updated. Check for errors."
-      render "settings"
+    flash[:alert] = "Wrong old password ."
+    render "settings"
     end
-  end
-  render "settings"
   end
 
      def update_email

@@ -7,24 +7,26 @@
 
 <div class="row">
   <div class="col-md-3 col-md-offset-9 text-right">
-    SUBTOTAL: <strong>$<%= current_or_guest_user.current_order.total_price %></strong>
+    SUBTOTAL: <strong>$<%= @order.total_price %></strong>
   </div>
 </div>
+<% if @order == current_or_guest_user.current_order %>
 <div class="row">
   <div class="col-md-2 ">
-    <%= button_to "EMPTY CART", empty_cart_order_path, class: "btn btn-danger" %>
+    <%= button_to "EMPTY CART", empty_cart_order_path, class: "btn btn-danger"  %>
   </div>
   <div class="col-md-2 ">
     <%= button_to "CONTINUE SHOPPING", books_path, class: "btn btn-primary" %>
   </div>
   <div class="col-md-2 col-md-offset-4">
     <%= f.submit "Update", class: "btn btn-default" %>
-    <% end %>
   </div>
   <div class="col-md-2 ">
     <%= button_to "CHECKOUT", "/orders/#{current_or_guest_user.current_order.id}/checkout/address", method: :get, class: "btn btn-success" %>
   </div>
 </div>
+<% end %>
+<% end %>
 <% else %>
   <p> No items in your order yet. <%= link_to "Go back to shop", books_path %></p>
 <% end %>
