@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Order, type: :model do
   # let(:order_item) {create :order_item}
 
-  it { should belong_to(:customer) }
+  it { should belong_to(:user) }
   it { should belong_to(:credit_card) }
   it { should belong_to(:billing_address) }
   it { should belong_to(:shipping_address) }
@@ -56,9 +56,20 @@ RSpec.describe Order, type: :model do
     #   expect(order).not_to be_valid
     # end
 
-    it "is invalid if it has no completed date while in 'completed' state " do
-      order= build :order, state: Order::ORDER_STATE[1], completed_date: nil
+    it "is invalid if it has no completed date while in 'confirmed' state " do
+      order = build :order, state: "confirmed", completed_date: nil
       expect(order).not_to be_valid
+    end
+  end
+
+  describe "merge other_order" do
+    it "adds books in guest order to signed in user's current order" do
+      first_order = create :order
+      order_item = create :order_item, book: book, order: first_order
+      other_order = create :order
+      order_item = create :order_item, book: book, order: other_order
+      first_order.merge other_order
+      expect(first_order.order_items.first.quantity).to eq(first_order.order_item.quantity + other_order.order_item.quantity)
     end
   end
 

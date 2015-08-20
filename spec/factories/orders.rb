@@ -4,6 +4,7 @@ FactoryGirl.define do
     completed_date { Faker::Time.between(3.days.ago, Time.now) }
     state "in_progress"
     user nil
+    delivery nil
   end
 
 end

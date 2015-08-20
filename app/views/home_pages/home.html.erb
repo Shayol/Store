@@ -12,17 +12,21 @@
       <%= image_tag book.image.thumb %>
     </div>
     <div class="col-md-8">
-    <div class="col-md-8">
-      <%= book.description %>
-    </div>
-    <div class="col-md-8">
-      <div class="col-md-4">
-        <h3>$<%= book.price %></h3>
+      <div class="row">
+        <div class="col-md-10">
+          <%= book.description %>
+        </div>
       </div>
-      <div class="col-md-8 ">
-        <%= render "books/add_book", book: book %>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="col-md-4">
+            <h3>$<%= book.price %></h3>
+          </div>
+          <div class="col-md-8 ">
+            <%= render "books/add_book", book: book %>
+          </div>
+        </div>
       </div>
-    </div>
   </div>
 </div>
 </div>
