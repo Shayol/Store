@@ -11,7 +11,7 @@ class CheckoutAddressForm
   attribute :billing_city, String
   attribute :billing_phone, String
   attribute :billing_country_id, Integer
-  attribute :billing_as_shipping, Boolean, default: true
+  attribute :use_billing_as_shipping, Boolean, default: true
 
   attribute :shipping_firstname, String
   attribute :shipping_lastname, String
@@ -26,9 +26,13 @@ class CheckoutAddressForm
             :billing_zipcode, :billing_city, :billing_phone, :billing_country_id,
             presence: true
 
- validates  :shipping_firstname, :shipping_lastname, :shipping_address,
+  validates  :shipping_firstname, :shipping_lastname, :shipping_address,
             :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country_id,
-            presence: true, if: :billing_as_shipping
+            presence: true, if: :not_same_as_billing?
+
+  def not_same_as_billing?
+    !use_billing_as_shipping
+  end
 
   def save(order)
     if valid?
@@ -55,7 +59,7 @@ class CheckoutAddressForm
 
   def persist!(order)
     order.billing_address.update!(billing_address_params)
-    :billing_as_shipping ? order.shipping_address.update!(billing_address_params) : order.shipping_address.update!(shipping_address_params)
+    use_billing_as_shipping ? order.shipping_address.update!(billing_address_params) : order.shipping_address.update!(shipping_address_params)
   end
 
   def billing_address_params

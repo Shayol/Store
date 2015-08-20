@@ -3,80 +3,81 @@ class Orders::CheckoutController < ApplicationController
   include Wicked::Wizard
 
   steps :address, :delivery, :payment, :confirm, :complete
+  before_action :find_order
 
   def show
-    get_order
+    redirect_to :back and return unless consecutive_progression_of_steps?
     case step
-    when :address
-      @address = CheckoutAddressForm.new
-      get_checkout_address_data
-      @address.populate(@billing_address, @shipping_address)
-    when :delivery
-    when :payment
-      get_credit_card
-    when :confirm
+      when :address
+        @address = CheckoutAddressForm.new
+        get_checkout_address_data
+        @address.populate(@billing_address, @shipping_address)
+        flash[:notice]="#{current_or_guest_user.current_order.billing_address}"
+      when :delivery
+      when :payment
+        get_credit_card
+      when :confirm
+      when :complete
+        flash[:notice] = "Sign in or Sign up now and your order data will be saved in your account."
     end
-    check_step ? render_wizard : (redirect_to :back)
+    render_wizard
   end
 
 
   def update
-    get_order
-    #params[:order][:state] = 'in_queue' if step == steps[-2]
     case step
       when :address
         @address = CheckoutAddressForm.new(checkout_address_form_params)
         if @address.save(@order)
           update_state
-          current_or_guest_user.update_settings
+          current_user.update_settings if current_user
           redirect_to next_wizard_path and return
         else
-          flash[:alert] = "Check for errors"
+          flash_alert
         end
       when :delivery
-        if @order.update_attributes(order_params)
-           update_state
-         else
-          flash[:alert] = "Delivery wasn't updated. Check for errors."
-        end
+        @order.update_attributes(order_params) ? update_state : flash_alert
         @rendered_variable = @order
       when :payment
         get_credit_card
-        if @credit_card.update_attributes(credit_card_params)
-          update_state
-          else
-          flash[:alert] = "Credit card wasn't updated. Check for errors."
-        end
+        @credit_card.update_attributes(credit_card_params) ? update_state : flash_alert
         @rendered_variable = @credit_card
       when :confirm
-        if @order.update(order_params)
-          update_state
-        else
-          flash[:alert] = "Order wasn't confirmed."
-        end
-          @rendered_variable = @order
-    end
+        @order.update(order_params) ? update_state : flash_alert
+        @rendered_variable = @order
+      end
     render_wizard @rendered_variable
   end
 
   private
 
-  def update_state
-    @order.update_attribute(:state, step.to_s) unless future_step?(@order.state.to_sym)
-    flash[:notice] = "#{step} was successfully updated"
+  def flash_alert
+    flash[:alert] = "#{step.capitalize} wasn't updated. Check for errors."
   end
 
-  def check_step
-    if !previous_step?(@order.state.to_sym) || !future_step?(@order.state.to_sym) || step != wizard_steps.first
-    flash[:alert]="Fill in previous steps in checkout, please."
-    false
+  def flash_success
+    flash[:notice] = "#{step.capitalize} was successfully updated."
   end
-  true
+
+  def update_state
+    @order.update_attribute(:state, step.to_s) unless future_step?(@order.state.to_sym)
+    flash_success
+  end
+
+  def consecutive_progression_of_steps?
+    if (past_step?(@order.state.to_sym) && !previous_step?(@order.state.to_sym))
+      flash[:alert]="Fill in previous steps in checkout, please."
+      false
+    else
+      true
+    end
   end
 
    def get_checkout_address_data
-    @billing_address  = current_or_guest_user.current_order.billing_address || current_or_guest_user.billing_address
-    @shipping_address  = current_or_guest_user.current_order.shipping_address || current_or_guest_user.shipping_address
+    @billing_address  = current_or_guest_user.current_order.billing_address
+    @shipping_address  = current_or_guest_user.current_order.shipping_address
+    @billing_address ||= current_user.billing_address if current_user
+    @shipping_address ||= current_user.shipping_address if current_user
 
     unless @billing_address
       @billing_address = Address.new
@@ -91,7 +92,7 @@ class Orders::CheckoutController < ApplicationController
     end
   end
 
-  def get_order
+  def find_order
     @order = current_or_guest_user.current_order
   end
 
@@ -115,7 +116,7 @@ class Orders::CheckoutController < ApplicationController
   def checkout_address_form_params
     params.require(:checkout_address_form).permit(:billing_firstname, :billing_lastname, :billing_address,
                   :billing_zipcode, :billing_city, :billing_phone, :billing_country_id,
-                  :billing_as_shipping, :shipping_firstname, :shipping_lastname, :shipping_address,
+                  :use_billing_as_shipping, :shipping_firstname, :shipping_lastname, :shipping_address,
                   :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country_id)
   end
 end

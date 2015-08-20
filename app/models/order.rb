@@ -17,8 +17,8 @@ class Order < ActiveRecord::Base
   validates :completed_date, presence: true, if: :order_in_queue?
   validates :state, inclusion: { in: ORDER_STATE }, presence: true
 
-  scope :in_progress, -> {where(state: ["in_progress", "address", "delivery", "payment"])}
-  scope :in_queue, -> {where(state: ["confirm", "in_queue"])}
+  scope :in_progress, -> {where(state: ["in_progress", "address", "delivery", "payment", "confirm"])}
+  scope :in_queue, -> {where(state: ["complete", "in_queue"])}
   scope :in_delivery, -> {where(state: "in_delivery")}
   scope :delivered, -> {where(state: "delivered")}
 
