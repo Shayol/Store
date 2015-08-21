@@ -1,14 +1,17 @@
-<div class="owl-carousel">
+<div class="owl-carousel slider">
 <% @books.each do |book| %>
   <div>
-    <div class="row">
-      <div class="col-md-12">
-        <strong><%= book.title %></strong> <span>by <%= book.author.firstname %> <%= book.author.lastname %></span>
+    <div class="row text-center">
+      <div class="col-md-4">
+      <%= link_to book do %>
+        <strong><%= book.title %></strong>
+      <% end %>
+      <span>by <%= book.author.firstname %> <%= book.author.lastname %></span>
       </div>
    </div>
 
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 text-center">
       <%= image_tag book.image.thumb %>
     </div>
     <div class="col-md-8">
@@ -32,6 +35,7 @@
 </div>
 <% end %>
 </div>
+
 
 
 

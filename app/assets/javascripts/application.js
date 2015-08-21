@@ -25,7 +25,7 @@ ready = function() {
     navigation: true,
     slideSpeed : 300,
     paginationSpeed : 400,
-    navigationText: ["<i class='fa fa-caret-left fa-3x'></i>","<i class='fa fa-caret-right fa-3x'></i>"]
+    navigationText: ["<i class='fa fa-caret-left fa-5x'></i>","<i class='fa fa-caret-right fa-5x'></i>"]
   });
 
   if($("#checkout_address_form_use_billing_as_shipping").is(":checked")) {
