@@ -60,13 +60,13 @@
 <hr>
 <div class="row">
   <div class="col-md-12 text-right">
-    SUBTOTAL: <strong>$<%= order.items_price %></strong>
-    <p>SHIPPING: <strong>$<%= order.delivery.price %></strong></p>
+    SUBTOTAL: <strong><%= number_to_currency(order.items_price) %></strong>
+    <p>SHIPPING: <strong><%= number_to_currency(order.delivery.price) %></strong></p>
   </div>
 </div>
 <hr>
 <div class="row">
   <div class="col-md-12 text-right">
-    ORDER TOTAL: <strong>$<%= order.total_price %></strong>
+    ORDER TOTAL: <strong><%= number_to_currency(order.total_price) %></strong>
   </div>
 </div>

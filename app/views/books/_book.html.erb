@@ -9,7 +9,7 @@
     </div>
   <% end %>
     <div class="col-md-10 text-center">
-      <strong>$<%= book.price %></strong>
+      <strong><%= number_to_currency(book.price) %></strong>
     </div>
   </div>
 </div>

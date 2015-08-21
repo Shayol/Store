@@ -5,13 +5,12 @@
   <div class="col-md-3">
     <%= link_to "HOME", root_path %> | <%= link_to "SHOP", books_path %>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 text-right">
   <% if current_or_guest_user && current_or_guest_user.orders.in_progress %>
     <%= link_to order_path(current_or_guest_user.current_order) do %>
       <i class="fa fa-shopping-cart">
         CART(<%= current_or_guest_user.current_order.order_items.count %>)
-          <%= current_or_guest_user.current_order.total_price %>
-          $
+          <%= number_to_currency(current_or_guest_user.current_order.total_price) %>
       </i>
     <% end %>
     <% else %>

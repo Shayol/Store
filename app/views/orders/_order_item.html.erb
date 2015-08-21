@@ -32,7 +32,7 @@
   <% end %>
   </div>
   <div class="col-md-1 text-center">
-    <strong>$<%= order_item.price * order_item.quantity %></strong>
+    <strong><%= number_to_currency(order_item.price * order_item.quantity) %></strong>
   </div>
   <div class="col-md-1 text-left">
     <% if current_page?(current_or_guest_user.current_order) %>
