@@ -3,9 +3,10 @@ class Orders::CheckoutController < ApplicationController
   include Wicked::Wizard
 
   steps :address, :delivery, :payment, :confirm, :complete
-  before_action :find_order
+
 
   def show
+    @order = current_or_guest_user.current_order
     redirect_to :back and return unless consecutive_progression_of_steps?
     case step
       when :address
@@ -14,17 +15,18 @@ class Orders::CheckoutController < ApplicationController
         @address.populate(@billing_address, @shipping_address)
       when :delivery
       when :payment
-        get_credit_card
+        @credit_card = @order.credit_card || CreditCard.new
       when :confirm
       when :complete
         @order_in_queue = current_or_guest_user.orders.in_queue.last
-        flash[:notice] + "Sign in or Sign up now and your order data will be saved in your account."
+        flash[:info] = "Sign in or Sign up now and your order data will be saved in your account."
     end
     render_wizard
   end
 
 
   def update
+    @order = current_or_guest_user.current_order
     case step
       when :address
         @address = CheckoutAddressForm.new(checkout_address_form_params)
@@ -40,8 +42,8 @@ class Orders::CheckoutController < ApplicationController
         @order.set_total_price
         @rendered_variable = @order
       when :payment
-        get_credit_card
-        @credit_card.update(credit_card_params) ? update_state : flash_alert
+        @credit_card = @order.credit_card ||= CreditCard.new
+        @order.credit_card.update(credit_card_params) ? update_state : flash_alert
         @rendered_variable = @credit_card
       when :confirm
         @order.update(order_params) ? update_state : flash_alert
@@ -76,35 +78,20 @@ class Orders::CheckoutController < ApplicationController
     end
   end
 
-   def get_checkout_address_data
-    @billing_address  = current_or_guest_user.current_order.billing_address
-    @shipping_address  = current_or_guest_user.current_order.shipping_address
-    # @billing_address ||= current_user.billing_address if current_user
-    # @shipping_address ||= current_user.shipping_address if current_user
-
+  def get_checkout_address_data
+    @billing_address = @order.billing_address
+    @shipping_address = @order.shipping_address
+    @billing_address ||= current_user.billing_address if current_user
+    @shipping_address ||= current_user.shipping_address if current_user
     unless @billing_address
       @billing_address = Address.new
       @billing_address.save(validate: false)
-      current_or_guest_user.current_order.update_attribute(:billing_address_id, @billing_address.id)
-    end
-
+      @order.update_attribute(:billing_address_id, @billing_address.id)
+     end
     unless @shipping_address
       @shipping_address = Address.new
       @shipping_address.save(validate: false)
-      current_or_guest_user.current_order.update_attribute(:shipping_address_id, @shipping_address.id)
-    end
-  end
-
-  def find_order
-    @order = current_or_guest_user.current_order
-  end
-
-  def get_credit_card
-    @credit_card = current_or_guest_user.current_order.credit_card
-    unless @credit_card
-      @credit_card = CreditCard.new
-      @credit_card.save(validate: false)
-      current_or_guest_user.current_order.update_attribute(:credit_card_id, @credit_card.id)
+      @order.update_attribute(:shipping_address_id, @shipping_address.id)
     end
   end
 

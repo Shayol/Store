@@ -58,8 +58,8 @@ class CheckoutAddressForm
   private
 
   def persist!(order)
-    order.billing_address.update!(billing_address_params)
-    use_billing_as_shipping ? order.shipping_address.update!(billing_address_params) : order.shipping_address.update!(shipping_address_params)
+    order.billing_address.update(billing_address_params)
+    use_billing_as_shipping ? order.shipping_address.update(billing_address_params) : order.shipping_address.update(shipping_address_params)
   end
 
   def billing_address_params
