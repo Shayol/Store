@@ -64,7 +64,8 @@ class Orders::CheckoutController < ApplicationController
 
   def update_state
     unless future_step?(@order.state.to_sym)
-      @order.update_attribute(:state, step.to_s)
+    #   @order.update_attribute(:state, step.to_s)
+       @order.send(step.to_s.concat("_event!"))
     end
     flash_success
   end

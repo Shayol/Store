@@ -1,4 +1,5 @@
 class Order < ActiveRecord::Base
+  include AASM
 
   ORDER_STATE = ["in_progress", "address", "delivery", "payment", "confirm", "in_queue", "in_delivery", "delivered", "canceled"]
 
@@ -21,6 +22,55 @@ class Order < ActiveRecord::Base
   scope :in_queue, -> {where(state: ["confirm", "in_queue"])}
   scope :in_delivery, -> {where(state: "in_delivery")}
   scope :delivered, -> {where(state: "delivered")}
+
+  aasm :whiny_transitions => false, :column => 'state' do
+    state :in_progress, :initial => true
+    state :address
+    state :delivery
+    state :payment
+    state :confirm
+    state :in_queue
+    state :in_delivery
+    state :delivered
+    state :canceled
+
+
+    event :address_event do
+      transitions :from => :in_progress, :to => :address
+    end
+
+    event :delivery_event do
+      transitions :from => :address, :to => :delivery
+    end
+
+    event :payment_event do
+      transitions :from => :delivery, :to => :payment
+    end
+
+    event :confirm_event do
+      transitions :from => :payment, :to => :confirm, :guard => :check_cart_not_empty?
+    end
+
+    # event :complete, :after => :notify_user do
+    #   transitions :from => :confirm, :to => :in_queue, :guard => :check_cart_not_empty?
+    # end
+
+    # event :cancel do
+    #   transitions :from => [:in_queue, :in_delivery], :to => :canceled
+    # end
+    # event :finish do
+    #   transitions :from => :in_delivery, :to => :delivered
+    # end
+
+  end
+
+  def notify_user
+    #send mail with order info
+  end
+
+  def check_cart_not_empty?
+    order_items.any?
+  end
 
   def order_in_queue?
     state == "in_queue"
