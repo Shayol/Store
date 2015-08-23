@@ -13,8 +13,8 @@ class OrdersController < ApplicationController
   end
 
   def empty_cart
-    curent_or_guest_user.current_order.order_items.delete
-    current__or_guest_user.current_order.set_total_price
+    curent_or_guest_user.current_order.order_items.destroy_all
+    current_or_guest_user.current_order.set_total_price
     flash[:notice] = "Cart is empty"
     redirect_to action: :show
   end
