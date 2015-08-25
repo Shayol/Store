@@ -4,7 +4,6 @@
 <div class="row">
   <div class="col-md-2">
     <%= form_for @order, url: wizard_path do |f| %>
-      <%= f.hidden_field :state, value: 'in_queue' %>
       <%= f.hidden_field :completed_date, value: Time.now.utc %>
     <%= f.submit "CONFIRM", class: "btn btn-success" %>
     <% end %>

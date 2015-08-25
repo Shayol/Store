@@ -1,10 +1,10 @@
 <h3> Orders </h3>
 <h4> IN PROGRESS </h4>
 <hr>
-  <%= render "order_item", order: @cart %>
+  <%= render "order_item", order: @cart if @cart.order_items.any? %>
 <hr>
 <div class="row">
-  <div class="col-md-2"><%= button_to "GO TO CART", order_path(@cart), class: "btn btn-primary" %>
+  <div class="col-md-2"><%= button_to "GO TO CART", order_path(current_or_guest_user.current_order), class: "btn btn-primary" %>
   </div>
 </div>
 <h4>WAITING FOR PROCESSING</h4>

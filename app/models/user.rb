@@ -49,7 +49,7 @@ end
   end
 
   def guest?
-    email.match(/example.com/) == "example.com"
+    email.match(/example.com/)
   end
 
 end

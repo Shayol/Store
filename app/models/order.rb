@@ -39,7 +39,7 @@ class Order < ActiveRecord::Base
     state :canceled
 
 
-    event :address_event, :after => :update_user_address do
+    event :address_event do
       transitions :from => :in_progress, :to => :address
     end
 
@@ -51,8 +51,8 @@ class Order < ActiveRecord::Base
       transitions :from => :type_of_delivery, :to => :payment
     end
 
-    event :confirm_event, :after => :notify_user do
-      transitions :from => :payment, :to => :confirm, :guard => :cart_not_empty?
+    event :confirm_event, :after => [:update_user_address, :notify_user] do
+      transitions :from => :payment, :to => :confirm
     end
 
     # event :cancel do
@@ -66,10 +66,6 @@ class Order < ActiveRecord::Base
 
   def notify_user
     #send mail with order info
-  end
-
-  def cart_not_empty?
-    order_items.any?
   end
 
   def update_user_address

@@ -1,22 +1,20 @@
 class Orders::CheckoutController < ApplicationController
   #load_and_authorize_resource
+  before_action :find_order
   include Wicked::Wizard
 
   steps :address, :type_of_delivery, :payment, :confirm, :complete
 
 
   def show
-    @order = current_or_guest_user.current_order
     redirect_to :back and return unless consecutive_progression_of_steps?
     case step
       when :address
         @address = CheckoutAddressForm.new
         get_checkout_address_data
         @address.populate(@order.billing_address, @order.shipping_address)
-      when :type_of_delivery
       when :payment
         @credit_card = @order.credit_card || CreditCard.new
-      when :confirm
       when :complete
         @order_in_queue = current_or_guest_user.orders.in_queue.last
         flash[:info] = "Sign in or Sign up now and your order data will be saved in your account."
@@ -26,28 +24,17 @@ class Orders::CheckoutController < ApplicationController
 
 
   def update
-    @order = current_or_guest_user.current_order
     case step
       when :address
-        @address = CheckoutAddressForm.new(checkout_address_form_params)
-        if @address.save(@order)
-          update_state
-          redirect_to next_wizard_path and return
-        else
-          flash_alert
-        end
+        address ? (redirect_to next_wizard_path and return) : (render_wizard and return)
       when :type_of_delivery
         @order.update(order_params) ? update_state : flash_alert
-        @rendered_variable = @order
       when :payment
-        @credit_card = @order.credit_card ||= CreditCard.new
-        @order.credit_card.update(credit_card_params) ? update_state : flash_alert
-        @rendered_variable = @credit_card
+        return render_wizard payment
       when :confirm
-        @order.update(order_params) ? update_state : flash_alert
-        @rendered_variable = @order
+        redirect_to :back and return unless confirm
       end
-    render_wizard @rendered_variable # refactor this
+     render_wizard @order
   end
 
   private
@@ -60,11 +47,39 @@ class Orders::CheckoutController < ApplicationController
     flash[:notice] = "#{step.capitalize} was successfully updated."
   end
 
+  def address
+    @address = CheckoutAddressForm.new(checkout_address_form_params)
+      if @address.save(@order)
+        update_state
+        true
+      else
+        flash_alert
+       false
+      end
+  end
+
+  def payment
+    @credit_card = @order.credit_card ||= CreditCard.new
+    @order.credit_card.update(credit_card_params) ? update_state : flash_alert
+    @credit_card
+  end
+
+  def confirm
+    if cart_not_empty?
+      @order.update(order_params)
+      update_state
+      true
+    else
+      flash[:alert] = "Your cart is empty. Choose some books and come back."
+      false
+    end
+  end
+
   def update_state
     @order.save #  whyyyy????
     unless future_step?(@order.state.to_sym)
-      #@order.update_attribute(:state, step.to_s)
-      @order.send(step.to_s.concat("_event!"))
+      @order.update_attribute(:state, step.to_s)
+        #@order.send(step.to_s.concat("_event!"))
     end
     flash_success
   end
@@ -78,12 +93,15 @@ class Orders::CheckoutController < ApplicationController
     end
   end
 
+  def cart_not_empty?
+    @order.order_items.any?
+  end
+
   def get_checkout_address_data
-    if current_user && current_user.billing_address
-      @order.billing_address ||= current_user.billing_address.dup
-      @order.shipping_address ||= current_user.shipping_address.dup
-      @order.save ## check if can leave it out!!!!
-   end
+    if !current_or_guest_user.guest?
+      @order.billing_address ||= current_user.billing_address.dup if current_user.billing_address
+      @order.shipping_address ||= current_user.shipping_address.dup if current_user.shipping_address
+    end
     unless @order.billing_address
       @order.billing_address = Address.new
       @order.billing_address.save(validate: false)
@@ -92,6 +110,11 @@ class Orders::CheckoutController < ApplicationController
       @order.shipping_address = Address.new
       @order.shipping_address.save(validate: false)
     end
+    @order.save## why need this?!!!!
+  end
+
+  def find_order
+    @order = current_or_guest_user.current_order
   end
 
   def order_params

@@ -1,5 +1,6 @@
 class OrderItemsController < ApplicationController
   load_and_authorize_resource
+
   def destroy
     item = OrderItem.find(params[:id])
     item.destroy
