@@ -16,30 +16,30 @@
         <% end %>
       <% end %>
     <div class="row">
-      <div class="col-md-8">
-        <%= f.text_field :firstname, placeholder: "First name", value: current_or_guest_user.current_order.billing_address.firstname %>
+      <div class="col-md-4">
+        <%= f.text_field :firstname, placeholder: "First name", value: current_or_guest_user.current_order.billing_address.firstname, class: "form-control" %>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-8">
-        <%= f.text_field :lastname, placeholder: "Last name", value: current_or_guest_user.current_order.billing_address.lastname %>
+      <div class="col-md-4">
+        <%= f.text_field :lastname, placeholder: "Last name", value: current_or_guest_user.current_order.billing_address.lastname, class: "form-control" %>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-8">
-        <%= f.text_field :number, placeholder: "Card number" %>
+      <div class="col-md-4">
+        <%= f.text_field :number, placeholder: "Card number", class: "form-control" %>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-4">
       <p>Expiration date</p>
-        <%= f.select :expiration_month, CreditCard::EXPIRATION_MONTH, include_blank: "Month" %>
-        <%= f.select :expiration_year, CreditCard::EXPIRATION_YEAR, include_blank: "Year" %>
+        <%= f.select :expiration_month, CreditCard::EXPIRATION_MONTH, include_blank: "Month", class: "form-control" %>
+        <%= f.select :expiration_year, CreditCard::EXPIRATION_YEAR, include_blank: "Year", class: "form-control" %>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-8">
-        <%= f.text_field :CVV, placeholder: "cvv" %>
+      <div class="col-md-4">
+        <%= f.text_field :CVV, placeholder: "cvv", class: "form-control" %>
       </div>
     </div>
   </div>

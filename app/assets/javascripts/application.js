@@ -14,19 +14,19 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require_tree .
-
+//= require owl.carousel
 
 
 var ready;
 ready = function() {
 
-  // $(".owl-carousel").owlCarousel({
-  //   singleItem: true,
-  //   navigation: true,
-  //   slideSpeed : 300,
-  //   paginationSpeed : 400,
-  //   navigationText: ["<i class='fa fa-caret-left fa-5x'></i>","<i class='fa fa-caret-right fa-5x'></i>"]
-  // });
+  $("#carousel").owlCarousel({
+    singleItem: true,
+    navigation: true,
+    slideSpeed: 300,
+    paginationSpeed: 400,
+    navigationText: ["<i class='fa fa-caret-left fa-5x'></i>","<i class='fa fa-caret-right fa-5x'></i>"]
+  });
 
   if($("#checkout_address_form_use_billing_as_shipping").is(":checked")) {
     $(".shipping_address_checkout").addClass("hidden");

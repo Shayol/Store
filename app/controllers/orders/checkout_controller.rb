@@ -3,11 +3,11 @@ class Orders::CheckoutController < ApplicationController
   before_action :find_order
   include Wicked::Wizard
 
-  steps :address, :type_of_delivery, :payment, :confirm, :complete
+  steps :address, :delivery, :payment, :confirm, :complete
+  before_action :check_filled_in_info
 
 
   def show
-    redirect_to :back and return unless consecutive_progression_of_steps?
     case step
       when :address
         @address = CheckoutAddressForm.new
@@ -17,7 +17,7 @@ class Orders::CheckoutController < ApplicationController
         @credit_card = @order.credit_card || CreditCard.new
       when :complete
         @order_in_queue = current_or_guest_user.orders.in_queue.last
-        flash[:info] = "Sign in or Sign up now and your order data will be saved in your account."
+        flash[:info] = "Sign in or Sign up now and your order data will be saved in your account." if current_or_guest_user.guest?
     end
     render_wizard
   end
@@ -27,8 +27,8 @@ class Orders::CheckoutController < ApplicationController
     case step
       when :address
         address ? (redirect_to next_wizard_path and return) : (render_wizard and return)
-      when :type_of_delivery
-        @order.update(order_params) ? update_state : flash_alert
+      when :delivery
+        delivery
       when :payment
         return render_wizard payment
       when :confirm
@@ -47,27 +47,39 @@ class Orders::CheckoutController < ApplicationController
     flash[:notice] = "#{step.capitalize} was successfully updated."
   end
 
+  def flash_wrong_step
+    flash[:info] = "Please, fill in missing info."
+  end
+
   def address
     @address = CheckoutAddressForm.new(checkout_address_form_params)
       if @address.save(@order)
-        update_state
         true
       else
         flash_alert
-       false
+        false
       end
+  end
+
+  def delivery
+    if @order.update!(order_params)
+      @order.set_total_price
+      flash_success
+     else
+      flash_alert
+    end
   end
 
   def payment
     @credit_card = @order.credit_card ||= CreditCard.new
-    @order.credit_card.update(credit_card_params) ? update_state : flash_alert
+    @order.credit_card.update(credit_card_params) ? @order.save : flash_alert
     @credit_card
   end
 
   def confirm
     if cart_not_empty?
       @order.update(order_params)
-      update_state
+      @order.confirm_event!
       true
     else
       flash[:alert] = "Your cart is empty. Choose some books and come back."
@@ -75,21 +87,35 @@ class Orders::CheckoutController < ApplicationController
     end
   end
 
-  def update_state
-    @order.save #  whyyyy????
-    unless future_step?(@order.state.to_sym)
-      @order.update_attribute(:state, step.to_s)
-        #@order.send(step.to_s.concat("_event!"))
-    end
-    flash_success
-  end
-
-  def consecutive_progression_of_steps?
-    if (past_step?(@order.state.to_sym) && !previous_step?(@order.state.to_sym))
-      flash[:alert]="Fill in previous steps in checkout, please."
-      false
-    else
-      true
+  def check_filled_in_info
+    case step
+      when :delivery
+         unless @order.shipping_address && @order.billing_address
+          flash_wrong_step
+          jump_to(:address)
+         end
+      when :payment
+        unless @order.shipping_address && @order.billing_address
+          flash_wrong_step
+          jump_to(:address)
+        end
+        unless @order.delivery
+          flash_wrong_step
+          jump_to(:delivery)
+        end
+      when :confirm
+        unless @order.shipping_address && @order.billing_address
+          flash_wrong_step
+          jump_to(:address)
+        end
+        unless @order.delivery
+          flash_wrong_step
+          jump_to(:delivery)
+        end
+        unless @order.credit_card
+          flash_wrong_step
+          jump_to(:payment)
+        end
     end
   end
 

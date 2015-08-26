@@ -16,10 +16,15 @@ RSpec.describe Order, type: :model do
 
   subject{create :order}
 
-  describe ".order_book" do
+  describe "#order_book" do
     it "creates new order_item first time book added to the order" do
       subject.order_book(book)
       expect(subject.order_items.count).to eq(1)
+    end
+
+    It "adds price of a book to order total_price" do
+      subject.order_book(book)
+      expect(subject.total_price).to eq(book.price)
     end
 
     it "changes quantity of existing order_item" do
@@ -30,7 +35,7 @@ RSpec.describe Order, type: :model do
     end
   end
 
-  describe ".set_total_price" do
+  describe "#set_total_price" do
     it "changes order's total_price every time book added to order" do
       subject.order_book(book)
       expect(subject.total_price).to eq(77)
@@ -46,15 +51,14 @@ RSpec.describe Order, type: :model do
     #   expect(build :order, state: nil).not_to be_valid
     # end
 
-
-    it "creates new order with state: In progress" do
-      expect(subject.state).to eq("in progress")
-    end
-
     # it "order's state should be onу of the  ['in progress', 'completed', 'shipped']" do
     #   order= build :order, state: "fakeState"
     #   expect(order).not_to be_valid
     # end
+
+    it "creates new order with state: In progress" do
+      expect(subject.state).to eq("in progress")
+    end
 
     it "is invalid if it has no completed date while in 'confirmed' state " do
       order = build :order, state: "confirmed", completed_date: nil
@@ -62,14 +66,16 @@ RSpec.describe Order, type: :model do
     end
   end
 
-  describe "merge other_order" do
-    it "adds books in guest order to signed in user's current order" do
-      first_order = create :order
-      order_item = create :order_item, book: book, order: first_order
-      other_order = create :order
-      order_item = create :order_item, book: book, order: other_order
+  describe "#merge" do
+    let(:first_order) { create :order }
+    let(:first_order_item)  { create :order_item, book: book, order: first_order, quantity: 1 }
+    let(:other_order) { create :order }
+    let(:other_order_item)  { create :order_item, book: book, order: other_order, quantity: 1 }
+
+    it "adds books in guest order to same books of signed in user" do
       first_order.merge other_order
-      expect(first_order.order_items.first.quantity).to eq(first_order.order_item.quantity + other_order.order_item.quantity)
+      expect(first_order.order_items.first.quantity).to eq(first_order_item.quantity + other_order_item.quantity)
+      expect(first_order.books).to eq(other_order.books)
     end
   end
 

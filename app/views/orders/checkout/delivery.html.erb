@@ -5,7 +5,7 @@
   <% Delivery.all.each do |d| %>
   <div class="col-md-10">
     <%= f.radio_button :delivery_id, d.id.to_i  %>
-    <%= f.label :delivery_id, "#{d.description} + #{d.price}" %>
+    <%= f.label :delivery_id, "#{d.description} + #{number_to_currency(d.price)}" %>
   </div>
   <% end %>
   </div>
