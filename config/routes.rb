@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  #get 'raitings/new'
+  get 'cart', to: 'orders#cart'
 
   #get 'categories/show'
 

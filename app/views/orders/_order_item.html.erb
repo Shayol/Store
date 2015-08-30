@@ -25,7 +25,7 @@
     <strong>$<%= order_item.price %></strong>
   </div>
   <div class="col-md-1 text-center">
-  <% if current_page?(current_or_guest_user.current_order) %>
+  <% if order.current_order? %>
     <%= number_field_tag "id-#{order_item.id}", order_item.quantity, class: "form-control qty", within: 1..200 %>
   <% else %>
     <strong><%= order_item.quantity %></strong>
@@ -35,8 +35,8 @@
     <strong><%= number_to_currency(order_item.price * order_item.quantity) %></strong>
   </div>
   <div class="col-md-1 text-left">
-    <% if current_page?(current_or_guest_user.current_order) %>
-      <%= link_to order_order_item_path(order, order_item), method: :delete do %>
+    <% if order.current_order? %>
+      <%= link_to order_order_item_path(order, order_item), id: "delete_item_#{order_item.id}", method: :delete do %>
       <i class="fa fa-times"></i>
     <% end %>
     <% end %>

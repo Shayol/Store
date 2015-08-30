@@ -4,13 +4,24 @@
 
 .owl-prev, .owl-next {
     position: absolute;
-    top: 30%;
-    width: 50px;
-    height: 60px;
+    top: 35%;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
     line-height: 3;
+    border-radius: 0px !important;
+    background: transparent !important;
+    padding: 0px 0px !important;
+    border-bottom: 20px solid transparent;
   }
   .owl-prev {left: 1%;}
   .owl-next {right: 1%;}
   .slider {
     border: 1px solid gray;
+  }
+  .owl-prev {
+    border-right: 40px solid DimGray;
+  }
+  .owl-next {
+    border-left: 40px solid DimGray;
   }

@@ -1,5 +1,5 @@
 class HomePagesController < ApplicationController
   def home
-    @books = Book.all
+    @books = Book.all.take(3)
   end
 end

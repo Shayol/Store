@@ -2,6 +2,11 @@ class OrdersController < ApplicationController
   before_action :find_order, only: [:show, :update]
   load_and_authorize_resource
 
+
+  def cart
+     @cart = current_or_guest_user.current_order
+  end
+
   def show
   end
 
@@ -13,7 +18,7 @@ class OrdersController < ApplicationController
   end
 
   def empty_cart
-    curent_or_guest_user.current_order.order_items.destroy_all
+    current_or_guest_user.current_order.order_items.destroy
     current_or_guest_user.current_order.set_total_price
     flash[:notice] = "Cart is empty"
     redirect_to action: :show

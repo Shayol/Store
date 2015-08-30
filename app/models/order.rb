@@ -99,4 +99,8 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def current_order?
+    self == user.current_order
+  end
+
 end
