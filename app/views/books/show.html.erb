@@ -34,24 +34,34 @@
     <div class="col-md-12">
       <% if @book.raitings.approved_by_admin.any? %>
         <% @book.raitings.approved_by_admin.each do |raiting| %>
-          <%= form_for raiting, url: book_raitings_path(@book) do |f| %>
-          <div class="reviews">
-            <span class="star-rating">
-              <% (1..5).each do |r| %>
-                <% if r == raiting.raiting_number %>
-                  <%= f.radio_button :raiting_number, r, checked: true, disabled: true %>
-                    <i></i>
-                <% else %>
-                  <%= f.radio_button :raiting_number, r, disabled: true %>
-                    <i></i>
+          <div class="row">
+            <div class="col-md-3">
+              <%= form_for raiting, url: book_raitings_path(@book) do |f| %>
+              <div class="reviews">
+                <span class="star-rating">
+                  <% (1..5).each do |r| %>
+                    <% if r == raiting.raiting_number %>
+                     <%= f.radio_button :raiting_number, r, checked: true, disabled: true %>
+                      <i></i>
+                    <% else %>
+                      <%= f.radio_button :raiting_number, r, disabled: true %>
+                        <i></i>
+                    <% end %>
+                  <% end %>
                 <% end %>
-              <% end %>
-            <% end %>
-          </span>
-        </div>
+              </span>
+            </div>
+            </div>
+        <div class="col-md-5">
           by <%= raiting.user.firstname %> <%= raiting.user.lastname %>
           <em><%= raiting.created_at.strftime("%B %d, %Y") %></em>
-          <p><em><%= raiting.review %></em></p>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p><em><%= raiting.review %></em></p>
+          </div>
+        </div>
         <% end %>
       <% else %>
         <br>
