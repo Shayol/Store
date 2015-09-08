@@ -29,6 +29,12 @@ ready = function() {
     // navigationText: ["<i class='fa fa-caret-left fa-5x'></i>","<i class='fa fa-caret-right fa-5x'></i>"]
   });
 
+ //  $(':radio').change(
+ //  function(){
+ //    $('.choice').text( this.value + ' stars' );
+ //  }
+ // );
+
   if($("#checkout_address_form_use_billing_as_shipping").is(":checked")) {
     $(".shipping_address_checkout").addClass("hidden");
   }

@@ -69,11 +69,13 @@ class Order < ActiveRecord::Base
 
   def order_book(book, quantity=1)
     if item = order_items.find_by(book: book)
-      item.increment!(:quantity, quantity)
+      @added_book = item.increment!(:quantity, quantity)
     else
-      order_items.create(price: book.price, quantity: quantity, book_id: book.id)
+      @added_book = order_items.create(price: book.price, quantity: quantity, book_id: book.id)
+      @added_book = @added_book.valid?
     end
     set_total_price
+    return @added_book
   end
 
   def items_price

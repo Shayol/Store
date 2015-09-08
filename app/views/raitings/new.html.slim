@@ -2,18 +2,12 @@ h1
   ' New review for
   =link_to @book.title, @book
 
-- if @rating.errors.any?
-  div.alert.alert-danger
-    strong Review can't be save because:
-    - @rating.errors.full_messages.each do |msg|
-      p msg
-
 =form_for @rating, url: book_raitings_path do |f|
-  .form-group
+  .form-group.reviews
     =f.label :raiting_number, "Rating:", class: "control-label"
     span.star-rating
-      -(1..5).each do |i|
-        =f.radio_button :raiting_number, i
+      -(1..5).each do |r|
+        =f.radio_button :raiting_number, r
         i
   .form-group
     =f.label :review, "Text:", class: "control-label"

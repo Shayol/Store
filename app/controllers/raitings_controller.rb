@@ -11,6 +11,7 @@ class RaitingsController < ApplicationController
     if @rating.save
       redirect_to @book, notice: "Thank you for review! It will appear on this page after moderation."
     else
+      flash[:alert] = "Review wasn't saved."
       render 'new'
     end
   end

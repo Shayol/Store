@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :find_order, only: [:show, :update]
-  load_and_authorize_resource
+  authorize_resource
 
 
   def cart

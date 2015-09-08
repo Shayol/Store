@@ -8,13 +8,13 @@ class Ability
       can :access, :rails_admin       # only allow admin users to access Rails Admin
       can :dashboard
       can :manage, :all
-    elsif user.guest?
-      can :manage, OrderItem, :order_id => user.current_order.id
-      can :manage, Order, :user_id => user.id
     else
-       can :manage, [ Address, CreditCard, User, Order, Raiting], :user_id => user.id
-       can :manage, OrderItem, :order_id => user.current_order.id
-       can :manage, Raiting, :user_id => user.id
+      can :manage, OrderItem, :order_id => user.current_order.id
+      can :read, Raiting
+      can :manage, [ Address, CreditCard, Order], :user_id => user.id
+      if !user.guest?
+        can :manage, [User, Raiting], :user_id => user.id
+      end
     end
     # The first argument to `can` is the action you are giving the user
     # permission to do.
