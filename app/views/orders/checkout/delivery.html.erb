@@ -1,5 +1,5 @@
 <%= render "checkout_menu" %>
-<%= form_for @order, url: wizard_path do |f| %>
+<%= form_for @form, method: :put, url: wizard_path do |f| %>
 <div class="row">
   <div class="col-md-8">
   <% Delivery.all.each do |d| %>

@@ -1,27 +1,26 @@
 class OrdersController < ApplicationController
   before_action :find_order, only: [:show, :update]
+  before_action :find_cart, only: [:cart, :delete, :index]
   authorize_resource
 
 
   def cart
-     @cart = current_or_guest_user.current_order
   end
 
   def show
   end
 
   def index
-    @cart = current_or_guest_user.current_order
     @waiting_for_processing = current_or_guest_user.orders.in_queue
     @in_delivery = current_or_guest_user.orders.in_delivery
     @delivered = current_or_guest_user.orders.delivered
   end
 
-  def empty_cart
-    current_or_guest_user.current_order.order_items.destroy
-    current_or_guest_user.current_order.set_total_price
+  def delete
+    @cart.order_items.destroy
+    @cart.set_total_price
     flash[:notice] = "Cart is empty"
-    redirect_to action: :show
+    redirect_to action: :cart
   end
 
   def update
@@ -36,5 +35,9 @@ class OrdersController < ApplicationController
 
   def find_order
     @order = Order.find(params[:id])
+  end
+
+  def find_cart
+     @cart = current_or_guest_user.current_order
   end
 end

@@ -12,7 +12,7 @@
 </div>
 <div class="row">
   <div class="col-md-2 ">
-    <%= button_to "EMPTY CART", empty_cart_order_path(@cart), class: "btn btn-danger"  %>
+    <%= button_to "EMPTY CART", @cart, method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" }  %>
   </div>
   <div class="col-md-2 ">
     <%= button_to "CONTINUE SHOPPING", books_path, class: "btn btn-primary" %>

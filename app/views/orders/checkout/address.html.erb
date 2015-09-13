@@ -6,9 +6,9 @@
         <strong> BILLING ADDRESS </strong>
       </div>
     </div>
-    <%= form_for @address, method: :put, url: wizard_path do |f| %>
-      <% if @address.errors.any? %>
-        <% @address.errors.full_messages.each do |msg| %>
+    <%= form_for @form, method: :put, url: wizard_path do |f| %>
+      <% if @form.errors.any? %>
+        <% @form.errors.full_messages.each do |msg| %>
           <p class="alert"> <%= msg %> </p>
         <% end %>
       <% end %>

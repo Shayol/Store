@@ -13,13 +13,6 @@ class Order < ActiveRecord::Base
 
   validates :state, inclusion: { in: ORDER_STATE }, presence: true
 
-  # Validations happens only after appropriate state of order
-  # validates :total_price, :order_items, :books, :billing_address_id, :shipping_address_id,
-  #                            presence: true, if: Proc.new { |a| a.state == "address" || a.state == "confirm"}
-  # validates :delivery_id,    presence: true, if: Proc.new { |a| a.state == "type_of_delivery" || a.state == "confirm"}
-  # validates :credit_card_id, presence: true, if: Proc.new { |a| a.state == "payment" || a.state == "confirm"}
-  # validates :completed_date, presence: true, if: Proc.new { |a| a.state == "confirm" }
-
 
   scope :in_progress,  -> {where(state: "in_progress")}
   scope :in_queue,     -> {where(state: "in_queue")}

@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   resources :orders do
     resources :order_items, only: :destroy
     member do
-      post :empty_cart
+      get :empty_cart
     end
   end
   resources :categories, only: [:show]
