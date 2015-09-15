@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150805165858) do
+ActiveRecord::Schema.define(version: 20150915104921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,11 @@ ActiveRecord::Schema.define(version: 20150805165858) do
 
   add_index "books", ["author_id"], name: "index_books_on_author_id", using: :btree
   add_index "books", ["category_id"], name: "index_books_on_category_id", using: :btree
+
+  create_table "books_wish_lists", id: false, force: :cascade do |t|
+    t.integer "wish_list_id", null: false
+    t.integer "book_id",      null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.text     "title",      null: false
@@ -179,6 +184,14 @@ ActiveRecord::Schema.define(version: 20150805165858) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "wish_lists", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "wish_lists", ["user_id"], name: "index_wish_lists_on_user_id", using: :btree
+
   add_foreign_key "addresses", "countries"
   add_foreign_key "books", "authors"
   add_foreign_key "books", "categories"
@@ -190,4 +203,5 @@ ActiveRecord::Schema.define(version: 20150805165858) do
   add_foreign_key "orders", "users"
   add_foreign_key "raitings", "books"
   add_foreign_key "raitings", "users"
+  add_foreign_key "wish_lists", "users"
 end
