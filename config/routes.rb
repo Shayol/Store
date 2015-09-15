@@ -3,8 +3,6 @@ Rails.application.routes.draw do
   get 'cart', to: 'orders#cart'
   post 'search', to: 'books#search'
 
-  #get 'categories/show'
-
   devise_for :admins
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: 'home_pages#home'

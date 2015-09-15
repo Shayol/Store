@@ -15,7 +15,7 @@ class BooksController < ApplicationController
     else
       flash[:alert] = "Book wasn't added"
     end
-    redirect_to action: :show
+    redirect_to cart_path
   end
 
   def search
