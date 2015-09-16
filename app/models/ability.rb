@@ -9,11 +9,18 @@ class Ability
       can :dashboard
       can :manage, :all
     else
+      can :read, WishList
+      can :read, Book
+      can :add_to_order, Book
       can :manage, OrderItem, :order_id => user.current_order.id
-      can :read, Raiting
+      can :read, Raiting, :approved => true
       can :manage, [ Address, CreditCard, Order], :user_id => user.id
       if !user.guest?
-        can :manage, [User, Raiting], :user_id => user.id
+        can :manage, WishList, :order_id => user.current_order.id
+        can :edit, User, :user_id => user.id
+        can :read, User, :user_id => user.id
+        can :delete, User, :user_id => user.id
+        can :create, Raiting, :user_id => user.id
       end
     end
     # The first argument to `can` is the action you are giving the user
