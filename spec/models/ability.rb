@@ -41,6 +41,7 @@ describe "User" do
       end
 
       context "user" do
+        it { should be_able_to :update_address, user }
         it { should be_able_to :settings, user }
         it { should be_able_to :update_email, user }
         it { should be_able_to :update_password, user }
@@ -71,6 +72,7 @@ describe "User" do
         let(:user) (create :user, email: "guest_#{Time.now.to_i}#{rand(100)}@example.com")
 
         context "user" do
+          it { should_not be_able_to :update_address, User.new }
           it { should_not be_able_to :settings, User.new }
           it { should_not be_able_to :update_email, User.new }
           it { should_not be_able_to :update_password, User.new }
