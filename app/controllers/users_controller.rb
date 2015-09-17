@@ -1,10 +1,16 @@
 class UsersController < ApplicationController
   authorize_resource
-  before_action :get_settings_data, only: :settings
   before_action :find_user
 
 
   def settings
+    find_addresses
+  end
+
+  def update_address
+    if type = params[:address_type]
+      @user.send("#{type}") ? update_billing_or_shipping(type) : create_billing_or_shipping(type)
+    end
   end
 
   def update_password
@@ -34,6 +40,34 @@ class UsersController < ApplicationController
 
   private
 
+  def update_billing_or_shipping(type)
+    if @user.send("#{type}").update(address_params(type))
+      @user.save
+      flash[:notice] = "#{type.capitalize} address was successfully saved."
+      return redirect_to action: :settings
+    else
+      find_addresses
+      return render action: :settings
+    end
+  end
+
+  def create_billing_or_shipping(type)
+    @user.send("#{type}=", Address.new)
+    if @user.send("#{type}").update(address_params(type))
+      flash[:notice] = "#{type.capitalize} address was successfully saved."
+      @user.save
+      return redirect_to action: :settings
+    else
+      find_addresses
+      return render action: :settings
+    end
+  end
+
+  def find_addresses
+    @user.billing_address ||= Address.new
+    @user.shipping_address ||= Address.new
+  end
+
   def find_user
     @user = current_user
   end
@@ -46,4 +80,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:new_password, :old_password)
   end
 
+  def address_params(type)
+    params.require(type.to_sym).permit(:firstname, :lastname, :address, :country, :city, :phone, :zipcode)
+  end
 end

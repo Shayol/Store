@@ -7,51 +7,53 @@
   <div class="col-md-6">
     <h3> BILLING ADDRESS </h3>
     <hr>
-    <%= form_for @billing_address do |f| %>
-      <% if @billing_address.errors.any? %>
-        <% @billing_address.errors.full_messages.each do |msg| %>
-          <p class="alert"> - <%= msg %> </p>
+    <%= form_for @user, url: update_address_path, method: :put do |u| %>
+      <%= fields_for :billing_address, @user.billing_address do |f| %>
+        <% if @user.billing_address.errors.any? %>
+          <% @user.billing_address.errors.full_messages.each do |msg| %>
+            <p class="alert"> - <%= msg %> </p>
+          <% end %>
         <% end %>
+        <div class="row">
+        <div class="col-md-6">
+          <%= f.text_field :firstname, placeholder: "First name", class: "form-control" %>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-md-6">
+          <%= f.text_field :lastname, placeholder: "Last name", class: "form-control" %>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <%= f.text_field :address, placeholder: "Street address", class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <%= f.text_field :city, placeholder: "City", class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+          <%= f.country_select :country, {priority_countries: ["GB", "US"], prompt: "Select a Country"}, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <%= f.text_field :zipcode, placeholder: "Zip", class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <%= f.text_field :phone, placeholder: "Phone", class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+        <div class="col-md-2">
       <% end %>
-    <div class="row">
-    <div class="col-md-6">
-      <%= f.text_field :firstname, placeholder: "First name", class: "form-control" %>
-    </div>
-    </div>
-    <div class="row">
-    <div class="col-md-6">
-      <%= f.text_field :lastname, placeholder: "Last name", class: "form-control" %>
-    </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <%= f.text_field :address, placeholder: "Street address", class: "form-control" %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <%= f.text_field :city, placeholder: "City", class: "form-control" %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-      <%= f.country_select :country, {priority_countries: ["GB", "US"], prompt: "Select a Country"}, class: "form-control" %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4">
-        <%= f.text_field :zipcode, placeholder: "Zip", class: "form-control" %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <%= f.text_field :phone, placeholder: "Phone", class: "form-control" %>
-      </div>
-    </div>
-    <%= hidden_field_tag 'address_type', 'billing' %>
-    <div class="row">
-    <div class="col-md-2">
-      <%= f.submit "Save", class: "btn btn-primary" %>
+      <%= hidden_field_tag 'address_type', 'billing_address' %>
+    <%= u.submit "Save", class: "btn btn-primary" %>
     </div>
     </div>
     <% end %>
@@ -61,55 +63,56 @@
   <div class="col-md-6">
     <h3> SHIPPING ADDRESS </h3>
     <hr>
-    <%= form_for @shipping_address do |f| %>
-    <% if @shipping_address.errors.any? %>
-      <% @shipping_address.errors.full_messages.each do |msg| %>
-        <p class="alert"> <%= msg %> </p>
+    <%= form_for @user, url: update_address_path, method: :put do |u| %>
+      <%= fields_for :shipping_address, @user.shipping_address do |f| %>
+        <% if @user.shipping_address.errors.any? %>
+          <% @user.shipping_address.errors.full_messages.each do |msg| %>
+            <p class="alert"> - <%= msg %> </p>
+          <% end %>
+        <% end %>
+        <div class="row">
+        <div class="col-md-6">
+          <%= f.text_field :firstname, placeholder: "First name", class: "form-control" %>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-md-6">
+          <%= f.text_field :lastname, placeholder: "Last name", class: "form-control" %>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <%= f.text_field :address, placeholder: "Street address", class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <%= f.text_field :city, placeholder: "City", class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+          <%= f.country_select :country, {priority_countries: ["GB", "US"], prompt: "Select a Country"}, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <%= f.text_field :zipcode, placeholder: "Zip", class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <%= f.text_field :phone, placeholder: "Phone", class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+        <div class="col-md-2">
       <% end %>
+      <%= hidden_field_tag 'address_type', 'shipping_address' %>
+    <%= u.submit "Save", class: "btn btn-primary" %>
+    </div>
+    </div>
     <% end %>
-  <div class="row">
-  <div class="col-md-6">
-    <%= f.text_field :firstname, placeholder: "First name", class: "form-control" %>
-  </div>
-  </div>
-  <div class="row">
-  <div class="col-md-6">
-    <%= f.text_field :lastname, placeholder: "Last name", class: "form-control" %>
-  </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <%= f.text_field :address, placeholder: "Street address", class: "form-control" %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <%= f.text_field :city, placeholder: "City", class: "form-control" %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <%= f.country_select :country, {priority_countries: ["GB", "US"], prompt: "Select a Country"}, class: "form-control" %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      <%= f.text_field :zipcode, placeholder: "Zip", class: "form-control" %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <%= f.text_field :phone, placeholder: "Phone", class: "form-control" %>
-    </div>
-  </div>
-  <%= hidden_field_tag 'address_type', 'shipping' %>
-  <div class="row">
-  <div class="col-md-2">
-    <%= f.submit "Save", class: "btn btn-primary" %>
-  </div>
-  </div>
-  <% end %>
-
   </div>
   </div>
 

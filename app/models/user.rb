@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :omniauthable, :omniauth_providers => [:facebook]
 
-  attr_accessor :old_password, :new_password
+  #attr_accessor :old_password, :new_password
 
   has_one    :credit_card, dependent: :destroy
   has_many   :orders, dependent: :destroy

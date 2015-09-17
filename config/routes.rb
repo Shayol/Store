@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}
   devise_scope :user do
     get '/settings', to: 'users#settings'
+    put '/update_address', to: 'users#update_address'
     put '/update_email', to: 'users#update_email'
     put '/update_password', to: 'users#update_password'
   end

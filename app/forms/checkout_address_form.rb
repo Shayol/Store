@@ -114,7 +114,7 @@ class CheckoutAddressForm
   end
 
   def order_delivery
-    order.delivery_id || nil
+    order.delivery_id || nil ## check if need nil
   end
 
   def order_completed_date

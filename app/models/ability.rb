@@ -20,6 +20,7 @@ class Ability
         can :settings, User, :user_id => user.id
         can :update_email, User, :user_id => user.id
         can :update_password, User, :user_id => user.id
+        can :update_address, User, :user_id => user.id
         # can :edit, User, :user_id => user.id
         # can :read, User, :user_id => user.id
         can :delete, User, :user_id => user.id
