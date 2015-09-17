@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  load_and_authorize_resource
-  before_action :get_settings_data
+  authorize_resource
+  before_action :get_settings_data, only: :settings
   before_action :find_user
 
 

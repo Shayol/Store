@@ -21,14 +21,12 @@ ActiveRecord::Schema.define(version: 20150915104921) do
     t.text     "zipcode"
     t.text     "city"
     t.text     "phone"
-    t.integer  "country_id"
+    t.string   "country"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "firstname"
     t.string   "lastname"
   end
-
-  add_index "addresses", ["country_id"], name: "index_addresses_on_country_id", using: :btree
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -84,14 +82,6 @@ ActiveRecord::Schema.define(version: 20150915104921) do
   end
 
   add_index "categories", ["title"], name: "index_categories_on_title", unique: true, using: :btree
-
-  create_table "countries", force: :cascade do |t|
-    t.text     "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "countries", ["name"], name: "index_countries_on_name", unique: true, using: :btree
 
   create_table "credit_cards", force: :cascade do |t|
     t.text     "number"
@@ -192,7 +182,6 @@ ActiveRecord::Schema.define(version: 20150915104921) do
 
   add_index "wish_lists", ["user_id"], name: "index_wish_lists_on_user_id", using: :btree
 
-  add_foreign_key "addresses", "countries"
   add_foreign_key "books", "authors"
   add_foreign_key "books", "categories"
   add_foreign_key "credit_cards", "users"

@@ -17,8 +17,11 @@ class Ability
       can :manage, [ Address, CreditCard, Order], :user_id => user.id
       if !user.guest?
         can :manage, WishList, :order_id => user.current_order.id
-        can :edit, User, :user_id => user.id
-        can :read, User, :user_id => user.id
+        can :settings, User, :user_id => user.id
+        can :update_email, User, :user_id => user.id
+        can :update_password, User, :user_id => user.id
+        # can :edit, User, :user_id => user.id
+        # can :read, User, :user_id => user.id
         can :delete, User, :user_id => user.id
         can :create, Raiting, :user_id => user.id
       end

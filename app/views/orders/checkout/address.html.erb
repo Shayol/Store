@@ -34,7 +34,7 @@
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.select :billing_country_id, Country.all.collect { |p| [ p.name, p.id ] }, {include_blank: false}, {class: "form-control"} %>
+        <%= f.country_select :billing_country, {priority_countries: ["GB", "US"], prompt: "Select a Country"}, class: "form-control" %>
       </div>
     </div>
     <div class="row">
@@ -84,7 +84,7 @@
     </div>
     <div class="row">
       <div class="col-md-8">
-        <%= f.select :shipping_country_id, Country.all.collect { |p| [ p.name, p.id ] }, {include_blank: false}, {class: "form-control"} %>
+        <%= f.country_select :shipping_country, {priority_countries: ["GB", "US"], prompt: "Select a Country"}, class: "form-control" %>
       </div>
     </div>
     <div class="row">

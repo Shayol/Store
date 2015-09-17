@@ -40,6 +40,7 @@ gem 'carrierwave-dropbox'
 gem 'wicked'
 gem 'virtus'
 gem 'aasm'
+gem 'country_select'
 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc

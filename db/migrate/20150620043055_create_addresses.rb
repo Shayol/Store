@@ -5,7 +5,7 @@ class CreateAddresses < ActiveRecord::Migration
       t.text :zipcode
       t.text :city
       t.text :phone
-      t.references :country, index: true, foreign_key: true
+      t.string :country
 
       t.timestamps null: false
     end

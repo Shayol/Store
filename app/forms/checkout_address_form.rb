@@ -15,7 +15,7 @@ class CheckoutAddressForm
   attribute :billing_zipcode, String
   attribute :billing_city, String
   attribute :billing_phone, String
-  attribute :billing_country_id, Integer
+  attribute :billing_country, String
   attribute :use_billing_as_shipping, Boolean, default: true
 
   attribute :shipping_firstname, String
@@ -24,7 +24,7 @@ class CheckoutAddressForm
   attribute :shipping_zipcode, String
   attribute :shipping_city, String
   attribute :shipping_phone, String
-  attribute :shipping_country_id, Integer
+  attribute :shipping_country, String
 
   attribute :card_firstname, String
   attribute :card_lastname, String
@@ -41,11 +41,11 @@ class CheckoutAddressForm
 
 
   validates :billing_firstname, :billing_lastname, :billing_address,
-            :billing_zipcode, :billing_city, :billing_phone, :billing_country_id,
+            :billing_zipcode, :billing_city, :billing_phone, :billing_country,
             presence: true, if: Proc.new { step == :address }
 
   validates :shipping_firstname, :shipping_lastname, :shipping_address,
-            :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country_id,
+            :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country,
             presence: true, unless: :not_address_step_and_same_as_billing?
 
   validates :card_firstname, :card_lastname, :card_expiration_month,
@@ -170,11 +170,6 @@ class CheckoutAddressForm
 
   private
 
-  # def persist!(order)
-  #   order.billing_address.update(billing_address_params)
-  #   use_billing_as_shipping ? order.shipping_address.update(billing_address_params) : order.shipping_address.update(shipping_address_params)
-  # end
-
   def confirm_params
     {completed_date: form_completed_date}
   end
@@ -188,10 +183,10 @@ class CheckoutAddressForm
   end
 
   def billing_address_params
-    {firstname: billing_firstname, lastname: billing_lastname, address: billing_address, city: billing_city, country_id: billing_country_id, zipcode: billing_zipcode, phone: billing_phone}
+    {firstname: billing_firstname, lastname: billing_lastname, address: billing_address, city: billing_city, country: billing_country, zipcode: billing_zipcode, phone: billing_phone}
   end
 
   def shipping_address_params
-    {firstname: shipping_firstname, lastname: shipping_lastname, address: shipping_address, city: shipping_city, country_id: shipping_country_id, zipcode: shipping_zipcode, phone: shipping_phone}
+    {firstname: shipping_firstname, lastname: shipping_lastname, address: shipping_address, city: shipping_city, country: shipping_country, zipcode: shipping_zipcode, phone: shipping_phone}
   end
 end
