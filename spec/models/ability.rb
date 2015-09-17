@@ -47,13 +47,13 @@ describe "User" do
         it { should_not be_able_to :delete, User.new }
       end
 
-      context "rating" do
-        it { should be_able_to :read, Rating.new(approved: true) }
-        it { should be_able_to :create, Rating.new(user: user) }
-        it { should_not be_able_to :read, Rating.new }
-        it { should_not be_able_to :create, Rating.new }
-        it { should_not be_able_to :edit, Rating.new }
-        it { should_not be_able_to :delete, Rating.new }
+      context "raiting" do
+        it { should be_able_to :read, Raiting.new(approved: true) }
+        it { should be_able_to :create, Raiting.new(user: user) }
+        it { should_not be_able_to :read, Raiting.new }
+        it { should_not be_able_to :create, Raiting.new }
+        it { should_not be_able_to :edit, Raiting.new }
+        it { should_not be_able_to :delete, Raiting.new }
       end
 
       context "wish list" do
@@ -74,7 +74,7 @@ describe "User" do
           it { should_not be_able_to :delete, User.new }
       end
 
-      context "Raiting"
+      context "raiting"
         it { should be_able_to :read, Raiting.new(approved: true) }
         it { should_not be_able_to :read, Raiting.new }
         it { should_not be_able_to :create, Raiting.new(user: user) }
