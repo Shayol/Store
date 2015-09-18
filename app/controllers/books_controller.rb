@@ -1,6 +1,7 @@
 class BooksController < ApplicationController
 
-  before_action :find_book, only: [:show, :add_to_order]
+  load_and_authorize_resource, only: [:show, :add_to_order]
+
   def index
     @books = Book.all.page params[:page]
     @categories = Category.all
@@ -23,12 +24,6 @@ class BooksController < ApplicationController
     @categories = Category.all
     flash[:alert] = "No books found." if @books.empty?
     render 'index'
-  end
-
-  private
-
-  def find_book
-    @book = Book.find(params[:id])
   end
 
 end

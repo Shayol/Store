@@ -67,6 +67,15 @@ describe "User" do
         it { should_not be_able_to :edit, WishList.new }
         it { should_not be_able_to :delete, WishList.new }
       end
+
+      context "book" do
+        it { should be_able_to :read, Book.new }
+        it { should be_able_to :add_to_order, Book.new }
+        it { should_not be_able_to :create, Book.new }
+        it { should_not be_able_to :edit, Book.new }
+        it { should_not be_able_to :delete, Book.new }
+      end
+      end
     end
       describe "when user is a guest" do
         let(:user) (create :user, email: "guest_#{Time.now.to_i}#{rand(100)}@example.com")
