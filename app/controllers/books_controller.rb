@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
 
-  load_and_authorize_resource, only: [:show, :add_to_order]
+  load_and_authorize_resource
 
   def index
     @books = Book.all.page params[:page]

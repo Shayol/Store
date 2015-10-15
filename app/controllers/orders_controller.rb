@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :find_order, only: [:show, :update]
-  before_action :find_cart, only: [:cart, :delete, :index]
+  before_action :find_cart, only: [:cart, :destroy, :index]
   authorize_resource
 
 
@@ -16,9 +16,8 @@ class OrdersController < ApplicationController
     @delivered = current_or_guest_user.orders.delivered
   end
 
-  def delete
-    @cart.order_items.destroy
-    @cart.set_total_price
+  def destroy
+    @cart.destroy
     flash[:notice] = "Cart is empty"
     redirect_to action: :cart
   end
