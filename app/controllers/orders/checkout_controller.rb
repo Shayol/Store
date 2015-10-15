@@ -1,12 +1,10 @@
 class Orders::CheckoutController < ApplicationController
-  #load_and_authorize_resource
+
   before_action :find_order
   include Wicked::Wizard
 
   steps :address, :delivery, :payment, :confirm, :complete
-  before_action :check_filled_in_info, only: :show
-  before_action :check_if_cart_empty, only: :update
-  before_action :complete_step_info, only: :show
+  before_action :step_info
 
   def show
     @form = CheckoutAddressForm.new({order: @order, step: step})
@@ -21,31 +19,37 @@ class Orders::CheckoutController < ApplicationController
 
   private
 
-  def flash_wrong_step
-    flash[:info] = "Please, fill in missing info."
+  def step_info
+    check_if_cart_empty if step == :confirm
+    check_filled_in_info unless step == :complete
+    complete_step_info if step == :complete
   end
 
-
-  def check_filled_in_info
-    unless step == :complete
-       jump_to(:address) unless @order.shipping_address && @order.billing_address && step != :address
-       jump_to(:delivery) unless @order.delivery && step != :delivery
-       jump_to(:payment) unless @order.credit_card && step != :payment
+  def check_filled_in_info  ### redirect_to loop
+    unless (step == :address) || (@order.shipping_address && @order.billing_address)
+      flash[:info] = "Please, fill in missing info."
+      return jump_to(:address)
     end
+    unless (step == :delivery) || @order.delivery
+      flash[:info] = "Please, fill in missing info."
+      jump_to(:delivery) and return
+    end
+    # unless (step == :payment) || @order.credit_card
+    #   flash[:info] = "Please, fill in missing info."
+    #   jump_to(:payment) and return
+    # end
   end
 
   def check_if_cart_empty
-    if (step == :confirm) && @order.order_items.empty?
+    if @order.order_items.empty?
       flash[:alert] = "Your cart is empty. Choose some books and come back."
-      redirect_to :back and return
+      return :back
     end
   end
 
   def complete_step_info
-    if step == :complete
-      @order_in_queue = current_or_guest_user.orders.in_queue.last
-      flash[:info] = "Sign in or Sign up now and your order data will be saved in your account." if current_or_guest_user.guest?
-    end
+    @order_in_queue = current_or_guest_user.orders.in_queue.last
+    flash[:info] = "Sign in or Sign up now and your order data will be saved in your account." if current_or_guest_user.guest?
   end
 
   def find_order
@@ -54,9 +58,9 @@ class Orders::CheckoutController < ApplicationController
 
   def form_params
     params.require(:checkout_address_form).permit(:billing_firstname, :billing_lastname, :billing_address,
-                  :billing_zipcode, :billing_city, :billing_phone, :billing_country_id,
+                  :billing_zipcode, :billing_city, :billing_phone, :billing_country,
                   :use_billing_as_shipping, :shipping_firstname, :shipping_lastname, :shipping_address,
-                  :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country_id,
+                  :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country,
                   :card_firstname, :card_lastname, :card_expiration_month, :card_expiration_year, :card_CVV, :card_number, :delivery_id,
                   :form_completed_date)
   end

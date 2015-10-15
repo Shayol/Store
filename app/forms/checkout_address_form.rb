@@ -2,9 +2,10 @@ class CheckoutAddressForm
   include ActiveModel::Model
   include Virtus.model
 
-  ADDRESS_ATTRIBUTES = ["firstname", "lastname", "address", "zipcode", "city", "phone", "country_id"]
+  ADDRESS_ATTRIBUTES = ["firstname", "lastname", "address", "zipcode", "city", "phone", "country"]
+
   EXPIRATION_MONTH = (1..12).map(&:to_s)
-  EXPIRATION_YEAR = (2015..2025).map(&:to_s)
+  EXPIRATION_YEAR = (Date.today.year..(Date.today.year + 10)).map(&:to_s)
 
   attribute :order
   attribute :step
@@ -48,22 +49,22 @@ class CheckoutAddressForm
             :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country,
             presence: true, unless: :not_address_step_and_same_as_billing?
 
+  validates :billing_zipcode, :billing_phone, numericality: true, if: Proc.new { step == :address }
+  validates :shipping_zipcode, :shipping_phone, numericality: true, unless: :not_address_step_and_same_as_billing?
+
   validates :card_firstname, :card_lastname, :card_expiration_month,
             :card_expiration_year, :card_CVV, :card_number,
              presence: true,  if: Proc.new { step == :payment }
 
   validates :card_expiration_month, inclusion: { in: EXPIRATION_MONTH },  if: Proc.new { step == :payment }
   validates :card_expiration_year, inclusion: { in: EXPIRATION_YEAR },  if: Proc.new { step == :payment }
-  validates :card_CVV, length: 3..4,  if: Proc.new { step == :payment }
-  validates :card_number, length: 13..16,  if: Proc.new { step == :payment }
+  validates :card_CVV, length: 3..4, numericality: true, if: Proc.new { step == :payment }
+  validates :card_number, length: 13..16, numericality: true, if: Proc.new { step == :payment }
+  validate :expiration_date_cannot_be_in_the_past, if: Proc.new { step == :payment }
 
   validates :delivery_id, presence: true, if: Proc.new { step == :delivery }
 
   validates :form_completed_date, presence: true, if: Proc.new { step == :confirm }
-
-  def not_address_step_and_same_as_billing?
-    step != :address || use_billing_as_shipping
-  end
 
   def save
     if valid?
@@ -101,6 +102,20 @@ class CheckoutAddressForm
 
   end
 
+  private
+
+  def not_address_step_and_same_as_billing?
+    step != :address || use_billing_as_shipping
+  end
+
+  def expiration_date_cannot_be_in_the_past
+    if card_expiration_month.present? && card_expiration_year.present?
+      if (card_expiration_year.to_i == Date.today.year) && (card_expiration_month.to_i < Date.today.month)
+        errors.add(:card_expiration_month, "can't be in the past")
+      end
+    end
+  end
+
   def order_billing_address
     order.billing_address || order.user.billing_address || Address.new
   end
@@ -114,11 +129,11 @@ class CheckoutAddressForm
   end
 
   def order_delivery
-    order.delivery_id || nil ## check if need nil
+    order.delivery_id
   end
 
   def order_completed_date
-    order.completed_date || nil
+    order.completed_date
   end
 
   def create_addresses
@@ -167,8 +182,6 @@ class CheckoutAddressForm
 
     end
   end
-
-  private
 
   def confirm_params
     {completed_date: form_completed_date}
