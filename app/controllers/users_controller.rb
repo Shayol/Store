@@ -28,14 +28,14 @@ class UsersController < ApplicationController
     end
   end
 
-     def update_email
-      if @user.update!(user_email_params)
-        flash[:success] = "Email changed."
-        redirect_to settings_path
-      else
-        flash[:alert] = "Email wasn't updated. Check for errors."
-        render "settings"
-      end
+  def update_email
+    if @user.update!(user_email_params)
+      flash[:success] = "Email changed."
+      redirect_to settings_path
+    else
+      flash[:alert] = "Email wasn't updated. Check for errors."
+      render "settings"
+    end
   end
 
   private
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
   def update_billing_or_shipping(type)
     if @user.send("#{type}").update(address_params(type))
       @user.save
-      flash[:notice] = "#{type.capitalize} address was successfully saved."
+      flash[:notice] = "#{type.capitalize} was successfully saved."
       return redirect_to action: :settings
     else
       find_addresses
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
   def create_billing_or_shipping(type)
     @user.send("#{type}=", Address.new)
     if @user.send("#{type}").update(address_params(type))
-      flash[:notice] = "#{type.capitalize} address was successfully saved."
+      flash[:notice] = "#{type.capitalize} was successfully saved."
       @user.save
       return redirect_to action: :settings
     else

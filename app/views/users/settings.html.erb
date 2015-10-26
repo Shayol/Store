@@ -4,7 +4,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 billing-address">
     <h3> BILLING ADDRESS </h3>
     <hr>
     <%= form_for @user, url: update_address_path, method: :put do |u| %>
@@ -60,7 +60,7 @@
 
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 shipping-address">
     <h3> SHIPPING ADDRESS </h3>
     <hr>
     <%= form_for @user, url: update_address_path, method: :put do |u| %>

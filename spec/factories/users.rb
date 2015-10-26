@@ -5,6 +5,12 @@ FactoryGirl.define do
     email { Faker::Internet.email }
     password { Faker::Internet.password(8, 20)}
     password_confirmation { |u| u.password }
+    confirmed_at { Time.now }
+
+    factory :facebook_user do
+      provider "facebook"
+      uid { Faker::Number.number(15) }
+    end
   end
 
 end

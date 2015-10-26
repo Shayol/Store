@@ -3,7 +3,7 @@ class CreditCard < ActiveRecord::Base
   has_many :orders
 
   EXPIRATION_MONTH = (1..12).map(&:to_s)
-  EXPIRATION_YEAR = (2015..2025).map(&:to_s)
+  EXPIRATION_YEAR = (Date.today.year..(Date.today.year + 10)).map(&:to_s)
 
   validates :number, :expiration_month, :expiration_year, :firstname, :lastname, :CVV, presence: true
   validates :expiration_month, inclusion: { in: EXPIRATION_MONTH }

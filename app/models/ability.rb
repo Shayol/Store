@@ -2,10 +2,8 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # Define abilities for the passed in user here. For example:
-    #user ||= current_or_guest_user # guest user (not logged in)
     if user && user.class == Admin
-      can :access, :rails_admin       # only allow admin users to access Rails Admin
+      can :access, :rails_admin       
       can :dashboard
       can :manage, :all
     else

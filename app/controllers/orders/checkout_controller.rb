@@ -26,18 +26,18 @@ class Orders::CheckoutController < ApplicationController
   end
 
   def check_filled_in_info  ### redirect_to loop
-    unless (step == :address) || (@order.shipping_address && @order.billing_address)
-      flash[:info] = "Please, fill in missing info."
-      return jump_to(:address)
+    case step
+      when :address 
+        return unless @order.shipping_address && @order.billing_address
+      when :delivery
+        return unless @order.delivery
+      when :payment
+        return unless @order.credit_card
     end
-    unless (step == :delivery) || @order.delivery
-      flash[:info] = "Please, fill in missing info."
-      jump_to(:delivery) and return
-    end
-    # unless (step == :payment) || @order.credit_card
-    #   flash[:info] = "Please, fill in missing info."
-    #   jump_to(:payment) and return
-    # end
+    return jump_to(:address) unless @order.shipping_address && @order.billing_address
+    return jump_to(:delivery) unless @order.delivery
+    return jump_to(:payment) unless @order.credit_card
+    flash[:info] = "Please, fill in missing info."
   end
 
   def check_if_cart_empty

@@ -14,7 +14,7 @@ RSpec.describe Order, type: :model do
 
   let(:book) {create :book, price: 77}
 
-  subject{create :order}
+  #subject{create :order}
 
   describe "#order_book" do
     it "creates new order_item first time book added to the order" do
@@ -43,26 +43,28 @@ RSpec.describe Order, type: :model do
   end
 
   describe "Validation" do
-    # it "is invalid without total_price" do
-    #   expect(build :order, total_price: nil).not_to be_valid
-    # end
+   it "is invalid without total_price" do
+      expect(build :order, total_price: nil).not_to be_valid
+    end
 
-    # it "is invalid without state" do
-    #   expect(build :order, state: nil).not_to be_valid
-    # end
-
-    # it "order's state should be onу of the  ['in progress', 'completed', 'shipped']" do
-    #   order= build :order, state: "fakeState"
-    #   expect(order).not_to be_valid
-    # end
-
-    it "creates new order with state: In progress" do
-      expect(subject.state).to eq("in progress")
+    it "is invalid without state" do
+      expect(build :order, state: nil).not_to be_valid
     end
 
     it "is invalid if it has no completed date while in 'confirmed' state " do
       order = build :order, state: "confirmed", completed_date: nil
       expect(order).not_to be_valid
+    end
+  end
+
+  describe "#current_order?"
+    it "returns true if self in state: In progress" do
+        expect(subject.current_order?).to eq(true)
+    end
+
+    it "returns false if self is not in state: In progress" do
+      order = create :order, state: "in_queue"
+      expect(subject.current_order?).to eq(true)
     end
   end
 
@@ -76,6 +78,13 @@ RSpec.describe Order, type: :model do
       first_order.merge other_order
       expect(first_order.order_items.first.quantity).to eq(first_order_item.quantity + other_order_item.quantity)
       expect(first_order.books).to eq(other_order.books)
+    end
+  end
+
+  describe "#set_total_price" do
+    it "updates total sum of order" do
+      order_item = create :order_item, order: subject
+      expect { subject.set_total_price }.to change { subject.total_price }.by(order_item.price * order_item.quantity)
     end
   end
 

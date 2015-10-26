@@ -4,16 +4,14 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :omniauthable, :omniauth_providers => [:facebook]
 
-  #attr_accessor :old_password, :new_password
-
   has_one    :credit_card, dependent: :destroy
   has_many   :orders, dependent: :destroy
   has_many   :raitings, dependent: :destroy
   belongs_to :billing_address, :class_name => 'Address', :foreign_key => 'billing_address_id'
   belongs_to :shipping_address, :class_name => 'Address', :foreign_key => 'shipping_address_id'
 
-  validates :firstname, length: { maximum: 200 }
-  validates :lastname, length: { maximum: 200 }
+  validates :firstname, presence: true
+  validates :lastname, presence: true
 
   def self.from_omniauth(auth)
     unless user = where(provider: auth.provider, uid: auth.uid).first
