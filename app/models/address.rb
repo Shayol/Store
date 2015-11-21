@@ -1,5 +1,5 @@
 class Address < ActiveRecord::Base
-  has_many :users
+  has_many  :users
   validates :address, presence: true
   validates :zipcode, presence: true
   validates :city, presence: true

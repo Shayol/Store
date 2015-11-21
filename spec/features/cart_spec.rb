@@ -4,7 +4,7 @@ RSpec.feature "Cart" do
 
   let(:user) { login_user }
   let(:order)      {create :order, user: user}
-  let(:author)     {create :author}
+  #let(:author)     {create :author}
   let(:book)       {create :book, author: author}
 
   describe "empty cart" do
@@ -18,7 +18,7 @@ RSpec.feature "Cart" do
 
     let!(:order_item) {create :order_item, order: order, book: book}
 
-     before(:each) do
+    before(:each) do
       allow(order).to receive(:current_order?).and_return(true)
       visit cart_path
     end

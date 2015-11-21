@@ -4,7 +4,7 @@ FactoryGirl.define do
     price { Faker::Commerce.price }
     amount { Faker::Number.number(2) }
     image  nil
-    author  nil
+    author  
   end
 
 end

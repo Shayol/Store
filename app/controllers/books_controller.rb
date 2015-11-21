@@ -9,7 +9,7 @@ class BooksController < ApplicationController
 
   def show
   end
-
+  
   def add_to_order
     if current_or_guest_user.current_order.order_book(@book, params[:addBook][:quantity].to_i)
       flash[:notice] = "Book successfully added"
