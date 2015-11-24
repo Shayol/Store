@@ -20,18 +20,16 @@ Rails.application.routes.draw do
     resources :checkout, controller: 'orders/checkout', only: [:show, :update]
   end
   resources :books do
-    member do
-      post :add_to_order
-    end
     resources :raitings, only: [:new, :create, :update]
   end
 
   resources :orders do
-    resources :order_items, only: :destroy
     member do
       get :empty_cart
     end
   end
+
+  resources :order_items, only: [:create, :destroy]
   resources :categories, only: [:show]
   resources :addresses, only: [:create, :update]
 

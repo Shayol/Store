@@ -36,7 +36,7 @@
   </div>
   <div class="col-md-1 text-left">
     <% if order.current_order? %>
-      <%= link_to order_order_item_path(order, order_item), id: "delete_item_#{order_item.id}", method: :delete do %>
+      <%= link_to order_item_path(order, order_item), id: "delete_item_#{order_item.id}", method: :delete do %>
       <i class="fa fa-times"></i>
     <% end %>
     <% end %>

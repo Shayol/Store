@@ -1,8 +1,11 @@
-<%= form_for :addBook, url: add_to_order_book_path(book), method: :post, class: "form-inline" do |f| %>
+<%= form_for :order_item, url: order_items_path, method: :post, class: "form-inline" do |f| %>
     <div class="col-md-6">
       <%= f.number_field :quantity, value: 1, within: 1..100, class: "form-control addBook_quantity" %>
     </div>
+    <div class="col-md-6">
+      <%= f.hidden_field :book_id, value: book.id, class: "form-control" %>
+    </div>
     <div class="col-md-3">
-      <%= f.submit "ADD BOOK", class: "btn btn-info"%>
+      <%= f.submit "ADD ITEM", class: "btn btn-info"%>
     </div>
 <% end %>
