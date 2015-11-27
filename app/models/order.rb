@@ -60,16 +60,11 @@ class Order < ActiveRecord::Base
     user.update_settings unless user.guest?
   end
 
-  def add_item(book_id, quantity=1)
-    @book = Book.find(book_id)
-    if item = order_items.find_by(book: book_id)
-      @added_book = item.increment!(:quantity, quantity)
-    else
-      @added_book = order_items.create(price: @book.price, quantity: quantity, book_id: book_id)
-      @added_book = @added_book.valid?
-    end
+  def add_item(product, quantity=1)
+    item = OrderItem.find_or_create_by(product: product, price: product.price)
+    item.increment!(:quantity, quantity)    
     set_total_price
-    return @added_book
+    item.valid?
   end
 
   def items_price

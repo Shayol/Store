@@ -2,9 +2,7 @@
     <div class="col-md-6">
       <%= f.number_field :quantity, value: 1, within: 1..100, class: "form-control addBook_quantity" %>
     </div>
-    <div class="col-md-6">
-      <%= f.hidden_field :book_id, value: book.id, class: "form-control" %>
-    </div>
+      <%= f.hidden_field :book_id, value: book.id %>
     <div class="col-md-3">
       <%= f.submit "ADD ITEM", class: "btn btn-info"%>
     </div>
