@@ -2,7 +2,7 @@ class OrderItemsController < ApplicationController
   load_and_authorize_resource
 
   def create
-    if current_or_guest_user.current_order.add_item(params[:order_item][:book_id].to_i, params[:order_item][:quantity].to_i)
+    if current_or_guest_user.current_order.add_item(order_item_params[:book_id].to_i, order_item_params[:quantity].to_i)
       flash[:notice] = "Book successfully added"
     else
       flash[:alert] = "Book wasn't added"

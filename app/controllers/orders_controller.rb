@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
-  before_action :find_order, only: [:show, :update]
-  before_action :find_cart, only: [:cart, :destroy, :index]
+  before_action :find_order, only: :show
+  before_action :find_cart, only: [:cart, :destroy, :index, :update]
   authorize_resource
 
 
@@ -23,11 +23,11 @@ class OrdersController < ApplicationController
   end
 
   def update
-    @order.order_items.each do |item|
+    @cart.order_items.each do |item|
       item.update(quantity: params["id-#{item.id}"])
     end
-    @order.set_total_price
-    redirect_to order_path(@order)
+    @cart.set_total_price
+    redirect_to cart_path
   end
 
   private
