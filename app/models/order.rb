@@ -4,7 +4,7 @@ class Order < ActiveRecord::Base
   ORDER_STATE = ["in_progress", "in_queue", "in_delivery", "delivered", "canceled"]
 
   has_many   :order_items, dependent: :destroy
-  has_many   :books, :through => :order_items
+  has_many   :products, :through => :order_items
   belongs_to :user
   belongs_to :delivery
   belongs_to :credit_card
@@ -61,7 +61,7 @@ class Order < ActiveRecord::Base
   end
 
   def add_item(product, quantity=1)
-    item = OrderItem.find_or_create_by(product: product, price: product.price)
+    item = OrderItem.find_or_create_by(product: product, price: product.price, order: self)
     item.increment!(:quantity, quantity)    
     set_total_price
     item.valid?
@@ -80,8 +80,8 @@ class Order < ActiveRecord::Base
   def merge guest_order
     user_order_items = order_items
     guest_order.order_items.each do |order_item|
-      if self.books.include? order_item.book
-        user_order_item = user_order_items.find_by(book_id: order_item.book_id)
+      if self.products.include? order_item.product
+        user_order_item = user_order_items.find_by(product: order_item.product)
         user_order_item.update(quantity: (order_item.quantity + user_order_item.quantity))
      else
         order_item.order_id = self.id

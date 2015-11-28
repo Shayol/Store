@@ -1,5 +1,5 @@
 class OrderItem < ActiveRecord::Base
-  belongs_to :book
+  belongs_to :product, polymorphic: true
   belongs_to :order
 
   validates :price, presence: true, numericality: true
