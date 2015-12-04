@@ -3,7 +3,7 @@ FactoryGirl.define do
     price { Faker::Commerce.price }
     quantity { Faker::Number.number(1) }
     order nil
-    book nil
+    product nil
   end
 
 end

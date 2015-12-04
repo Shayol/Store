@@ -8,7 +8,7 @@ RSpec.describe Order, type: :model do
   it { should belong_to(:billing_address) }
   it { should belong_to(:shipping_address) }
   it { should have_many(:order_items) }
-  it { should have_many(:books) }
+  #it { should have_many(:books) }
   it { should validate_presence_of(:total_price) }
   it { should validate_presence_of(:state) }
 
@@ -16,24 +16,24 @@ RSpec.describe Order, type: :model do
 
   #subject{create :order}
 
-  describe "#order_book" do
-    it "creates new order_item first time book added to the order" do
-      subject.order_book(book)
-      expect(subject.order_items.count).to eq(1)
-    end
+  # describe "#order_book" do
+  #   it "creates new order_item first time book added to the order" do
+  #     subject.order_book(book)
+  #     expect(subject.order_items.count).to eq(1)
+  #   end
 
-    It "adds price of a book to order total_price" do
-      subject.order_book(book)
-      expect(subject.total_price).to eq(book.price)
-    end
+  #   It "adds price of a book to order total_price" do
+  #     subject.order_book(book)
+  #     expect(subject.total_price).to eq(book.price)
+  #   end
 
-    it "changes quantity of existing order_item" do
-      subject.order_book(book)
-      subject.reload
-      subject.order_book(book)
-      expect(subject.order_items.first.quantity).to eq(2)
-    end
-  end
+  #   it "changes quantity of existing order_item" do
+  #     subject.order_book(book)
+  #     subject.reload
+  #     subject.order_book(book)
+  #     expect(subject.order_items.first.quantity).to eq(2)
+  #   end
+  # end
 
   describe "#set_total_price" do
     it "changes order's total_price every time book added to order" do
@@ -84,8 +84,8 @@ RSpec.describe Order, type: :model do
   describe "#set_total_price" do
     it "updates total sum of order" do
       order_item = create :order_item, order: subject
-      expect { subject.set_total_price }.to change { subject.total_price }.by(order_item.price * order_item.quantity)
+      expect { subject.set_total_price }.to change{ subject.total_price }.by(order_item.price * order_item.quantity)
     end
   end
 
-end
+
