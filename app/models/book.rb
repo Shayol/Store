@@ -6,6 +6,7 @@ class Book < ActiveRecord::Base
   belongs_to :author
   belongs_to :category
   has_many   :raitings
+  has_many :order_items, as: :product
 
   validates :title, :price, :amount, presence: true
 

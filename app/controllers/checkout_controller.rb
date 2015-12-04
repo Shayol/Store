@@ -1,9 +1,9 @@
-class Orders::CheckoutController < ApplicationController
+class CheckoutController < ApplicationController
+
+  include Wicked::Wizard
+  steps :address, :delivery, :payment, :confirm, :complete
 
   before_action :find_order
-  include Wicked::Wizard
-
-  steps :address, :delivery, :payment, :confirm, :complete
   before_action :step_info
 
   def show
@@ -21,23 +21,20 @@ class Orders::CheckoutController < ApplicationController
 
   def step_info
     check_if_cart_empty if step == :confirm
-    check_filled_in_info unless step == :complete
-    complete_step_info if step == :complete
+    step == :complete ? complete_step_info : check_filled_in_info
   end
 
-  def check_filled_in_info  ### redirect_to loop
-    case step
-      when :address 
-        return unless @order.shipping_address && @order.billing_address
-      when :delivery
-        return unless @order.delivery
-      when :payment
-        return unless @order.credit_card
+  def check_filled_in_info
+    steps[0...steps.index(step)].each do |past_step|
+      case past_step
+        when :address 
+          return jump_to(:address) unless @order.shipping_address && @order.billing_address
+        when :delivery
+          return jump_to(:delivery) unless @order.delivery
+        when :payment
+          return jump_to(:payment) unless @order.credit_card
+      end
     end
-    return jump_to(:address) unless @order.shipping_address && @order.billing_address
-    return jump_to(:delivery) unless @order.delivery
-    return jump_to(:payment) unless @order.credit_card
-    flash[:info] = "Please, fill in missing info."
   end
 
   def check_if_cart_empty
@@ -61,7 +58,8 @@ class Orders::CheckoutController < ApplicationController
                   :billing_zipcode, :billing_city, :billing_phone, :billing_country,
                   :use_billing_as_shipping, :shipping_firstname, :shipping_lastname, :shipping_address,
                   :shipping_zipcode, :shipping_city, :shipping_phone, :shipping_country,
-                  :card_firstname, :card_lastname, :card_expiration_month, :card_expiration_year, :card_CVV, :card_number, :delivery_id,
-                  :form_completed_date)
+                  :card_firstname, :card_lastname, :card_expiration_month, :card_expiration_year, :card_CVV, :card_number,
+                   :delivery_id, :completed_date
+                  )
   end
 end

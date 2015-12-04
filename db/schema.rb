@@ -105,15 +105,15 @@ ActiveRecord::Schema.define(version: 20150915104921) do
   end
 
   create_table "order_items", force: :cascade do |t|
-    t.decimal  "price",      precision: 9, scale: 2, null: false
-    t.integer  "quantity",                           null: false
-    t.integer  "book_id"
+    t.decimal  "price",        precision: 9, scale: 2, null: false
+    t.integer  "quantity",                             null: false
+    t.string   "product_type"
+    t.integer  "product_id"
     t.integer  "order_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
-  add_index "order_items", ["book_id"], name: "index_order_items_on_book_id", using: :btree
   add_index "order_items", ["order_id"], name: "index_order_items_on_order_id", using: :btree
 
   create_table "orders", force: :cascade do |t|
@@ -185,7 +185,6 @@ ActiveRecord::Schema.define(version: 20150915104921) do
   add_foreign_key "books", "authors"
   add_foreign_key "books", "categories"
   add_foreign_key "credit_cards", "users"
-  add_foreign_key "order_items", "books"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "credit_cards"
   add_foreign_key "orders", "deliveries"

@@ -15,11 +15,11 @@
 <% order.order_items.each do |order_item| %>
 <div class="row">
   <div class="col-md-3">
-    <img src=<%= order_item.book.image.thumb %> ></img>
+    <img src=<%= order_item.product.image.thumb %> ></img>
   </div>
   <div class="col-md-5">
-    <div class="col-md-11"><strong><%= order_item.book.title.titleize %></strong></div>
-    <div class="col-md-11"><%= order_item.book.summary %></div>
+    <div class="col-md-11"><strong><%= order_item.product.title.titleize %></strong></div>
+    <div class="col-md-11"><%= order_item.product.summary %></div>
   </div>
   <div class="col-md-1 text-center">
     <strong>$<%= order_item.price %></strong>
@@ -36,7 +36,7 @@
   </div>
   <div class="col-md-1 text-left">
     <% if order.current_order? %>
-      <%= link_to order_item_path(order, order_item), id: "delete_item_#{order_item.id}", method: :delete do %>
+      <%= link_to order_item_path(order_item), id: "delete_item_#{order_item.id}", method: :delete do %>
       <i class="fa fa-times"></i>
     <% end %>
     <% end %>

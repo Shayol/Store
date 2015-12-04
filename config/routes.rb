@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   get 'cart', to: 'orders#cart'
+  #mount Shopart::Engine, at: "/cart"
   post 'search', to: 'books#search'
 
   devise_for :admins
@@ -16,9 +17,7 @@ Rails.application.routes.draw do
     put '/update_password', to: 'users#update_password'
   end
 
-  resources :orders do
-    resources :checkout, controller: 'orders/checkout', only: [:show, :update]
-  end
+  resources :checkout, controller: 'checkout', only: [:show, :update]
   resources :books do
     resources :raitings, only: [:new, :create, :update]
   end
