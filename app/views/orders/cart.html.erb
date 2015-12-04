@@ -22,7 +22,7 @@
     <%= button_to "EMPTY CART", @cart, method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" }  %>
   </div>
   <div class="col-md-2 ">
-    <%= button_to "CHECKOUT", order_checkout_path(@cart, "address"), method: :get, class: "btn btn-success" %>
+    <%= button_to "CHECKOUT", checkout_path("address"), method: :get, class: "btn btn-success" %>
   </div>
 </div>
 <% else %>

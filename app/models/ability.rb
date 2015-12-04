@@ -8,11 +8,12 @@ class Ability
       can :manage, :all
     else
       can :read, WishList
-      can :read, Book
+      can [:read, :search], Book
       can :add_to_order, Book
       can :manage, OrderItem, :order_id => user.current_order.id
       can :read, Raiting, :approved => true
       can :manage, [ Address, CreditCard, Order], :user_id => user.id
+
       if !user.guest?
         can :manage, WishList, :order_id => user.current_order.id
         can :settings, User, :user_id => user.id

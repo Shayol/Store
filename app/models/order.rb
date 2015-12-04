@@ -88,6 +88,7 @@ class Order < ActiveRecord::Base
         order_item.save
       end
     end
+    set_total_price
   end
 
   def current_order?

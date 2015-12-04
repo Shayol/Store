@@ -33,10 +33,9 @@ class CheckoutAddressForm
   attribute :card_expiration_year, String
   attribute :card_CVV, String
   attribute :card_number, String
-
+  attribute :completed_date, Time
   attribute :delivery_id, Integer
 
-  attribute :form_completed_date, DateTime
 
 
 
@@ -64,7 +63,7 @@ class CheckoutAddressForm
 
   validates :delivery_id, presence: true, if: Proc.new { step == :delivery }
 
-  validates :form_completed_date, presence: true, if: Proc.new { step == :confirm }
+  validates :completed_date, presence: true, if: Proc.new { step == :confirm }
 
   def save
     if valid?
@@ -96,10 +95,7 @@ class CheckoutAddressForm
         self.card_expiration_year = order_credit_card.expiration_year
         self.card_CVV = order_credit_card.CVV
         self.card_number = order_credit_card.number
-      when :confirm
-        self.form_completed_date = order_completed_date
       end
-
   end
 
   private
@@ -162,7 +158,7 @@ class CheckoutAddressForm
   end
 
   def create_confirm
-    order.update(confirm_params)  ### check this!!!
+    order.update({completed_date: completed_date})  ### check this!!!
     order.confirm_event!
   end
 
@@ -181,10 +177,6 @@ class CheckoutAddressForm
       when :complete
 
     end
-  end
-
-  def confirm_params
-    {completed_date: form_completed_date}
   end
 
   def delivery_params

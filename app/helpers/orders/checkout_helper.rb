@@ -1,2 +1,0 @@
-module Orders::CheckoutHelper
-end

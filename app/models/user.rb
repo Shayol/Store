@@ -32,12 +32,13 @@ end
 
   def update_settings
     if !guest?
-      if !billing_address_id
-        update_attribute(:billing_address_id, current_order.billing_address_id)
+      if !billing_address
+        billing_address = current_order.billing_address
       end
-      if !shipping_address_id
-        update_attribute(:shipping_address_id, current_order.shipping_address_id)
+      if !shipping_address
+        shipping_address = current_order.shipping_address
       end
+      self.save
     end
   end
 
